@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="userRedisRealm" class="com.evada.inno.auth.realm.RedisUserRealm">
+        <property name="cachingEnabled" value="true"></property>
+        <property name="authorizationCachingEnabled" value="true"></property>
+        <property name="authenticationCachingEnabled" value="true"></property>
+    </bean>
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="userRedisRealm"/>
+        <property name="subjectDAO" ref="subjectDAO"/>
+        <!--<property name="sessionManager" ref="sessionManager" />-->
+    </bean>
+
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/#/login"/>
+        <property name="successUrl" value="/"/>
+        <property name="filters">
+            <map>
+                <entry key="tokenCheckFilter">
+                    <bean class="com.evada.inno.auth.filter.TokenCheckerFilter" />
+                </entry>
+            </map>
+
+        </property>
+        <property name="filterChainDefinitions">
+            <value>
+                /index.html = anon
+                /api/** = anon
+                /api-docs/** = anon
+
+                /app_download.html = anon
+                /sysPackageVersions/lastVersion = anon
+                /sysPackageVersions/**/qrCode = anon
+                /sysPackageVersions/**/download = anon
+                /manifest/** = anon
+
+                /sysUsers/login = anon
+                /sysUsers/logout = anon
+                /sysUsers/loadAvatar = anon
+                /wfProcessDefinitions/getInfoForFront = anon
+                /webSocketServer = anon
+                /public/** = anon
+                / = anon
+                /assets/** = anon
+                /fonts/** = anon
+                /** = tokenCheckFilter
+                /inno-de-web/public/fireFoxDownloadObjectFile = anon
+                /inno-de-web/public/ieToFirefoxPluginDownloadObjectFile = anon
+            </value>
+            <!--,sessionControlFilter-->
+        </property>
+    </bean>
+    <!-- 此处引起 ISysUserService.deleteById 拦截器进不去问题 -->
+    <!--<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">-->
+    <!--<property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager"/>-->
+    <!--<property name="arguments" ref="securityManager"/>-->
+    <!--</bean>-->
+
+    <bean id="subjectDAO" class="org.apache.shiro.mgt.DefaultSubjectDAO">
+        <property name="sessionStorageEvaluator">
+            <bean class="org.apache.shiro.web.mgt.DefaultWebSessionStorageEvaluator">
+                <property name="sessionStorageEnabled" value="false"/>
+            </bean>
+        </property>
+    </bean>
+
+</beans>

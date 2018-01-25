@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/aop
+                http://www.springframework.org/schema/aop/spring-aop.xsd
+                http://www.springframework.org/schema/tx
+                http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <bean id="transactionAdvice" class="com.cys.web.interceptor.DeTransactionInterceptor">
+        <property name="transactionManager" ref="transactionManager"></property>
+        <property name="transactionAttributes">
+            <props>
+                <prop key="add*">PROPAGATION_REQUIRED</prop>
+                <prop key="create*">PROPAGATION_REQUIRED</prop>
+                <prop key="insert*">PROPAGATION_REQUIRED</prop>
+                <prop key="save*">PROPAGATION_REQUIRED</prop>
+                <prop key="update*">PROPAGATION_REQUIRED</prop>
+                <prop key="modify*">PROPAGATION_REQUIRED</prop>
+                <prop key="edit*">PROPAGATION_REQUIRED</prop>
+                <prop key="delete*">PROPAGATION_REQUIRED</prop>
+                <prop key="destroy*">PROPAGATION_REQUIRED</prop>
+                <prop key="remove*">PROPAGATION_REQUIRED</prop>
+                <prop key="move*">PROPAGATION_REQUIRED</prop>
+                <prop key="send*">PROPAGATION_REQUIRED</prop>
+                <prop key="un*">PROPAGATION_REQUIRED</prop>
+                <prop key="upload*">PROPAGATION_REQUIRED</prop>
+                <prop key="deploy*">PROPAGATION_REQUIRED</prop>
+                <prop key="*Lock">PROPAGATION_REQUIRED</prop>
+                <!--deleteViewDataObjectRelForCompatible此方法在spring-tx.xml中配置成开启新事务, 为了支持兼容的那个删除操作,必须要可写事务,所以创建新事务-->
+                <prop key="deleteViewDataObjectRelForCompatible">PROPAGATION_REQUIRES_NEW</prop>
+                <prop key="relationShip">PROPAGATION_REQUIRES_NEW</prop>
+                <prop key="relationTable">PROPAGATION_REQUIRES_NEW</prop>
+
+                <prop key="otherAffair*">PROPAGATION_REQUIRES_NEW, +NotRollbackException</prop>
+
+                <prop key="get*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="find*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="load*">PROPAGATION_REQUIRED,readOnly</prop>
+                <prop key="*">PROPAGATION_REQUIRED</prop>
+            </props>
+        </property>
+    </bean>
+
+    <aop:config>
+        <aop:pointcut id="servicePointcut" expression="execution(* *..service.impl.*.*(..))"/>
+        <aop:advisor pointcut-ref="servicePointcut"
+                     advice-ref="transactionAdvice"/>
+    </aop:config>
+
+</beans>
