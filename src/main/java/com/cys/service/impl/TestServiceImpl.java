@@ -1,7 +1,8 @@
 package com.cys.service.impl;
 
+import com.cys.model.SysUser;
+import com.cys.repository.SysUserRepository;
 import com.cys.service.TestService;
-import com.cys.model.ProjectUserRel;
 import com.cys.repository.TestResitory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,13 @@ import java.util.List;
 public class TestServiceImpl implements TestService {
     @Autowired
     private TestResitory testResitory;
+
+    @Autowired
+    private SysUserRepository sysUserRepository;
+
     @Override
     public String say() throws Exception {
-        List<ProjectUserRel> projectUserRelList = testResitory.findAll();
-        projectUserRelList.forEach(projectUserRel -> {
-            System.out.print(projectUserRel.getId());
-        });
+        List<SysUser> sysUsers = sysUserRepository.findAll();
         return "sucess";
     }
 }
