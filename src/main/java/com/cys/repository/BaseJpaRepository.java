@@ -25,7 +25,7 @@ public abstract interface BaseJpaRepository<T,ID extends Serializable> extends J
 
     /**
      * 根据特定条件集合删除实体
-     * @param object
+     * @param objects
      */
     int  deleteInBatch(List<T> objects);
 

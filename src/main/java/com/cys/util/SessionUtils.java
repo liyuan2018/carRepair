@@ -34,7 +34,7 @@ public class SessionUtils {
             if(environment!=null&& environment.getProperty(SYSTEM_USER_ACCOUNT)!=null){
                 SysUserRepository userMapper = (SysUserRepository)ApplicationContextUtils.getApplicationContext().getBean("sysUserRepository");
                 //后端调用
-                SysUser  userInfo =  userMapper.findByaAccount(environment.getProperty(SYSTEM_USER_ACCOUNT));
+                SysUser  userInfo =  userMapper.findByAccount(environment.getProperty(SYSTEM_USER_ACCOUNT));
                 return userInfo;
             }
             else

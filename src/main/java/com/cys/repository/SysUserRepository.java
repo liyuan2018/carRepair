@@ -7,9 +7,9 @@ import java.util.List;
 /**
  * Created by liyuan on 2018/1/28.
  */
-public interface SysUserRepository extends BaseJpaRepository {
+public interface SysUserRepository extends BaseJpaRepository<SysUser,String> {
 
-    SysUser findByaAccount(String account);
+    SysUser findByAccount(String account);
 
     List<SysUser>  findAll();
 }

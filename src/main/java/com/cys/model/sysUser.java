@@ -55,13 +55,13 @@ public class SysUser extends BaseModel {
     @Column(name = "error_count", columnDefinition = "VARCHAR")
     private Integer errorCount;
 
-    @Column(name = "error_time", columnDefinition = "VARCHAR")
+    @Column(name = "error_time", columnDefinition = "TIMESTAMP")
     private Date errorTime;
 
-    @Column(name = "modified_time", columnDefinition = "VARCHAR")
+    @Column(name = "modified_time", columnDefinition = "TIMESTAMP")
     private Date modifiedTime;
 
-    @Column(name = "creator_time", columnDefinition = "VARCHAR")
+    @Column(name = "creator_time", columnDefinition = "TIMESTAMP")
     private Date creatorTime;
 
     @Column(name = "status", columnDefinition = "VARCHAR")

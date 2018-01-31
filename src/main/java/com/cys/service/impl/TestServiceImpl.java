@@ -15,9 +15,6 @@ import java.util.List;
 @Service
 public class TestServiceImpl implements TestService {
     @Autowired
-    private TestResitory testResitory;
-
-    @Autowired
     private SysUserRepository sysUserRepository;
 
     @Override

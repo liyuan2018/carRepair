@@ -21,13 +21,13 @@ public class UUIDUtils {
         return UUID.randomUUID().toString().replaceAll("-","");
     }
 
-    public static void main( String[] args ) throws Exception {
-        for ( int i=0; i<100; i++) {
-            String id =UUID.randomUUID().toString().replaceAll("-","");
-            System.out.println(id+","+id.length());
-        }
-
-    }
+//    public static void main( String[] args ) throws Exception {
+//        for ( int i=0; i<100; i++) {
+//            String id =UUID.randomUUID().toString().replaceAll("-","");
+//            System.out.println(id+","+id.length());
+//        }
+//
+//    }
 }
 
 

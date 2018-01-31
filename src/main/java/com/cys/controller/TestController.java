@@ -2,8 +2,10 @@ package com.cys.controller;
 
 import com.cys.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -16,7 +18,7 @@ public class TestController {
     @Autowired
     private TestService testService;
 
-    @GetMapping("/sayHello")
+    @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public String say() throws Exception{
         return testService.say();
     }
