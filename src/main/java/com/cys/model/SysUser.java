@@ -75,8 +75,87 @@ public class SysUser extends BaseModel {
 
     @Column(name = "description", columnDefinition = "VARCHAR")
     private String description;
+    /**
+     * 
+     */
+    @Column(name = "type_dby", columnDefinition = "VARCHAR")
+    private Integer typeDby;
+    
+    @Column(name = "type_xby", columnDefinition = "VARCHAR")
+    private Integer typeXby;
+    
+    @Column(name = "type_wx", columnDefinition = "VARCHAR")
+    private Integer typeWx;
+    
+    @Column(name = "type_mr", columnDefinition = "VARCHAR")
+    private Integer typeMr;
+    
+    @Column(name = "type_jc", columnDefinition = "VARCHAR")
+    private Integer typeJc;
+    
+    @Column(name = "jf", columnDefinition = "VARCHAR")
+    private Integer jf;
+    
+    @Column(name = "dj", columnDefinition = "VARCHAR")
+    private Integer dj;
 
-    public Short getUserType() {
+    public Integer getTypeDby() {
+		return typeDby;
+	}
+
+	public void setTypeDby(Integer typeDby) {
+		this.typeDby = typeDby;
+	}
+
+	public Integer getTypeXby() {
+		return typeXby;
+	}
+
+	public void setTypeXby(Integer typeXby) {
+		this.typeXby = typeXby;
+	}
+
+	public Integer getTypeWx() {
+		return typeWx;
+	}
+
+	public void setTypeWx(Integer typeWx) {
+		this.typeWx = typeWx;
+	}
+
+	public Integer getTypeMr() {
+		return typeMr;
+	}
+
+	public void setTypeMr(Integer typeMr) {
+		this.typeMr = typeMr;
+	}
+
+	public Integer getTypeJc() {
+		return typeJc;
+	}
+
+	public void setTypeJc(Integer typeJc) {
+		this.typeJc = typeJc;
+	}
+
+	public Integer getJf() {
+		return jf;
+	}
+
+	public void setJf(Integer jf) {
+		this.jf = jf;
+	}
+
+	public Integer getDj() {
+		return dj;
+	}
+
+	public void setDj(Integer dj) {
+		this.dj = dj;
+	}
+
+	public Short getUserType() {
         return userType;
     }
 
