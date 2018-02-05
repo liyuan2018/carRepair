@@ -8,8 +8,8 @@ import com.cys.web.resolver.QueryHandlerMethodArgumentResolver;
 import com.cys.web.serializer.NullKeySerializer;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +24,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
 /**
@@ -152,6 +153,17 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         ApplicationContextUtils resolver = new ApplicationContextUtils();
         return resolver;
     }
+
+
+    @Bean
+    public FilterRegistrationBean addFilters(EntityManagerFactory entityManagerFactory) {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setName("jpaOpenEntityManagerInViewFilter");
+        registration.setFilter(new OpenEntityManagerInViewFilter());
+        registration.addUrlPatterns(new String[]{"/*"});
+        return registration;
+    }
+
 
 //    /**
 //     * 配置拦截器
