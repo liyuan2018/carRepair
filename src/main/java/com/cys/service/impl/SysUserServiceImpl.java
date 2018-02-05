@@ -21,32 +21,14 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
     @Autowired
     private SysUserRepository sysUserRepository;
     @Override
-    public Page<SysUser> find(SysUserDTO sysUserDTO, Query query) throws Exception {
+    public Page<SysUser> find(SysUser sysUser, Query query) throws Exception {
         Pageable pageable = query.getPageable();
-        SysUser sysUser = new SysUser();
-        PropertyUtils.copyProperties(sysUser,sysUserDTO);
-        Page<SysUser> sysUserPages = sysUserRepository.find(sysUserDTO,pageable);
+        Page<SysUser> sysUserPages = sysUserRepository.find(sysUser,pageable);
         return sysUserPages;
     }
 
     @Override
-    public List<SysUser> find(SysUserDTO sysUserDTO) throws Exception {
-        SysUser sysUser = new SysUser();
-        PropertyUtils.copyProperties(sysUser,sysUserDTO);
+    public List<SysUser> find(SysUser sysUser) {
         return sysUserRepository.find(sysUser);
-    }
-
-    @Override
-    public void create(SysUserDTO sysUserDTO) throws Exception {
-        SysUser sysUser = new SysUser();
-        PropertyUtils.copyProperties(sysUser,sysUserDTO);
-        sysUserRepository.save(sysUser);
-    }
-
-    @Override
-    public void update(SysUserDTO sysUserDTO) throws Exception {
-        SysUser sysUser = new SysUser();
-        PropertyUtils.copyProperties(sysUser,sysUserDTO);
-        sysUserRepository.save(sysUser);
     }
 }

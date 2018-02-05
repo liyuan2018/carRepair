@@ -15,34 +15,19 @@ public interface ISysUserService extends IBaseService<SysUser,String> {
 
     /**
      * 分页查询接口
-     * @param sysUserDTO
+     * @param sysUser
      * @param query
      * @return
      * @throws Exception
      */
-    Page<SysUser> find(SysUserDTO sysUserDTO, Query query) throws Exception;
+    Page<SysUser> find(SysUser sysUser, Query query) throws Exception;
 
     /**
      * 查询集合
-     * @param sysUserDTO
+     * @param sysUser
      * @return
      * @throws Exception
      */
-    List<SysUser> find(SysUserDTO sysUserDTO) throws Exception;
-
-
-    /**
-     * 创建
-     * @param sysUserDTO
-     * @throws Exception
-     */
-    void create(SysUserDTO sysUserDTO) throws Exception;
-
-    /**
-     * 更新
-     * @param sysUserDTO
-     * @throws Exception
-     */
-    void update(SysUserDTO sysUserDTO) throws Exception;
+    List<SysUser> find(SysUser sysUser);
 
 }

@@ -23,9 +23,9 @@ public class SysUserController extends BaseController {
 
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData findPmoPrjList(Query query) throws Exception {
-        SysUserDTO sysUserDTO= (SysUserDTO) query.getBean(SysUserDTO.class);
-        Page<SysUser> pageList = sysUserService.find(sysUserDTO, query);
+    public ResultData find(Query query) throws Exception {
+        SysUser sysUser= (SysUser) query.getBean(SysUserDTO.class);
+        Page<SysUser> pageList = sysUserService.find(sysUser, query);
         return new ResultData(SysUserDTO.class, pageList);
     }
 }
