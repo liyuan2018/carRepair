@@ -90,7 +90,7 @@ public class DataSourceConfig {
         dataSource.setUsername(properties.getUsername());
         String password = properties.getPassword();
         try{
-            password =  Base64Utils.getFromBase64(properties.getPassword());
+            password =  properties.getPassword();//Base64Utils.getFromBase64(properties.getPassword());
             String dataSourceFilters =systemConfig.getProperty("spring.datasource.filters");
             if(StringUtils.isNotEmpty(dataSourceFilters)&&!dataSourceFilters.contains("$")) {
                 dataSource.setFilters(dataSourceFilters);
