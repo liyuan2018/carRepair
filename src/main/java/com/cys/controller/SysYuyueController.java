@@ -32,6 +32,14 @@ public class SysYuyueController extends BaseController {
     @Autowired
     private BaseJpaRepository sysUserRepository;
 
+    /**
+     * 保存预约信息
+     * @param request
+     * @param response
+     * @param sysyuyue
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "save",  produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData save(HttpServletRequest request,HttpServletResponse response,SysYuyue sysyuyue) throws Exception {
        
@@ -42,4 +50,20 @@ public class SysYuyueController extends BaseController {
         json.put("result", ret);
         return new ResultData(JSONObject.class, json);
     }
+    
+    
+    @RequestMapping(value = "getYuyueCount",  produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData getYuyueCount(HttpServletRequest request,HttpServletResponse response,SysYuyue sysyuyue) throws Exception {
+       
+        JSONObject json = new JSONObject();
+        String ret= "fail";
+        sysUserRepository.save(sysyuyue);
+        ret="success";
+        json.put("result", ret);
+        return new ResultData(JSONObject.class, json);
+    }
+    
+    
+    
+    
 }
