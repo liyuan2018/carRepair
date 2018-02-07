@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cys.dao.carInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.cys.model.carInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="car_num" property="carNum" jdbcType="VARCHAR" />
+    <result column="car_age" property="carAge" jdbcType="SMALLINT" />
+    <result column="car_jh_num" property="carJhNum" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="ower_user_id" property="owerUserId" jdbcType="INTEGER" />
+    <result column="car_type" property="carType" jdbcType="VARCHAR" />
+    <result column="car_brand" property="carBrand" jdbcType="VARCHAR" />
+    <result column="yl1" property="yl1" jdbcType="VARCHAR" />
+    <result column="yl2" property="yl2" jdbcType="VARCHAR" />
+    <result column="yl3" property="yl3" jdbcType="VARCHAR" />
+    <result column="yl4" property="yl4" jdbcType="VARCHAR" />
+    <result column="yl5" property="yl5" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, car_num, car_age, car_jh_num, create_time, ower_user_id, car_type, car_brand, 
+    yl1, yl2, yl3, yl4, yl5
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cys.model.carInfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from car_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from car_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from car_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.cys.model.carInfoExample" >
+    delete from car_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cys.model.carInfo" >
+    insert into car_info (id, car_num, car_age, 
+      car_jh_num, create_time, ower_user_id, 
+      car_type, car_brand, yl1, 
+      yl2, yl3, yl4, yl5
+      )
+    values (#{id,jdbcType=INTEGER}, #{carNum,jdbcType=VARCHAR}, #{carAge,jdbcType=SMALLINT}, 
+      #{carJhNum,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{owerUserId,jdbcType=INTEGER}, 
+      #{carType,jdbcType=VARCHAR}, #{carBrand,jdbcType=VARCHAR}, #{yl1,jdbcType=VARCHAR}, 
+      #{yl2,jdbcType=VARCHAR}, #{yl3,jdbcType=VARCHAR}, #{yl4,jdbcType=VARCHAR}, #{yl5,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cys.model.carInfo" >
+    insert into car_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="carNum != null" >
+        car_num,
+      </if>
+      <if test="carAge != null" >
+        car_age,
+      </if>
+      <if test="carJhNum != null" >
+        car_jh_num,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="owerUserId != null" >
+        ower_user_id,
+      </if>
+      <if test="carType != null" >
+        car_type,
+      </if>
+      <if test="carBrand != null" >
+        car_brand,
+      </if>
+      <if test="yl1 != null" >
+        yl1,
+      </if>
+      <if test="yl2 != null" >
+        yl2,
+      </if>
+      <if test="yl3 != null" >
+        yl3,
+      </if>
+      <if test="yl4 != null" >
+        yl4,
+      </if>
+      <if test="yl5 != null" >
+        yl5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="carNum != null" >
+        #{carNum,jdbcType=VARCHAR},
+      </if>
+      <if test="carAge != null" >
+        #{carAge,jdbcType=SMALLINT},
+      </if>
+      <if test="carJhNum != null" >
+        #{carJhNum,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="owerUserId != null" >
+        #{owerUserId,jdbcType=INTEGER},
+      </if>
+      <if test="carType != null" >
+        #{carType,jdbcType=VARCHAR},
+      </if>
+      <if test="carBrand != null" >
+        #{carBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="yl1 != null" >
+        #{yl1,jdbcType=VARCHAR},
+      </if>
+      <if test="yl2 != null" >
+        #{yl2,jdbcType=VARCHAR},
+      </if>
+      <if test="yl3 != null" >
+        #{yl3,jdbcType=VARCHAR},
+      </if>
+      <if test="yl4 != null" >
+        #{yl4,jdbcType=VARCHAR},
+      </if>
+      <if test="yl5 != null" >
+        #{yl5,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cys.model.carInfoExample" resultType="java.lang.Integer" >
+    select count(*) from car_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update car_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.carNum != null" >
+        car_num = #{record.carNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carAge != null" >
+        car_age = #{record.carAge,jdbcType=SMALLINT},
+      </if>
+      <if test="record.carJhNum != null" >
+        car_jh_num = #{record.carJhNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.owerUserId != null" >
+        ower_user_id = #{record.owerUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.carType != null" >
+        car_type = #{record.carType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carBrand != null" >
+        car_brand = #{record.carBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl1 != null" >
+        yl1 = #{record.yl1,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl2 != null" >
+        yl2 = #{record.yl2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl3 != null" >
+        yl3 = #{record.yl3,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl4 != null" >
+        yl4 = #{record.yl4,jdbcType=VARCHAR},
+      </if>
+      <if test="record.yl5 != null" >
+        yl5 = #{record.yl5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update car_info
+    set id = #{record.id,jdbcType=INTEGER},
+      car_num = #{record.carNum,jdbcType=VARCHAR},
+      car_age = #{record.carAge,jdbcType=SMALLINT},
+      car_jh_num = #{record.carJhNum,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      ower_user_id = #{record.owerUserId,jdbcType=INTEGER},
+      car_type = #{record.carType,jdbcType=VARCHAR},
+      car_brand = #{record.carBrand,jdbcType=VARCHAR},
+      yl1 = #{record.yl1,jdbcType=VARCHAR},
+      yl2 = #{record.yl2,jdbcType=VARCHAR},
+      yl3 = #{record.yl3,jdbcType=VARCHAR},
+      yl4 = #{record.yl4,jdbcType=VARCHAR},
+      yl5 = #{record.yl5,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cys.model.carInfo" >
+    update car_info
+    <set >
+      <if test="carNum != null" >
+        car_num = #{carNum,jdbcType=VARCHAR},
+      </if>
+      <if test="carAge != null" >
+        car_age = #{carAge,jdbcType=SMALLINT},
+      </if>
+      <if test="carJhNum != null" >
+        car_jh_num = #{carJhNum,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="owerUserId != null" >
+        ower_user_id = #{owerUserId,jdbcType=INTEGER},
+      </if>
+      <if test="carType != null" >
+        car_type = #{carType,jdbcType=VARCHAR},
+      </if>
+      <if test="carBrand != null" >
+        car_brand = #{carBrand,jdbcType=VARCHAR},
+      </if>
+      <if test="yl1 != null" >
+        yl1 = #{yl1,jdbcType=VARCHAR},
+      </if>
+      <if test="yl2 != null" >
+        yl2 = #{yl2,jdbcType=VARCHAR},
+      </if>
+      <if test="yl3 != null" >
+        yl3 = #{yl3,jdbcType=VARCHAR},
+      </if>
+      <if test="yl4 != null" >
+        yl4 = #{yl4,jdbcType=VARCHAR},
+      </if>
+      <if test="yl5 != null" >
+        yl5 = #{yl5,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cys.model.carInfo" >
+    update car_info
+    set car_num = #{carNum,jdbcType=VARCHAR},
+      car_age = #{carAge,jdbcType=SMALLINT},
+      car_jh_num = #{carJhNum,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      ower_user_id = #{owerUserId,jdbcType=INTEGER},
+      car_type = #{carType,jdbcType=VARCHAR},
+      car_brand = #{carBrand,jdbcType=VARCHAR},
+      yl1 = #{yl1,jdbcType=VARCHAR},
+      yl2 = #{yl2,jdbcType=VARCHAR},
+      yl3 = #{yl3,jdbcType=VARCHAR},
+      yl4 = #{yl4,jdbcType=VARCHAR},
+      yl5 = #{yl5,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="com.cys.model.carInfoExample" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from car_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cys.dao.SysYuyueMapper" >
+  <resultMap id="BaseResultMap" type="com.cys.model.SysYuyue" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="yy_type" property="yyType" jdbcType="SMALLINT" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="yy_date" property="yyDate" jdbcType="TIMESTAMP" />
+    <result column="yy_time" property="yyTime" jdbcType="SMALLINT" />
+    <result column="yy_qy_user_id" property="yyQyUserId" jdbcType="INTEGER" />
+    <result column="yy_cz_user_id" property="yyCzUserId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="SMALLINT" />
+    <result column="car_num" property="carNum" jdbcType="VARCHAR" />
+    <result column="car_cj_num" property="carCjNum" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, yy_type, create_time, yy_date, yy_time, yy_qy_user_id, yy_cz_user_id, status, 
+    car_num, car_cj_num
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cys.model.SysYuyueExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_yuyue
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_yuyue
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_yuyue
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.cys.model.SysYuyueExample" >
+    delete from sys_yuyue
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cys.model.SysYuyue" >
+    insert into sys_yuyue (id, yy_type, create_time, 
+      yy_date, yy_time, yy_qy_user_id, 
+      yy_cz_user_id, status, car_num, 
+      car_cj_num)
+    values (#{id,jdbcType=INTEGER}, #{yyType,jdbcType=SMALLINT}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{yyDate,jdbcType=TIMESTAMP}, #{yyTime,jdbcType=SMALLINT}, #{yyQyUserId,jdbcType=INTEGER}, 
+      #{yyCzUserId,jdbcType=INTEGER}, #{status,jdbcType=SMALLINT}, #{carNum,jdbcType=VARCHAR}, 
+      #{carCjNum,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cys.model.SysYuyue" >
+    insert into sys_yuyue
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="yyType != null" >
+        yy_type,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="yyDate != null" >
+        yy_date,
+      </if>
+      <if test="yyTime != null" >
+        yy_time,
+      </if>
+      <if test="yyQyUserId != null" >
+        yy_qy_user_id,
+      </if>
+      <if test="yyCzUserId != null" >
+        yy_cz_user_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="carNum != null" >
+        car_num,
+      </if>
+      <if test="carCjNum != null" >
+        car_cj_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="yyType != null" >
+        #{yyType,jdbcType=SMALLINT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yyDate != null" >
+        #{yyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yyTime != null" >
+        #{yyTime,jdbcType=SMALLINT},
+      </if>
+      <if test="yyQyUserId != null" >
+        #{yyQyUserId,jdbcType=INTEGER},
+      </if>
+      <if test="yyCzUserId != null" >
+        #{yyCzUserId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="carNum != null" >
+        #{carNum,jdbcType=VARCHAR},
+      </if>
+      <if test="carCjNum != null" >
+        #{carCjNum,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cys.model.SysYuyueExample" resultType="java.lang.Integer" >
+    select count(*) from sys_yuyue
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sys_yuyue
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.yyType != null" >
+        yy_type = #{record.yyType,jdbcType=SMALLINT},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.yyDate != null" >
+        yy_date = #{record.yyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.yyTime != null" >
+        yy_time = #{record.yyTime,jdbcType=SMALLINT},
+      </if>
+      <if test="record.yyQyUserId != null" >
+        yy_qy_user_id = #{record.yyQyUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.yyCzUserId != null" >
+        yy_cz_user_id = #{record.yyCzUserId,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=SMALLINT},
+      </if>
+      <if test="record.carNum != null" >
+        car_num = #{record.carNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.carCjNum != null" >
+        car_cj_num = #{record.carCjNum,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sys_yuyue
+    set id = #{record.id,jdbcType=INTEGER},
+      yy_type = #{record.yyType,jdbcType=SMALLINT},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      yy_date = #{record.yyDate,jdbcType=TIMESTAMP},
+      yy_time = #{record.yyTime,jdbcType=SMALLINT},
+      yy_qy_user_id = #{record.yyQyUserId,jdbcType=INTEGER},
+      yy_cz_user_id = #{record.yyCzUserId,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=SMALLINT},
+      car_num = #{record.carNum,jdbcType=VARCHAR},
+      car_cj_num = #{record.carCjNum,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cys.model.SysYuyue" >
+    update sys_yuyue
+    <set >
+      <if test="yyType != null" >
+        yy_type = #{yyType,jdbcType=SMALLINT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yyDate != null" >
+        yy_date = #{yyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="yyTime != null" >
+        yy_time = #{yyTime,jdbcType=SMALLINT},
+      </if>
+      <if test="yyQyUserId != null" >
+        yy_qy_user_id = #{yyQyUserId,jdbcType=INTEGER},
+      </if>
+      <if test="yyCzUserId != null" >
+        yy_cz_user_id = #{yyCzUserId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=SMALLINT},
+      </if>
+      <if test="carNum != null" >
+        car_num = #{carNum,jdbcType=VARCHAR},
+      </if>
+      <if test="carCjNum != null" >
+        car_cj_num = #{carCjNum,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cys.model.SysYuyue" >
+    update sys_yuyue
+    set yy_type = #{yyType,jdbcType=SMALLINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      yy_date = #{yyDate,jdbcType=TIMESTAMP},
+      yy_time = #{yyTime,jdbcType=SMALLINT},
+      yy_qy_user_id = #{yyQyUserId,jdbcType=INTEGER},
+      yy_cz_user_id = #{yyCzUserId,jdbcType=INTEGER},
+      status = #{status,jdbcType=SMALLINT},
+      car_num = #{carNum,jdbcType=VARCHAR},
+      car_cj_num = #{carCjNum,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select resultMap="BaseResultMap" parameterType="com.cys.model.SysYuyueExample" id="selectByExampleWithRowbounds" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sys_yuyue
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>
