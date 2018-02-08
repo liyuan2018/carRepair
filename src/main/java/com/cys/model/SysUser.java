@@ -1,10 +1,13 @@
 package com.cys.model;
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name="sys_user")
+@Where(clause = "status > '0'")
 @Inheritance(strategy= InheritanceType.SINGLE_TABLE)
 @DiscriminatorValue("SysUser")
 public class SysUser extends BaseModel {

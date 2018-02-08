@@ -1,44 +1,44 @@
 package com.cys.model;
 
-import java.io.Serializable;
+import org.hibernate.annotations.Where;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
 import java.util.Date;
 
-public class SysYuyue implements Serializable {
-    private Integer id;
-
-    private Short yyType;
-
-    private Date createTime;
-
-    private Date yyDate;
-
-    private Short yyTime;
-
-    private Integer yyQyUserId;
-
-    private Integer yyCzUserId;
-
-    private Short status;
-
-    private String carNum;
-
-    private String carCjNum;
-
+@Entity
+@Table(name="sys_yuyue")
+@Where(clause = "status > '0'")
+@Inheritance(strategy= InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue("SysYuyue")
+public class SysYuyue extends BaseModel {
     private static final long serialVersionUID = 1L;
 
-    public Integer getId() {
-        return id;
-    }
+    @Column(name = "yy_type", columnDefinition = "VARCHAR")
+    private String yyType;
+    @Column(name = "create_time", columnDefinition = "Date")
+    private Date createTime;
+    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @Column(name = "yy_date", columnDefinition = "Date")
+    private Date yyDate;
+    @Column(name = "yy_time", columnDefinition = "VARCHAR")
+    private String yyTime;
+    @Column(name = "yy_qy_user_id", columnDefinition = "VARCHAR")
+    private String yyQyUserId;
+    @Column(name = "yy_cz_user_id", columnDefinition = "VARCHAR")
+    private String yyCzUserId;
+    @Column(name = "status", columnDefinition = "VARCHAR")
+    private String status;
+    @Column(name = "car_num", columnDefinition = "VARCHAR")
+    private String carNum;
+    @Column(name = "car_cj_num", columnDefinition = "VARCHAR")
+    private String carCjNum;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Short getYyType() {
+    public String getYyType() {
         return yyType;
     }
 
-    public void setYyType(Short yyType) {
+    public void setYyType(String yyType) {
         this.yyType = yyType;
     }
 
@@ -58,35 +58,35 @@ public class SysYuyue implements Serializable {
         this.yyDate = yyDate;
     }
 
-    public Short getYyTime() {
+    public String getYyTime() {
         return yyTime;
     }
 
-    public void setYyTime(Short yyTime) {
+    public void setYyTime(String yyTime) {
         this.yyTime = yyTime;
     }
 
-    public Integer getYyQyUserId() {
+    public String getYyQyUserId() {
         return yyQyUserId;
     }
 
-    public void setYyQyUserId(Integer yyQyUserId) {
+    public void setYyQyUserId(String yyQyUserId) {
         this.yyQyUserId = yyQyUserId;
     }
 
-    public Integer getYyCzUserId() {
+    public String getYyCzUserId() {
         return yyCzUserId;
     }
 
-    public void setYyCzUserId(Integer yyCzUserId) {
+    public void setYyCzUserId(String yyCzUserId) {
         this.yyCzUserId = yyCzUserId;
     }
 
-    public Short getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Short status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -95,7 +95,7 @@ public class SysYuyue implements Serializable {
     }
 
     public void setCarNum(String carNum) {
-        this.carNum = carNum == null ? null : carNum.trim();
+        this.carNum = carNum;
     }
 
     public String getCarCjNum() {
@@ -103,6 +103,8 @@ public class SysYuyue implements Serializable {
     }
 
     public void setCarCjNum(String carCjNum) {
-        this.carCjNum = carCjNum == null ? null : carCjNum.trim();
+        this.carCjNum = carCjNum;
     }
+
+
 }

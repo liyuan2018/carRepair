@@ -30,4 +30,11 @@ public interface ISysUserService extends IBaseService<SysUser,String> {
      */
     List<SysUser> find(SysUser sysUser);
 
+    /**
+     * 根据店铺ID查询
+     * @param shopId
+     * @return
+     */
+    List<SysUser> findByShopId(String shopId);
+
 }

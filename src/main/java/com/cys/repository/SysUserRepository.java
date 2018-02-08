@@ -12,4 +12,6 @@ public interface SysUserRepository extends BaseJpaRepository<SysUser,String> {
     SysUser findByAccount(String account);
 
     List<SysUser>  findAll();
+
+    List<SysUser> findByShopId(String shopId);
 }

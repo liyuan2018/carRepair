@@ -31,4 +31,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
     public List<SysUser> find(SysUser sysUser) {
         return sysUserRepository.find(sysUser);
     }
+
+    @Override
+    public List<SysUser> findByShopId(String shopId) {
+        return sysUserRepository.findByShopId(shopId);
+    }
 }
