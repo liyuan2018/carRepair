@@ -4,17 +4,19 @@ import com.cys.common.annotation.Rest;
 import com.cys.common.domain.Query;
 import com.cys.common.domain.ResultData;
 import com.cys.dto.SysUserDTO;
+import com.cys.model.SysAttachment;
 import com.cys.model.SysUser;
 import com.cys.service.ISysAttachmentService;
+import com.cys.service.ISysUserRelService;
 import com.cys.service.ISysUserService;
+import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by liyuan on 2018/2/5.
@@ -25,29 +27,30 @@ public class SysUserController extends BaseController {
     @Autowired
     private ISysUserService sysUserService;
 
-    @Autowired
-    private ISysAttachmentService sysAttachmentService;
-
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData find(Query query) throws Exception {
-        SysUser sysUser= (SysUser) query.getBean(SysUserDTO.class);
-        Page<SysUser> pageList = sysUserService.find(sysUser, query);
+        SysUserDTO sysUserDTO= (SysUserDTO) query.getBean(SysUserDTO.class);
+        Page<SysUserDTO> pageList = sysUserService.find(sysUserDTO, query);
         return new ResultData(SysUserDTO.class, pageList);
+    }
+
+
+    @RequestMapping(value = "register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData find(@RequestBody SysUserDTO sysUserDTO) throws Exception {
+        sysUserDTO = sysUserService.register(sysUserDTO);
+        return new ResultData(SysUserDTO.class, sysUserDTO);
     }
 
 
     /**
      * 批量上传图片
-     * @param mFiles
+     * @param mFile
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/uploadBatch", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData upload(@RequestParam("file") MultipartFile[] mFiles) throws Exception{
-        String module = "sysUser";
-        String subModule = "detail";
-        sysAttachmentService.upload(module, subModule, mFiles);
-        return null;
+    @RequestMapping(value = "/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData upload( @RequestParam("mFile") MultipartFile mFile) throws Exception{
+        return new ResultData(SysAttachment.class,sysUserService.upload(mFile));
     }
 }

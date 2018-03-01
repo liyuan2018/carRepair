@@ -3,8 +3,10 @@ package com.cys.service;
 import com.cys.common.domain.Query;
 import com.cys.dto.SysUserDTO;
 import com.cys.exception.BusinessException;
+import com.cys.model.SysAttachment;
 import com.cys.model.SysUser;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,26 +17,49 @@ public interface ISysUserService extends IBaseService<SysUser,String> {
 
     /**
      * 分页查询接口
-     * @param sysUser
+     * @param sysUserDTO
      * @param query
      * @return
      * @throws Exception
      */
-    Page<SysUser> find(SysUser sysUser, Query query) throws Exception;
+    Page<SysUserDTO> find(SysUserDTO sysUserDTO, Query query) throws Exception;
 
     /**
      * 查询集合
-     * @param sysUser
+     * @param sysUserDTO
      * @return
      * @throws Exception
      */
-    List<SysUser> find(SysUser sysUser);
+    List<SysUserDTO> find(SysUserDTO sysUserDTO) throws Exception;
 
     /**
      * 根据店铺ID查询
      * @param shopId
      * @return
      */
-    List<SysUser> findByShopId(String shopId);
+    List<SysUserDTO> findDTOByShopId(String shopId) throws Exception;
+
+    /**
+     * 根据店铺ID查询
+     * @param shopId
+     * @return
+     */
+    List<SysUser> findByShopId(String shopId) throws Exception;
+
+    /**
+     * 注册
+     * @param sysUserDTO
+     * @return
+     * @throws Exception
+     */
+    SysUserDTO register(SysUserDTO sysUserDTO) throws Exception;
+
+    /**
+     * 上传文件
+     * @param mFile
+     * @return
+     * @throws Exception
+     */
+    SysAttachment upload(MultipartFile mFile)throws Exception;
 
 }

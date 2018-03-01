@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by liyuan on 2018/2/28.
  */
-public interface ISysAttachmentService {
+public interface ISysAttachmentService extends IBaseService<SysAttachment,String>{
 
     SysAttachment upload(SysAttachment sysAttachment, MultipartFile mFile);
 

@@ -88,7 +88,13 @@ public class SysAttachmentServiceImpl extends
         sysAttachment.setType(suffix);
         sysAttachment.setPath(path);
         sysAttachment.setSize(mFile.getSize());
-        sysAttachment.setCreatorId(SessionUtils.getCurrentUserId());
+        String creatorId = "";
+        try {
+            creatorId = SessionUtils.getCurrentUserId();
+        }catch (Exception e){
+            logger.error("当前用户没有登陆",e);
+        }
+        sysAttachment.setCreatorId(creatorId);
         sysAttachment.setCreatedTime(new Date());
         SysAttachment rs = create(sysAttachment);
         if (isConvert2PDF4Preview) {

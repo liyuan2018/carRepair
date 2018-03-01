@@ -1,11 +1,10 @@
-package com.cys.service.impl;
+package com.cys.component;
 
 import com.cys.constants.ErrorCode;
 import com.cys.exception.BusinessException;
 import com.cys.service.IStorageComponent;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 

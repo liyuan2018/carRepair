@@ -1,5 +1,6 @@
 package com.cys.service.impl;
 
+import com.cys.component.NormalStorageComponent;
 import com.cys.constants.HardCode;
 import com.cys.constants.StorageTypeConstant;
 import com.cys.exception.BusinessException;
@@ -7,7 +8,6 @@ import com.cys.service.IStorageComponent;
 import com.cys.service.IStorageService;
 import com.cys.util.SpringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
