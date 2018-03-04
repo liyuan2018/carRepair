@@ -36,6 +36,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
 
     @Autowired
     private SysShopRepository sysShopRepository;
+    
     @Autowired
     private ISysAttachmentService sysAttachmentService;
 
