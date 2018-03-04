@@ -4,6 +4,7 @@ import com.cys.common.annotation.Rest;
 import com.cys.common.domain.Query;
 import com.cys.common.domain.ResultData;
 import com.cys.dto.SysUserDTO;
+import com.cys.dto.SysUserShopDTO;
 import com.cys.model.SysAttachment;
 import com.cys.model.SysUser;
 import com.cys.service.ISysAttachmentService;
@@ -36,10 +37,10 @@ public class SysUserController extends BaseController {
     }
 
 
-    @RequestMapping(value = "register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData find(@RequestBody SysUserDTO sysUserDTO) throws Exception {
-        sysUserDTO = sysUserService.register(sysUserDTO);
-        return new ResultData(SysUserDTO.class, sysUserDTO);
+    @RequestMapping(value = "shopRegister", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData find(@RequestBody SysUserShopDTO sysUserShopDTO) throws Exception {
+    	sysUserShopDTO = sysUserService.registerShop(sysUserShopDTO);
+        return new ResultData(SysUserShopDTO.class, sysUserShopDTO);
     }
 
 
