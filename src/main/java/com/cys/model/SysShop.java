@@ -32,13 +32,13 @@ public class SysShop implements Serializable {
 
     private Short shopLevel;
 
-    private String yl1;
+    private Date yl1;
 
-    private String yl2;
+    private Date yl2;
 
-    private String yl3;
+    private Date yl3;
 
-    private String yl4;
+    private Date yl4;
 
     private static final long serialVersionUID = 1L;
 
@@ -154,35 +154,35 @@ public class SysShop implements Serializable {
         this.shopLevel = shopLevel;
     }
 
-    public String getYl1() {
+    public Date getYl1() {
         return yl1;
     }
 
-    public void setYl1(String yl1) {
-        this.yl1 = yl1 == null ? null : yl1.trim();
+    public void setYl1(Date yl1) {
+        this.yl1 = yl1 == null ? null : yl1;
     }
 
-    public String getYl2() {
+    public Date getYl2() {
         return yl2;
     }
 
-    public void setYl2(String yl2) {
-        this.yl2 = yl2 == null ? null : yl2.trim();
+    public void setYl2(Date yl2) {
+        this.yl2 = yl2 == null ? null : yl2;
     }
 
-    public String getYl3() {
+    public Date getYl3() {
         return yl3;
     }
 
-    public void setYl3(String yl3) {
-        this.yl3 = yl3 == null ? null : yl3.trim();
+    public void setYl3(Date yl3) {
+        this.yl3 = yl3 == null ? null : yl3;
     }
 
-    public String getYl4() {
+    public Date getYl4() {
         return yl4;
     }
 
-    public void setYl4(String yl4) {
-        this.yl4 = yl4 == null ? null : yl4.trim();
+    public void setYl4(Date yl4) {
+        this.yl4 = yl4 == null ? null : yl4;
     }
 }
