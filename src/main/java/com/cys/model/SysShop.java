@@ -26,7 +26,7 @@ public class SysShop implements Serializable {
 
     private Date lastUpdateTime;
 
-    private Integer owerUserId;
+    private String owerUserId;
 
     private String desc;
 
@@ -130,11 +130,11 @@ public class SysShop implements Serializable {
         this.lastUpdateTime = lastUpdateTime;
     }
 
-    public Integer getOwerUserId() {
+    public String getOwerUserId() {
         return owerUserId;
     }
 
-    public void setOwerUserId(Integer owerUserId) {
+    public void setOwerUserId(String owerUserId) {
         this.owerUserId = owerUserId;
     }
 
