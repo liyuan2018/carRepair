@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by liyuan on 2018/2/5.
  */
-public class SysUserDTO extends SysUser {
+public class SysUserShopDTO extends SysUser {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -17,7 +17,15 @@ public class SysUserDTO extends SysUser {
      */
     List<SysAttachment>  businessLicenses;
     
-   
+    public SysShop getSysShop() {
+		return sysShop;
+	}
+
+	public void setSysShop(SysShop sysShop) {
+		this.sysShop = sysShop;
+	}
+
+	SysShop sysShop;
 
     /**
      * 门头照片
