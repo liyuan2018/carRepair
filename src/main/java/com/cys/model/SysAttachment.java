@@ -15,21 +15,21 @@ import java.util.Date;
 )
 public class SysAttachment extends BaseModel {
     private static final long serialVersionUID = -7607485310306029216L;
-    @Column
+    @Column(name ="name",columnDefinition = "VARCHAR")
     private String name;
-    @Column
+    @Column(name ="type",columnDefinition = "VARCHAR")
     private String type;
-    @Column
+    @Column(name ="path",columnDefinition = "VARCHAR")
     private String path;
-    @Column
+    @Column(name ="size",columnDefinition = "Long")
     private long size;
-    @Column
+    @Column(name ="module",columnDefinition = "VARCHAR")
     private String module;
-    @Column
+    @Column(name ="sub_module",columnDefinition = "VARCHAR")
     private String subModule;
-    @Column
+    @Column(name ="creator_id",columnDefinition = "VARCHAR")
     private String creatorId;
-    @Column
+    @Column(name ="created_time",columnDefinition = "TIMESTAMP")
     private Date createdTime;
     @Transient
     private String fileSizeWithUnit;
