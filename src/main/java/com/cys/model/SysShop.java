@@ -1,54 +1,122 @@
 package com.cys.model;
 
-import java.io.Serializable;
+
 import java.util.Date;
 
-public class SysShop implements Serializable {
-    private Integer id;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
 
+import org.hibernate.annotations.Where;
+
+@Entity
+@Table(name="sys_shop")
+@Where(clause = "status > '0'")
+@Inheritance(strategy= InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue("SysShop")
+public class SysShop extends BaseModel {
+
+
+    @Column(name = "shop_name", columnDefinition = "VARCHAR")
     private String shopName;
 
+    @Column(name = "shop_adress", columnDefinition = "VARCHAR")
     private String shopAdress;
 
+    @Column(name = "shop_zb_y", columnDefinition = "VARCHAR")
     private Float shopZbY;
 
+    @Column(name = "shop_zb_x", columnDefinition = "VARCHAR")
     private Float shopZbX;
 
+    @Column(name = "service_type", columnDefinition = "VARCHAR")
     private String serviceType;
 
+    @Column(name = "status", columnDefinition = "VARCHAR")
     private Short status;
 
+    @Column(name = "shop_img_url", columnDefinition = "VARCHAR")
     private String shopImgUrl;
 
+    @Column(name = "yy_img", columnDefinition = "VARCHAR")
     private String yyImg;
 
+    @Column(name = "create_time", columnDefinition = "TIMESTAMP")
     private Date createTime;
 
+    @Column(name = "last_update_time", columnDefinition = "TIMESTAMP")
     private Date lastUpdateTime;
 
+    @Column(name = "ower_user_id", columnDefinition = "VARCHAR")
     private String owerUserId;
 
+    @Column(name = "desc", columnDefinition = "VARCHAR")
     private String desc;
 
+    @Column(name = "shop_level", columnDefinition = "VARCHAR")
     private Short shopLevel;
 
+    @Column(name = "yl1", columnDefinition = "TIMESTAMP")
     private Date yl1;
 
+    @Column(name = "yl2", columnDefinition = "TIMESTAMP")
     private Date yl2;
 
+    @Column(name = "yl3", columnDefinition = "TIMESTAMP")
     private Date yl3;
 
+    @Column(name = "yl4", columnDefinition = "TIMESTAMP")
     private Date yl4;
+    
+    @Column(name = "dby_time", columnDefinition = "VARCHAR")
+    private Integer dbyTime;
+    
+    @Column(name = "xby_time", columnDefinition = "VARCHAR")
+    private Integer xbyTime;
+    
+    @Column(name = "mr_time", columnDefinition = "VARCHAR")
+    private Integer mrTime;
+    @Column(name = "jc_time", columnDefinition = "VARCHAR")
+    private Integer jcTime;
 
-    private static final long serialVersionUID = 1L;
+    public Integer getDbyTime() {
+		return dbyTime;
+	}
 
-    public Integer getId() {
-        return id;
-    }
+	public void setDbyTime(Integer dbyTime) {
+		this.dbyTime = dbyTime;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public Integer getXbyTime() {
+		return xbyTime;
+	}
+
+	public void setXbyTime(Integer xbyTime) {
+		this.xbyTime = xbyTime;
+	}
+
+	public Integer getMrTime() {
+		return mrTime;
+	}
+
+	public void setMrTime(Integer mrTime) {
+		this.mrTime = mrTime;
+	}
+
+	public Integer getJcTime() {
+		return jcTime;
+	}
+
+	public void setJcTime(Integer jcTime) {
+		this.jcTime = jcTime;
+	}
+
+	private static final long serialVersionUID = 1L;
+
+   
 
     public String getShopName() {
         return shopName;
