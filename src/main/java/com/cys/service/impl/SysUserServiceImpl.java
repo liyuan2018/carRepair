@@ -4,7 +4,9 @@ import com.cys.common.domain.Query;
 import com.cys.dto.SysUserDTO;
 import com.cys.enums.SysUserRelEnum;
 import com.cys.model.SysAttachment;
+import com.cys.model.SysShop;
 import com.cys.model.SysUser;
+import com.cys.repository.SysShopRepository;
 import com.cys.repository.SysUserRepository;
 import com.cys.service.ISysAttachmentService;
 import com.cys.service.ISysUserRelService;
@@ -31,6 +33,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
     @Autowired
     private SysUserRepository sysUserRepository;
 
+    @Autowired
+    private SysShopRepository sysShopRepository;
     @Autowired
     private ISysAttachmentService sysAttachmentService;
 
@@ -72,6 +76,10 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
         SysUser sysUser = new SysUser();
         PropertyUtils.copyProperties(sysUser,sysUserDTO);
         sysUserRepository.save(sysUser);
+        SysShop sysShop = new SysShop();
+        PropertyUtils.copyProperties(sysShop,sysUserDTO);
+        sysShopRepository.save(sysShop);
+        sysShop.setOwerUserId(sysUser.getId());
         sysUserDTO.setId(sysUser.getId());
 
         return sysUserDTO;
