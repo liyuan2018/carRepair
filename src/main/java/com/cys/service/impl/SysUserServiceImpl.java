@@ -2,6 +2,7 @@ package com.cys.service.impl;
 
 import com.cys.common.domain.Query;
 import com.cys.dto.SysUserDTO;
+import com.cys.dto.SysUserShopDTO;
 import com.cys.enums.SysUserRelEnum;
 import com.cys.model.SysAttachment;
 import com.cys.model.SysShop;
@@ -76,10 +77,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
         SysUser sysUser = new SysUser();
         PropertyUtils.copyProperties(sysUser,sysUserDTO);
         sysUserRepository.save(sysUser);
-        SysShop sysShop = new SysShop();
-        PropertyUtils.copyProperties(sysShop,sysUserDTO);
-        sysShopRepository.save(sysShop);
-        sysShop.setOwerUserId(sysUser.getId());
         sysUserDTO.setId(sysUser.getId());
 
         return sysUserDTO;
@@ -119,4 +116,19 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
         }
         return sysUserDTOs;
     }
+
+	@Override
+	public SysUserShopDTO registerShop(SysUserShopDTO sysUserShopDTO) throws Exception {
+		sysUserShopDTO.setCreatorTime(new Date());
+        SysUser sysUser = new SysUser();
+        PropertyUtils.copyProperties(sysUser,sysUserShopDTO);
+        sysUserRepository.save(sysUser);
+        SysShop sysShop = new SysShop();
+        PropertyUtils.copyProperties(sysShop,sysUserShopDTO);
+        sysShop.setOwerUserId(sysUser.getId());
+        sysShopRepository.save(sysShop);
+        sysUserShopDTO.setId(sysUser.getId());
+
+        return sysUserShopDTO;
+	}
 }

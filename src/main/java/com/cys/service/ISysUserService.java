@@ -2,6 +2,7 @@ package com.cys.service;
 
 import com.cys.common.domain.Query;
 import com.cys.dto.SysUserDTO;
+import com.cys.dto.SysUserShopDTO;
 import com.cys.exception.BusinessException;
 import com.cys.model.SysAttachment;
 import com.cys.model.SysUser;
@@ -53,6 +54,14 @@ public interface ISysUserService extends IBaseService<SysUser,String> {
      * @throws Exception
      */
     SysUserDTO register(SysUserDTO sysUserDTO) throws Exception;
+    
+    /**
+     * 注册
+     * @param sysUserDTO
+     * @return
+     * @throws Exception
+     */
+    SysUserShopDTO registerShop(SysUserShopDTO sysUserShopDTO) throws Exception;
 
     /**
      * 上传文件
