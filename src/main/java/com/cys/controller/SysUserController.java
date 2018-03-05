@@ -37,12 +37,28 @@ public class SysUserController extends BaseController {
     }
 
 
+    /**
+     * 店铺注册
+     * @param sysUserShopDTO
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "shopRegister", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData find(@RequestBody SysUserShopDTO sysUserShopDTO) throws Exception {
     	sysUserShopDTO = sysUserService.registerShop(sysUserShopDTO);
         return new ResultData(SysUserShopDTO.class, sysUserShopDTO);
     }
-
+    /**
+     * 用户注册
+     * @param sysUserShopDTO
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData find(@RequestBody SysUserDTO sysUserShopDTO) throws Exception {
+    	sysUserShopDTO = sysUserService.register(sysUserShopDTO);
+        return new ResultData(SysUserShopDTO.class, sysUserShopDTO);
+    }
 
     /**
      * 批量上传图片

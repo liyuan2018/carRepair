@@ -26,17 +26,17 @@ public class SysShop extends BaseModel {
     @Column(name = "shop_adress", columnDefinition = "VARCHAR")
     private String shopAdress;
 
-    @Column(name = "shop_zb_y", columnDefinition = "VARCHAR")
+    @Column(name = "shop_zb_y", columnDefinition = "Float")
     private Float shopZbY;
 
-    @Column(name = "shop_zb_x", columnDefinition = "VARCHAR")
+    @Column(name = "shop_zb_x", columnDefinition = "Float")
     private Float shopZbX;
 
     @Column(name = "service_type", columnDefinition = "VARCHAR")
     private String serviceType;
 
-    @Column(name = "status", columnDefinition = "VARCHAR")
-    private Short status;
+    @Column(name = "status")
+    private Integer shopStatus;
 
     @Column(name = "shop_img_url", columnDefinition = "VARCHAR")
     private String shopImgUrl;
@@ -56,7 +56,7 @@ public class SysShop extends BaseModel {
     @Column(name = "desc", columnDefinition = "VARCHAR")
     private String desc;
 
-    @Column(name = "shop_level", columnDefinition = "VARCHAR")
+    @Column(name = "shop_level", columnDefinition = "Integer")
     private Short shopLevel;
 
     @Column(name = "yl1", columnDefinition = "TIMESTAMP")
@@ -71,10 +71,10 @@ public class SysShop extends BaseModel {
     @Column(name = "yl4", columnDefinition = "TIMESTAMP")
     private Date yl4;
     
-    @Column(name = "dby_time", columnDefinition = "VARCHAR")
+    @Column(name = "dby_time", columnDefinition = "Integer")
     private Integer dbyTime;
     
-    @Column(name = "xby_time", columnDefinition = "VARCHAR")
+    @Column(name = "xby_time", columnDefinition = "Integer")
     private Integer xbyTime;
     
     @Column(name = "mr_time", columnDefinition = "VARCHAR")
@@ -158,12 +158,12 @@ public class SysShop extends BaseModel {
         this.serviceType = serviceType == null ? null : serviceType.trim();
     }
 
-    public Short getStatus() {
-        return status;
+    public Integer getShopStatus() {
+        return shopStatus;
     }
 
-    public void setStatus(Short status) {
-        this.status = status;
+    public void setShopStatus(Integer shopStatus) {
+        this.shopStatus = shopStatus;
     }
 
     public String getShopImgUrl() {
