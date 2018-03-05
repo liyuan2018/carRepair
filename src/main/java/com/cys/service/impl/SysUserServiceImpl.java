@@ -130,6 +130,22 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
         sysShopRepository.save(sysShop);
         sysUserShopDTO.setId(sysUser.getId());
 
+        //保存关联数据
+
         return sysUserShopDTO;
 	}
+
+    /**
+     * 保存关联信息
+     * @param sysUserShopDTO
+     */
+    private void saveRelationInfo(SysUserShopDTO sysUserShopDTO){
+        List<SysAttachment> businessLicenses = sysUserShopDTO.getBusinessLicenses();
+        List<SysAttachment>  doorHeadImgs = sysUserShopDTO.getDoorHeadImgs();
+        //营业执照
+        sysUserRelService.createRelations(sysUserShopDTO.getId(),SysUserRelEnum.BUSINESS_LICENSE.toString(),businessLicenses);
+        //门头照
+        sysUserRelService.createRelations(sysUserShopDTO.getId(),SysUserRelEnum.DOOR_HEAD_IMG.toString(),businessLicenses);
+
+    }
 }
