@@ -69,14 +69,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web-services</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-websocket</artifactId>
-    </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -101,11 +93,6 @@
       <version>1.0.9</version>
     </dependency>
     <!--数据库包-->
-    <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>9.4-1201-jdbc41</version>
-    </dependency>
     <dependency>
       <groupId>com.mangofactory</groupId>
       <artifactId>swagger-springmvc</artifactId>
@@ -150,7 +137,7 @@
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
-      <version>3.2</version>
+      <version>3.2.1</version>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>
@@ -162,6 +149,18 @@
       <artifactId>guava</artifactId>
       <version>18.0</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.codehaus.xfire</groupId>
+      <artifactId>xfire-core</artifactId>
+      <version>1.2.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcprov-jdk16</artifactId>
+      <version>1.46</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -171,6 +170,17 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>1.2.2.RELEASE</version>
+        <configuration>
+          <mainClass>my.package.MyStartClass</mainClass>
+          <layout>ZIP</layout>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
