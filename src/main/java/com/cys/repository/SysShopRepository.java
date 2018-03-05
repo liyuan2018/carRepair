@@ -10,9 +10,5 @@ import java.util.List;
  */
 public interface SysShopRepository extends BaseJpaRepository<SysShop,String> {
 
-    SysUser findByAccount(String account);
-
-    List<SysShop>  findAll();
-
-    List<SysUser> findByShopId(String shopId);
+   
 }
