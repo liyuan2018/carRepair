@@ -1,9 +1,14 @@
 package com.cys.service.impl;
 
+import com.alibaba.druid.support.json.JSONUtils;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.cys.common.domain.Query;
+import com.cys.constants.HardCode;
 import com.cys.dto.SysUserDTO;
 import com.cys.dto.SysUserShopDTO;
 import com.cys.enums.SysUserRelEnum;
+import com.cys.exception.BusinessException;
 import com.cys.model.SysAttachment;
 import com.cys.model.SysShop;
 import com.cys.model.SysUser;
@@ -12,7 +17,11 @@ import com.cys.repository.SysUserRepository;
 import com.cys.service.ISysAttachmentService;
 import com.cys.service.ISysUserRelService;
 import com.cys.service.ISysUserService;
+import com.cys.util.WXUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.common.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by liyuan on 2018/1/31.
@@ -92,6 +102,20 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
         sysAttachment.setSubModule(subModule);
         sysAttachment = sysAttachmentService.upload(sysAttachment, mFile);
         return sysAttachment;
+    }
+
+    @Override
+    public Map parseWeiXinUserData(String code, String encryptedData, String iv) throws Exception {
+        JSONObject result = WXUtils.getSessionKeyOropenid(code);
+        String openId = (String) result.get(HardCode.Key.WEI_XIN_OPEN_ID.toString());
+        String sessionKey = (String) result.get(HardCode.Key.WEI_XIN_SESSION_KEY.toString());
+        Integer errcode = (Integer) result.get(HardCode.Key.WEI_XIN_ERR_CODE.toString());
+        String errmsg = (String) result.get(HardCode.Key.WEI_XIN_ERR_MSG.toString());
+        if(errcode != null){
+            throw new BusinessException("微信获取openId错误，错误代码："+errcode+",错误信息："+errmsg);
+        }
+        JSONObject userInfoJson = WXUtils.getUserInfo(encryptedData,sessionKey,iv);
+        return (Map)JSON.parseArray(userInfoJson.toJSONString(),Map.class);
     }
 
 

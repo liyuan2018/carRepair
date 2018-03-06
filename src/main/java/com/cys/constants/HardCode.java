@@ -32,4 +32,27 @@ public class HardCode {
             return this.code;
         }
     }
+
+    public static enum Key {
+        WEI_XIN_OPEN_ID("openid", "微信openId"),
+        WEI_XIN_SESSION_KEY("session_key", "微信sessionKey"),
+        WEI_XIN_ERR_CODE("errcode", "微信errcode"),
+        WEI_XIN_ERR_MSG("errmsg", "微信errmsg");
+
+        private final String code;
+        private final String name;
+
+        private Key(String code, String name) {
+            this.code = code;
+            this.name = name;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public String toString() {
+            return this.code;
+        }
+    }
 }

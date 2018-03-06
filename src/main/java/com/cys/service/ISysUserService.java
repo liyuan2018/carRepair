@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by liyuan on 2018/1/31.
@@ -70,5 +71,11 @@ public interface ISysUserService extends IBaseService<SysUser,String> {
      * @throws Exception
      */
     SysAttachment upload(MultipartFile mFile)throws Exception;
+
+    /**
+     * 解析微信用户数据
+     * @return
+     */
+    Map parseWeiXinUserData(String code,String encryptedData,String iv) throws Exception;
 
 }

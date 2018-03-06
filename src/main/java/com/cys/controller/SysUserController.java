@@ -70,4 +70,9 @@ public class SysUserController extends BaseController {
     public ResultData upload( @RequestParam("mFile") MultipartFile mFile) throws Exception{
         return new ResultData(SysAttachment.class,sysUserService.upload(mFile));
     }
+
+    @RequestMapping(value = "/parseWeiXinUserData", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData parseWeiXinUserData( @RequestParam("code") String code,@RequestParam("encryptedData")String encryptedData,@RequestParam("iv")String iv) throws Exception{
+        return new ResultData("userInfo",sysUserService.parseWeiXinUserData(code,encryptedData,iv));
+    }
 }

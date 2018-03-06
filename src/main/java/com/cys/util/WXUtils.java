@@ -35,7 +35,7 @@ public class WXUtils {
     public static JSONObject getSessionKeyOropenid(String code){
         //微信端登录code值
         String wxCode = code;
-        ResourceBundle resource = ResourceBundle.getBundle("weixin");   //读取属性文件
+        ResourceBundle resource = ResourceBundle.getBundle("properties.weixin");   //读取属性文件
         String requestUrl = resource.getString("url");  //请求地址 https://api.weixin.qq.com/sns/jscode2session
         Map<String,String> requestUrlParam = new HashMap<String,String>();
         requestUrlParam.put("appid", resource.getString("appId"));  //开发者设置中的appId
@@ -107,4 +107,18 @@ public class WXUtils {
         }
         return null;
     }
+
+    public static void main(String[]   args){
+        String encryptedData ="p5AmetFW1CrqAw1H7T5UP0TS+UGTG5tmPe+O1MRdGn16MzLNauTIbHzvDv3BfkXZB82/FwEh3Er5mXZZftgs6PfMdArMJ8TejpD+2TcN1f7TJlI9GaeAQXayGSspGFpel2jVGYeU2h/9rG94LDaqLJZCpccP36xQ3Y2jUMPsFcbvQT3SLMGJdQSjoGzrDqd5yozxGSJbU9Ek/5jZdT8poLqKER6y686IMoRPm7CphYxbA/PVkWMdmNxFsLn7Sxi59COtma3zxBMttMFHgXkqhevZerExIp10zwLx1cSQVHY95onb+3Hd3Ta8hFSOA6kRo1YaI3/0dFGP7apS+WyFfCkyIbR0NDaAgd6R+2INYK9Zf8d7heNr085nUXbvcwtSELm5+doaGEqwO+7vxpK4dsrQ+mR4YP4GKvI7tDZC2lTDxk/nnzEs3avIWKpsBZ1pC2a8xYir6Wa7jCIsaJQlDqQha7/NrSTWVYiDPMme8X4=";
+        String iv = "XumygPZts04/JHAVSwo9jg==";
+        String sessionKey ="45dc8700919d14c16bd5bb6764213b0f5d7176c0";
+        JSONObject result =  WXUtils.getSessionKeyOropenid("003zzK8K0y88I52kXJbK0GZM8K0zzK8U");
+        String openid =(String) result.get("openid");
+        String session_key=(String) result.get("session_key");
+
+        JSONObject jsonObject = WXUtils.getUserInfo(encryptedData,sessionKey,iv);
+        System.out.println(jsonObject.toJSONString());
+    }
+
+
 }
