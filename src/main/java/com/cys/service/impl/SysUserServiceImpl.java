@@ -152,7 +152,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
         PropertyUtils.copyProperties(sysShop,sysUserShopDTO);
         sysShop.setOwerUserId(sysUser.getId());
         sysShopRepository.save(sysShop);
-        sysUserShopDTO.setId(sysUser.getId());
+        sysUserShopDTO.setId(sysShop.getId());
         saveRelationInfo(sysUserShopDTO);
         //保存关联数据
         return sysUserShopDTO;
