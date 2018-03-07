@@ -53,8 +53,8 @@ public class SysShop extends BaseModel {
     @Column(name = "ower_user_id", columnDefinition = "VARCHAR")
     private String owerUserId;
 
-    @Column(name = "desc", columnDefinition = "VARCHAR")
-    private String desc;
+    @Column(name = "shop_desc", columnDefinition = "VARCHAR")
+    private String ShopDesc;
 
     @Column(name = "shop_level", columnDefinition = "Integer")
     private Short shopLevel;
@@ -206,12 +206,12 @@ public class SysShop extends BaseModel {
         this.owerUserId = owerUserId;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getShopDesc() {
+        return ShopDesc;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc == null ? null : desc.trim();
+    public void setShopDesc(String shopDesc) {
+        ShopDesc = shopDesc;
     }
 
     public Short getShopLevel() {

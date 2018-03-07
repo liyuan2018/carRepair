@@ -168,6 +168,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
         //营业执照
         sysUserRelService.createRelations(sysUserShopDTO.getId(),SysUserRelEnum.BUSINESS_LICENSE.toString(),businessLicenses);
         //门头照
-        sysUserRelService.createRelations(sysUserShopDTO.getId(),SysUserRelEnum.DOOR_HEAD_IMG.toString(),businessLicenses);
+        sysUserRelService.createRelations(sysUserShopDTO.getId(),SysUserRelEnum.DOOR_HEAD_IMG.toString(),doorHeadImgs);
     }
 }
