@@ -105,17 +105,24 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
     }
 
     @Override
-    public Map parseWeiXinUserData(String code, String encryptedData, String iv) throws Exception {
+    public String parseWeiXinUserData(String code, String encryptedData, String iv) throws Exception {
         JSONObject result = WXUtils.getSessionKeyOropenid(code);
         String openId = (String) result.get(HardCode.Key.WEI_XIN_OPEN_ID.toString());
         String sessionKey = (String) result.get(HardCode.Key.WEI_XIN_SESSION_KEY.toString());
         Integer errcode = (Integer) result.get(HardCode.Key.WEI_XIN_ERR_CODE.toString());
         String errmsg = (String) result.get(HardCode.Key.WEI_XIN_ERR_MSG.toString());
+        if(null != errcode && 40029==errcode){
+            result = WXUtils.getSessionKeyOropenid(code);
+            openId = (String) result.get(HardCode.Key.WEI_XIN_OPEN_ID.toString());
+            sessionKey = (String) result.get(HardCode.Key.WEI_XIN_SESSION_KEY.toString());
+            errcode = (Integer) result.get(HardCode.Key.WEI_XIN_ERR_CODE.toString());
+            errmsg = (String) result.get(HardCode.Key.WEI_XIN_ERR_MSG.toString());
+        }
         if(errcode != null){
             throw new BusinessException("微信获取openId错误，错误代码："+errcode+",错误信息："+errmsg);
         }
         JSONObject userInfoJson = WXUtils.getUserInfo(encryptedData,sessionKey,iv);
-        return (Map)JSON.parseArray(userInfoJson.toJSONString(),Map.class);
+        return userInfoJson.toJSONString();
     }
 
 

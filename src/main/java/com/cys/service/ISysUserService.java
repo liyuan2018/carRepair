@@ -76,6 +76,6 @@ public interface ISysUserService extends IBaseService<SysUser,String> {
      * 解析微信用户数据
      * @return
      */
-    Map parseWeiXinUserData(String code,String encryptedData,String iv) throws Exception;
+    String parseWeiXinUserData(String code,String encryptedData,String iv) throws Exception;
 
 }

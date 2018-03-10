@@ -25,6 +25,12 @@ import java.util.ResourceBundle;
  */
 public class WXUtils {
     private static Logger log = Logger.getLogger(WXUtils.class);
+
+
+    static {
+        //BouncyCastle是一个开源的加解密解决方案，主页在http://www.bouncycastle.org/
+        Security.addProvider(new BouncyCastleProvider());
+    }
     /**
      * 获取微信小程序 session_key 和 openid
      *
@@ -74,8 +80,6 @@ public class WXUtils {
                 System.arraycopy(keyByte, 0, temp, 0, keyByte.length);
                 keyByte = temp;
             }
-            // 初始化
-            Security.addProvider(new BouncyCastleProvider());
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding","BC");
             SecretKeySpec spec = new SecretKeySpec(keyByte, "AES");
             AlgorithmParameters parameters = AlgorithmParameters.getInstance("AES");
@@ -109,12 +113,12 @@ public class WXUtils {
     }
 
     public static void main(String[]   args){
-        String encryptedData ="p5AmetFW1CrqAw1H7T5UP0TS+UGTG5tmPe+O1MRdGn16MzLNauTIbHzvDv3BfkXZB82/FwEh3Er5mXZZftgs6PfMdArMJ8TejpD+2TcN1f7TJlI9GaeAQXayGSspGFpel2jVGYeU2h/9rG94LDaqLJZCpccP36xQ3Y2jUMPsFcbvQT3SLMGJdQSjoGzrDqd5yozxGSJbU9Ek/5jZdT8poLqKER6y686IMoRPm7CphYxbA/PVkWMdmNxFsLn7Sxi59COtma3zxBMttMFHgXkqhevZerExIp10zwLx1cSQVHY95onb+3Hd3Ta8hFSOA6kRo1YaI3/0dFGP7apS+WyFfCkyIbR0NDaAgd6R+2INYK9Zf8d7heNr085nUXbvcwtSELm5+doaGEqwO+7vxpK4dsrQ+mR4YP4GKvI7tDZC2lTDxk/nnzEs3avIWKpsBZ1pC2a8xYir6Wa7jCIsaJQlDqQha7/NrSTWVYiDPMme8X4=";
-        String iv = "XumygPZts04/JHAVSwo9jg==";
-        String sessionKey ="45dc8700919d14c16bd5bb6764213b0f5d7176c0";
-        JSONObject result =  WXUtils.getSessionKeyOropenid("003zzK8K0y88I52kXJbK0GZM8K0zzK8U");
+        String encryptedData ="4n4WucjU7QRyzz8ZG1l/w84lnr9Ghjd6M/U3MZ2Nq/GBtM2xQWPWIQadXUxkcMoBHCsQ8SQADftafNYRr+Dv5sra/udwL7n4kyhRswIuk7qicFHery0uybZ5Av56H31midtV9blaJ+F1Xb6jv9KL5hjRe/qSI/Lure/QbS0AW4oWpvpZN3c0l+w+zBxudtyWsgZIfikAPL2bA2VdR8ewjjr8W7DNTrzDuzjhwXys9GHZLMIKMJAKcb9CGXJnrLlMs2r4kEPMv+tCdlE4hA4ocaOf/lJq8e2f2/Jvlr4BAqJj4raCksPTGmHbpjaz6g6Bi6b7TM6XGEtYlC6FlV/xT7vNPL8ZkN78ZLFAiUHppaT8hEBxcik9ST+dBicQXtYNTlfBC/qriq9P0BDpymr7ds9vLjp5bGsaU5Wu63vCqgVnwvsMs/Vb1aFbqHXaVTlh6q507V0R6mXzgrkqRQia48cfEDmrOYksHB1RxKGsxBU=";
+        String iv = "Aar00v6VAnNabVF06Nj5ow==";
+        String sessionKey ="Ye9h6hzvraJOXZrQIpi5pg==";
+        /*JSONObject result =  WXUtils.getSessionKeyOropenid("003E73dz0V1B3h18wDcz0klPcz0E73dN");
         String openid =(String) result.get("openid");
-        String session_key=(String) result.get("session_key");
+        String session_key=(String) result.get("session_key");*/
 
         JSONObject jsonObject = WXUtils.getUserInfo(encryptedData,sessionKey,iv);
         System.out.println(jsonObject.toJSONString());

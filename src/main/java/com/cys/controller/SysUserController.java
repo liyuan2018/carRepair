@@ -73,6 +73,9 @@ public class SysUserController extends BaseController {
 
     @RequestMapping(value = "/parseWeiXinUserData", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData parseWeiXinUserData( @RequestParam("code") String code,@RequestParam("encryptedData")String encryptedData,@RequestParam("iv")String iv) throws Exception{
+        code = code.trim();
+        encryptedData = encryptedData.trim();
+        iv = iv.trim();
         return new ResultData("userInfo",sysUserService.parseWeiXinUserData(code,encryptedData,iv));
     }
 }
