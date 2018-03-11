@@ -58,7 +58,7 @@ public interface ISysUserService extends IBaseService<SysUser,String> {
     
     /**
      * 注册
-     * @param sysUserDTO
+     * @param sysUserShopDTO
      * @return
      * @throws Exception
      */
@@ -77,5 +77,21 @@ public interface ISysUserService extends IBaseService<SysUser,String> {
      * @return
      */
     String parseWeiXinUserData(String code,String encryptedData,String iv) throws Exception;
+
+    /**
+     * 详情
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    SysUserDTO findDtoById(String id) throws Exception;
+
+    /**
+     * 更新
+     * @param sysUserDTO
+     * @return
+     * @throws Exception
+     */
+    SysUserDTO updateDto(SysUserDTO sysUserDTO) throws Exception;
 
 }

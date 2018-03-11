@@ -15,14 +15,19 @@ public class SysUserDTO extends SysUser {
     /**
      * 营业执照
      */
-    List<SysAttachment>  businessLicenses;
+   private List<SysAttachment>  businessLicenses;
     
    
 
     /**
      * 门头照片
      */
-    List<SysAttachment>  doorHeadImgs;
+    private List<SysAttachment>  doorHeadImgs;
+
+    /**
+     * 车辆信息
+     */
+    private List<CarInfoDTO> carInfoDTOs;
 
     public List<SysAttachment> getBusinessLicenses() {
         return businessLicenses;
@@ -40,4 +45,11 @@ public class SysUserDTO extends SysUser {
         this.businessLicenses = businessLicenses;
     }
 
+    public List<CarInfoDTO> getCarInfoDTOs() {
+        return carInfoDTOs;
+    }
+
+    public void setCarInfoDTOs(List<CarInfoDTO> carInfoDTOs) {
+        this.carInfoDTOs = carInfoDTOs;
+    }
 }

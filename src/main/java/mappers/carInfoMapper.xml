@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.cys.dao.carInfoMapper" >
-  <resultMap id="BaseResultMap" type="com.cys.model.carInfo" >
+  <resultMap id="BaseResultMap" type="com.cys.model.CarInfo" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="car_num" property="carNum" jdbcType="VARCHAR" />
     <result column="car_age" property="carAge" jdbcType="SMALLINT" />
@@ -108,7 +108,7 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.cys.model.carInfo" >
+  <insert id="insert" parameterType="com.cys.model.CarInfo" >
     insert into car_info (id, car_num, car_age, 
       car_jh_num, create_time, ower_user_id, 
       car_type, car_brand, yl1, 
@@ -120,7 +120,7 @@
       #{yl2,jdbcType=VARCHAR}, #{yl3,jdbcType=VARCHAR}, #{yl4,jdbcType=VARCHAR}, #{yl5,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.cys.model.carInfo" >
+  <insert id="insertSelective" parameterType="com.cys.model.CarInfo" >
     insert into car_info
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -277,7 +277,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cys.model.carInfo" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.cys.model.CarInfo" >
     update car_info
     <set >
       <if test="carNum != null" >
@@ -319,7 +319,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.cys.model.carInfo" >
+  <update id="updateByPrimaryKey" parameterType="com.cys.model.CarInfo" >
     update car_info
     set car_num = #{carNum,jdbcType=VARCHAR},
       car_age = #{carAge,jdbcType=SMALLINT},

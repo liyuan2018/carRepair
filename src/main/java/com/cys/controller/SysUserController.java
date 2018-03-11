@@ -43,7 +43,7 @@ public class SysUserController extends BaseController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "shopRegister", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/shopRegister", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData find(@RequestBody SysUserShopDTO sysUserShopDTO) throws Exception {
     	sysUserShopDTO = sysUserService.registerShop(sysUserShopDTO);
         return new ResultData(SysUserShopDTO.class, sysUserShopDTO);
@@ -54,7 +54,7 @@ public class SysUserController extends BaseController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData find(@RequestBody SysUserDTO sysUserShopDTO) throws Exception {
     	sysUserShopDTO = sysUserService.register(sysUserShopDTO);
         return new ResultData(SysUserShopDTO.class, sysUserShopDTO);
@@ -77,5 +77,32 @@ public class SysUserController extends BaseController {
         encryptedData = encryptedData.trim();
         iv = iv.trim();
         return new ResultData("userInfo",sysUserService.parseWeiXinUserData(code,encryptedData,iv));
+    }
+
+
+
+    /**
+     * 查询详情
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData findDetail(@PathVariable("id") String id) throws Exception {
+        SysUserDTO sysUserDTO = sysUserService.findDtoById(id);
+        return new ResultData(SysUserDTO.class, sysUserDTO);
+    }
+
+    /**
+     * 更新
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData update(@PathVariable("id") String id,@RequestBody SysUserDTO sysUserDTO) throws Exception {
+        sysUserDTO.setId(id);
+        sysUserDTO = sysUserService.updateDto(sysUserDTO);
+        return new ResultData(SysUserDTO.class, sysUserDTO);
     }
 }
