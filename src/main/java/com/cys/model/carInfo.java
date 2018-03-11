@@ -1,44 +1,41 @@
 package com.cys.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
-public class carInfo implements Serializable {
-    private Integer id;
+@Entity
+@Table(name = "car_info")
+public class CarInfo extends BaseModel {
 
+    @Column(name = "car_num", columnDefinition = "VARCHAR")
     private String carNum;
-
+    @Column(name = "car_age", columnDefinition = "Short")
     private Short carAge;
-
+    @Column(name = "car_jh_num", columnDefinition = "Integer")
     private Integer carJhNum;
-
+    @Column(name = "create_time", columnDefinition = "TIMESTAMP")
     private Date createTime;
-
-    private Integer owerUserId;
-
+    @Column(name = "ower_user_id", columnDefinition = "VARCHAR")
+    private String owerUserId;
+    @Column(name = "car_type", columnDefinition = "VARCHAR")
     private String carType;
-
+    @Column(name = "car_brand", columnDefinition = "VARCHAR")
     private String carBrand;
-
+    @Column(name = "yl1", columnDefinition = "VARCHAR")
     private String yl1;
-
+    @Column(name = "yl2", columnDefinition = "VARCHAR")
     private String yl2;
-
+    @Column(name = "yl3", columnDefinition = "VARCHAR")
     private String yl3;
-
+    @Column(name = "yl4", columnDefinition = "VARCHAR")
     private String yl4;
-
+    @Column(name = "yl5", columnDefinition = "VARCHAR")
     private String yl5;
 
     private static final long serialVersionUID = 1L;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getCarNum() {
         return carNum;
@@ -72,11 +69,11 @@ public class carInfo implements Serializable {
         this.createTime = createTime;
     }
 
-    public Integer getOwerUserId() {
+    public String getOwerUserId() {
         return owerUserId;
     }
 
-    public void setOwerUserId(Integer owerUserId) {
+    public void setOwerUserId(String owerUserId) {
         this.owerUserId = owerUserId;
     }
 
