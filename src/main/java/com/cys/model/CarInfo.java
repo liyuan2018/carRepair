@@ -18,9 +18,19 @@ public class CarInfo extends BaseModel {
     private Integer carJhNum;
     @Column(name = "create_time", columnDefinition = "TIMESTAMP")
     private Date createTime;
+    @Column(name = "buy_time", columnDefinition = "TIMESTAMP")
+    private Date buyTime;
     @Column(name = "ower_user_id", columnDefinition = "VARCHAR")
     private String owerUserId;
-    @Column(name = "car_type", columnDefinition = "VARCHAR")
+    public Date getBuyTime() {
+		return buyTime;
+	}
+
+	public void setBuyTime(Date buyTime) {
+		this.buyTime = buyTime;
+	}
+
+	@Column(name = "car_type", columnDefinition = "VARCHAR")
     private String carType;
     @Column(name = "car_brand", columnDefinition = "VARCHAR")
     private String carBrand;

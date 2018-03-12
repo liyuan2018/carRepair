@@ -15,8 +15,19 @@ public class SysUser extends BaseModel {
 
     @Column(name = "user_type", columnDefinition = "VARCHAR")
     private Short userType;
+    
+    @Column(name = "open_id", columnDefinition = "VARCHAR")
+    private String openId;
 
-    @Column(name = "name", columnDefinition = "VARCHAR")
+    public String getOpenId() {
+		return openId;
+	}
+
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
+
+	@Column(name = "name", columnDefinition = "VARCHAR")
     private String name;
 
     @Column(name = "frist_name", columnDefinition = "VARCHAR")

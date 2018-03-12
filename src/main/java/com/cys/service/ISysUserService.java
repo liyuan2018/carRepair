@@ -93,5 +93,14 @@ public interface ISysUserService extends IBaseService<SysUser,String> {
      * @throws Exception
      */
     SysUserDTO updateDto(SysUserDTO sysUserDTO) throws Exception;
+    
+    /**
+     * 详情
+     * @param openId
+     * @return
+     * @throws Exception
+     */
+    SysUserDTO findDtoByOpenId(String id) throws Exception;
+    
 
 }

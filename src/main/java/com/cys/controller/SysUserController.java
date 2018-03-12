@@ -92,6 +92,18 @@ public class SysUserController extends BaseController {
         SysUserDTO sysUserDTO = sysUserService.findDtoById(id);
         return new ResultData(SysUserDTO.class, sysUserDTO);
     }
+    
+    /**
+     * 查询详情
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/openId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData findByOpendId(@RequestParam("openId") String openId) throws Exception {
+        SysUserDTO sysUserDTO = sysUserService.findDtoByOpenId(openId);
+        return new ResultData(SysUserDTO.class, sysUserDTO);
+    }
 
     /**
      * 更新

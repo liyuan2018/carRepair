@@ -212,4 +212,22 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
         //门头照
         sysUserRelService.createRelations(sysUserShopDTO.getId(),SysUserRelEnum.DOOR_HEAD_IMG.toString(),doorHeadImgs);
     }
+
+	@Override
+	public SysUserDTO findDtoByOpenId(String id) throws Exception {
+		SysUser sysUser1 = new SysUser();
+		sysUser1.setOpenId(id);
+		SysUser sysUser = sysUserRepository.findOne(sysUser1);
+		if(sysUser !=null){
+			List<SysUser> sysUsers = new ArrayList<>();
+	        sysUsers.add(sysUser);
+	        List<SysUserDTO> sysUserDTOs = convertToSysUserDTO(sysUsers);
+	        return sysUserDTOs.get(0);
+		}else{
+			SysUserDTO sysUserDTOs = new SysUserDTO();
+			sysUserDTOs.setDTOStatus(sysUserDTOs.IS_NOT_IXEST);
+			return sysUserDTOs;
+		}
+        
+	}
 }

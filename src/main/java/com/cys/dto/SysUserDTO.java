@@ -10,7 +10,18 @@ import java.util.List;
  * Created by liyuan on 2018/2/5.
  */
 public class SysUserDTO extends SysUser {
-    private static final long serialVersionUID = 1L;
+	private String DTOStatus="200";
+	public final static String  IS_NOT_IXEST="304";
+	public final static String IS_EXCEPTION="500";
+    public String getDTOStatus() {
+		return DTOStatus;
+	}
+
+	public void setDTOStatus(String dTOStatus) {
+		DTOStatus = dTOStatus;
+	}
+
+	private static final long serialVersionUID = 1L;
 
     /**
      * 营业执照
