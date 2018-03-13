@@ -12,6 +12,10 @@ import java.util.Date;
 @DiscriminatorValue("SysUser")
 public class SysUser extends BaseModel {
     private static final long serialVersionUID = 1L;
+    
+    public final static String STATUS_QY="1";
+    
+    public final static String STATUS_JY="0";
 
     @Column(name = "user_type", columnDefinition = "VARCHAR")
     private Short userType;

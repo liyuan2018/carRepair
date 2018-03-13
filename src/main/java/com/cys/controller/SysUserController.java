@@ -55,9 +55,9 @@ public class SysUserController extends BaseController {
      * @throws Exception
      */
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData find(@RequestBody SysUserDTO sysUserShopDTO) throws Exception {
-    	sysUserShopDTO = sysUserService.register(sysUserShopDTO);
-        return new ResultData(SysUserShopDTO.class, sysUserShopDTO);
+    public ResultData find(@RequestBody SysUserDTO sysUserDTO) throws Exception {
+    	sysUserDTO = sysUserService.register(sysUserDTO);
+        return new ResultData(SysUserDTO.class, sysUserDTO);
     }
 
     /**

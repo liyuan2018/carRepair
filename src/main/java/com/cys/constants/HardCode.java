@@ -6,7 +6,7 @@ package com.cys.constants;
 public class HardCode {
 
     //文件上传路径
-    public final  static String UPLOAD_PATH = "G:\\inno-de-dgcb";
+    public final  static String UPLOAD_PATH = "C:\\file";
     //文件上传类型
     public final static String STORAGE_TYPE= "1";
 

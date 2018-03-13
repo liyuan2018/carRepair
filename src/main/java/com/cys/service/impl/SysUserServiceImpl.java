@@ -59,6 +59,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
 
     @Autowired
     private ICarInfoService carInfoService;
+    
     @Override
     public Page<SysUserDTO> find(SysUserDTO sysUserDTO, Query query) throws Exception {
         Pageable pageable = query.getPageable();
@@ -91,12 +92,22 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
 
     @Override
     public SysUserDTO register(SysUserDTO sysUserDTO) throws Exception {
+    	SysUser sysUser1 = new SysUser();
+    	if(!StringUtils.isEmpty(sysUserDTO.getOpenId())){
+    		sysUser1.setOpenId(sysUserDTO.getOpenId());
+    		SysUser sysUser = sysUserRepository.findOne(sysUser1);
+    		if(sysUser!=null){
+    			sysUserDTO.setDTOStatus(sysUserDTO.IS_NOT_IXEST);
+    			return sysUserDTO;
+    		}
+    	}
+		
         sysUserDTO.setCreatorTime(new Date());
         SysUser sysUser = new SysUser();
         PropertyUtils.copyProperties(sysUser,sysUserDTO);
+        sysUser.setStatus(SysUser.STATUS_QY);
         sysUserRepository.save(sysUser);
         sysUserDTO.setId(sysUser.getId());
-
         return sysUserDTO;
     }
 
