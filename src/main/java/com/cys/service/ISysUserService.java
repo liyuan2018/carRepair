@@ -24,7 +24,7 @@ public interface ISysUserService extends IBaseService<SysUser,String> {
      * @return
      * @throws Exception
      */
-    Page<SysUserDTO> find(SysUserDTO sysUserDTO, Query query) throws Exception;
+    Page<SysUserDTO> find(SysUser sysUserDTO, Query query) throws Exception;
 
     /**
      * 查询集合

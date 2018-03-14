@@ -6,10 +6,16 @@ import com.cys.model.SysUser;
 
 import java.util.List;
 
+import javax.persistence.Transient;
+
+
+
 /**
  * Created by liyuan on 2018/2/5.
  */
 public class SysUserDTO extends SysUser {
+	
+	@Transient
 	private String DTOStatus="200";
 	public final static String  IS_NOT_IXEST="304";
 	public final static String IS_EXCEPTION="500";

@@ -61,9 +61,9 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
     private ICarInfoService carInfoService;
     
     @Override
-    public Page<SysUserDTO> find(SysUserDTO sysUserDTO, Query query) throws Exception {
+    public Page<SysUserDTO> find(SysUser sysUser, Query query) throws Exception {
         Pageable pageable = query.getPageable();
-        Page<SysUser> sysUserPages = sysUserRepository.find(sysUserDTO,pageable);
+        Page<SysUser> sysUserPages = sysUserRepository.find(sysUser,pageable);
         List<SysUser> sysUsers = sysUserPages.getContent();
         List<SysUserDTO> sysUserDTOs = convertToSysUserDTO(sysUsers);
         return new PageImpl<SysUserDTO>(sysUserDTOs,pageable,sysUserPages.getTotalElements());
