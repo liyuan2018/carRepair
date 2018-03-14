@@ -84,8 +84,19 @@ public class SysUser extends BaseModel {
 
     @Column(name = "status", columnDefinition = "VARCHAR")
     private String status;
+    
+    @Column(name = "can_yuyue", columnDefinition = "VARCHAR")
+    private String canYuyue;
 
-    @Column(name = "shop_id", columnDefinition = "VARCHAR")
+    public String getCanYuyue() {
+		return canYuyue;
+	}
+
+	public void setCanYuyue(String canYuyue) {
+		this.canYuyue = canYuyue;
+	}
+
+	@Column(name = "shop_id", columnDefinition = "VARCHAR")
     private String shopId;
 
     @Column(name = "work_year", columnDefinition = "VARCHAR")

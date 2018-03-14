@@ -59,17 +59,17 @@ public class SysShop extends BaseModel {
     @Column(name = "shop_level", columnDefinition = "Integer")
     private Short shopLevel;
 
-    @Column(name = "yl1", columnDefinition = "TIMESTAMP")
-    private Date yl1;
+    @Column(name = "yl1", columnDefinition = "VARCHAR")
+    private String yl1;
 
-    @Column(name = "yl2", columnDefinition = "TIMESTAMP")
-    private Date yl2;
+    @Column(name = "yl2", columnDefinition = "VARCHAR")
+    private String yl2;
 
-    @Column(name = "yl3", columnDefinition = "TIMESTAMP")
-    private Date yl3;
+    @Column(name = "yl3", columnDefinition = "VARCHAR")
+    private String yl3;
 
-    @Column(name = "yl4", columnDefinition = "TIMESTAMP")
-    private Date yl4;
+    @Column(name = "yl4", columnDefinition = "VARCHAR")
+    private String yl4;
     
     @Column(name = "dby_time", columnDefinition = "Integer")
     private Integer dbyTime;
@@ -222,35 +222,35 @@ public class SysShop extends BaseModel {
         this.shopLevel = shopLevel;
     }
 
-    public Date getYl1() {
+    public String getYl1() {
         return yl1;
     }
 
-    public void setYl1(Date yl1) {
+    public void setYl1(String yl1) {
         this.yl1 = yl1 == null ? null : yl1;
     }
 
-    public Date getYl2() {
+    public String getYl2() {
         return yl2;
     }
 
-    public void setYl2(Date yl2) {
+    public void setYl2(String yl2) {
         this.yl2 = yl2 == null ? null : yl2;
     }
 
-    public Date getYl3() {
+    public String getYl3() {
         return yl3;
     }
 
-    public void setYl3(Date yl3) {
+    public void setYl3(String yl3) {
         this.yl3 = yl3 == null ? null : yl3;
     }
 
-    public Date getYl4() {
+    public String getYl4() {
         return yl4;
     }
 
-    public void setYl4(Date yl4) {
+    public void setYl4(String yl4) {
         this.yl4 = yl4 == null ? null : yl4;
     }
 }
