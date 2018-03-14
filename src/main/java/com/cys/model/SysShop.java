@@ -26,9 +26,15 @@ public class SysShop extends BaseModel {
     @Column(name = "shop_adress", columnDefinition = "VARCHAR")
     private String shopAdress;
 
+    /**
+     * 经度值
+     */
     @Column(name = "shop_zb_y", columnDefinition = "Float")
     private Float shopZbY;
 
+    /**
+     * w纬度值
+     */
     @Column(name = "shop_zb_x", columnDefinition = "Float")
     private Float shopZbX;
 
