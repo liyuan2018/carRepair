@@ -1,11 +1,15 @@
 package com.cys.controller;
 
 import com.cys.common.annotation.Rest;
+import com.cys.common.domain.Query;
 import com.cys.common.domain.ResultData;
+import com.cys.dto.SysUserDTO;
+import com.cys.model.SysUser;
 import com.cys.model.SysYuyue;
 import com.cys.service.ISysUserService;
 import com.cys.service.ISysYuyueService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +56,12 @@ public class SysYuyueController extends BaseController {
     }
     
     
+    @RequestMapping(value = "getByUserId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData find(Query query) throws Exception {
+    	SysYuyue sysYuyue= (SysYuyue) query.getBean(SysYuyue.class);
+        Page<SysYuyue> pageList = sysYuyueService.find(sysYuyue, query);
+        return new ResultData(SysYuyue.class, pageList);
+    }
     
     
 }

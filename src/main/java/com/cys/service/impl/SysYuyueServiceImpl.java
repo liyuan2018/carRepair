@@ -1,5 +1,7 @@
 package com.cys.service.impl;
 
+import com.cys.common.domain.Query;
+import com.cys.dto.SysUserDTO;
 import com.cys.dto.SysYuyueDTO;
 import com.cys.exception.BusinessException;
 import com.cys.model.SysUser;
@@ -12,6 +14,9 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.common.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -51,5 +56,14 @@ public class SysYuyueServiceImpl extends BaseServiceImpl<SysYuyue,String>  imple
         }
         PropertyUtils.copyProperties(sysYuyueDTO,sysYuyue);
         return sysYuyueDTO;
+    }
+    
+    @Override
+    public Page<SysYuyue> find(SysYuyue sysYuyue, Query query) throws Exception {
+        Pageable pageable = query.getPageable();
+        Page<SysYuyue> sysUserPages = sysYuyueRespository.find(sysYuyue,pageable);
+        List<SysYuyue> sysYuyues = sysUserPages.getContent();
+        //List<SysYuyue> sysYuyue = convertToSysUserDTO(sysUsers);
+        return new PageImpl<SysYuyue>(sysYuyues,pageable,sysUserPages.getTotalElements());
     }
 }

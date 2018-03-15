@@ -23,18 +23,39 @@ public class SysYuyue extends BaseModel {
     private Date yyDate;
     @Column(name = "yy_time", columnDefinition = "VARCHAR")
     private String yyTime;
-    @Column(name = "yy_qy_user_id", columnDefinition = "VARCHAR")
-    private String yyQyUserId;
-    @Column(name = "yy_cz_user_id", columnDefinition = "VARCHAR")
-    private String yyCzUserId;
+  
     @Column(name = "status", columnDefinition = "VARCHAR")
     private String status;
     @Column(name = "car_num", columnDefinition = "VARCHAR")
     private String carNum;
     @Column(name = "car_cj_num", columnDefinition = "VARCHAR")
     private String carCjNum;
+    
+    @ManyToOne(cascade = { CascadeType.ALL })
+    @JoinColumn(name="yy_qy_user_id")
+    private SysUser yyQyUser;
+    
+    @ManyToOne(cascade = { CascadeType.ALL })
+    @JoinColumn(name="yy_cz_user_id")
+    private SysUser yyCzUser;
+    
+    public SysUser getYyQyUser() {
+		return yyQyUser;
+	}
 
-    public String getYyType() {
+	public void setYyQyUser(SysUser yyQyUser) {
+		this.yyQyUser = yyQyUser;
+	}
+
+	public SysUser getYyCzUser() {
+		return yyCzUser;
+	}
+
+	public void setYyCzUser(SysUser yyCzUser) {
+		this.yyCzUser = yyCzUser;
+	}
+
+	public String getYyType() {
         return yyType;
     }
 
@@ -66,21 +87,7 @@ public class SysYuyue extends BaseModel {
         this.yyTime = yyTime;
     }
 
-    public String getYyQyUserId() {
-        return yyQyUserId;
-    }
-
-    public void setYyQyUserId(String yyQyUserId) {
-        this.yyQyUserId = yyQyUserId;
-    }
-
-    public String getYyCzUserId() {
-        return yyCzUserId;
-    }
-
-    public void setYyCzUserId(String yyCzUserId) {
-        this.yyCzUserId = yyCzUserId;
-    }
+   
 
     public String getStatus() {
         return status;
