@@ -126,7 +126,7 @@ public class SysUser extends BaseModel {
     private Integer jf;
     
     @Column(name = "dj", columnDefinition = "VARCHAR")
-    private Integer dj;
+    private Integer dj =0;
 
     public Integer getTypeDby() {
 		return typeDby;
