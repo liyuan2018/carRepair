@@ -6,4 +6,5 @@
 
     <import resource="spring-tx.xml"/>
     <import resource="spring-beans.xml"/>
+
 </beans>

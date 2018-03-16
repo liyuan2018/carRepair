@@ -1,6 +1,7 @@
 package com.cys.util;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +17,7 @@ import java.util.Map;
  * Created by liyuan on 2018/3/5.
  */
 public class UrlUtils {
-    private static Logger log = Logger.getLogger(UrlUtils.class);
+    private static Logger log = LoggerFactory.getLogger(UrlUtils.class);
 
     /**
      * 向指定URL发送GET方法的请求

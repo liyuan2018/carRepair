@@ -3,8 +3,9 @@ package com.cys.util;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
-import org.apache.log4j.Logger;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -24,7 +25,7 @@ import java.util.ResourceBundle;
  * Created by liyuan on 2018/3/5.
  */
 public class WXUtils {
-    private static Logger log = Logger.getLogger(WXUtils.class);
+    private static Logger log = LoggerFactory.getLogger(WXUtils.class);
 
 
     static {

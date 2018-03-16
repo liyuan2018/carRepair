@@ -29,14 +29,14 @@ public class SysShop extends BaseModel {
     /**
      * 经度值
      */
-    @Column(name = "shop_zb_y", columnDefinition = "Float")
-    private Float shopZbY;
+    @Column(name = "shop_zb_y", columnDefinition = "Double")
+    private Double shopZbY;
 
     /**
      * w纬度值
      */
-    @Column(name = "shop_zb_x", columnDefinition = "Float")
-    private Float shopZbX;
+    @Column(name = "shop_zb_x", columnDefinition = "Double")
+    private Double shopZbX;
 
     @Column(name = "service_type", columnDefinition = "VARCHAR")
     private String serviceType;
@@ -140,19 +140,19 @@ public class SysShop extends BaseModel {
         this.shopAdress = shopAdress == null ? null : shopAdress.trim();
     }
 
-    public Float getShopZbY() {
+    public Double getShopZbY() {
         return shopZbY;
     }
 
-    public void setShopZbY(Float shopZbY) {
+    public void setShopZbY(Double shopZbY) {
         this.shopZbY = shopZbY;
     }
 
-    public Float getShopZbX() {
+    public Double getShopZbX() {
         return shopZbX;
     }
 
-    public void setShopZbX(Float shopZbX) {
+    public void setShopZbX(Double shopZbX) {
         this.shopZbX = shopZbX;
     }
 

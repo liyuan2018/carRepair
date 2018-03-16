@@ -2,8 +2,9 @@ package com.cys.web.converter;
 
 import com.cys.util.ClassUtils;
 import com.cys.util.ParamUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.util.*;
 
@@ -12,7 +13,7 @@ import java.util.*;
  * Created by liyuan on 2018/1/31.
  */
 public class EmberConverter extends AbstractConverter {
-    private static final Logger logger = LogManager.getLogger(EmberConverter.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(EmberConverter.class.getName());
 
     private EmberConverter() {
     }

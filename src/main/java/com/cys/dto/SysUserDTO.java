@@ -46,6 +46,21 @@ public class SysUserDTO extends SysUser {
      */
     private List<CarInfoDTO> carInfoDTOs;
 
+    /**
+     * 用户精度
+     */
+    private Double userZbY;
+
+    /**
+     * 用户纬度
+     */
+    private Double userZbX;
+
+    /**
+     * 传入值查询距离排序 1：顺序，2：倒叙
+     */
+    private String  locationSearch;
+
     public List<SysAttachment> getBusinessLicenses() {
         return businessLicenses;
     }
@@ -68,5 +83,29 @@ public class SysUserDTO extends SysUser {
 
     public void setCarInfoDTOs(List<CarInfoDTO> carInfoDTOs) {
         this.carInfoDTOs = carInfoDTOs;
+    }
+
+    public Double getUserZbY() {
+        return userZbY;
+    }
+
+    public void setUserZbY(Double userZbY) {
+        this.userZbY = userZbY;
+    }
+
+    public Double getUserZbX() {
+        return userZbX;
+    }
+
+    public void setUserZbX(Double userZbX) {
+        this.userZbX = userZbX;
+    }
+
+    public String getLocationSearch() {
+        return locationSearch;
+    }
+
+    public void setLocationSearch(String locationSearch) {
+        this.locationSearch = locationSearch;
     }
 }
