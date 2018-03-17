@@ -31,11 +31,11 @@ public class SysYuyue extends BaseModel {
     @Column(name = "car_cj_num", columnDefinition = "VARCHAR")
     private String carCjNum;
     
-    @ManyToOne(cascade = { CascadeType.ALL })
+    @ManyToOne(cascade = { CascadeType. REFRESH })
     @JoinColumn(name="yy_qy_user_id")
     private SysUser yyQyUser;
     
-    @ManyToOne(cascade = { CascadeType.ALL })
+    @ManyToOne(cascade = { CascadeType. REFRESH })
     @JoinColumn(name="yy_cz_user_id")
     private SysUser yyCzUser;
     

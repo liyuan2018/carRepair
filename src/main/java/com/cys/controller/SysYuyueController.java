@@ -9,6 +9,7 @@ import com.cys.model.SysYuyue;
 import com.cys.service.ISysUserService;
 import com.cys.service.ISysYuyueService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +24,7 @@ import java.util.Date;
 /**
  * Created by liyuan on 2018/2/5.
  */
+@Scope("prototype")
 @Rest(SysYuyueController.class)
 public class SysYuyueController extends BaseController {
 
