@@ -3,7 +3,7 @@ package com.cys.model;
 /**
  * Created by liyuan on 2018/1/28.
  * 保存读取的配置
- * 为了保证读取的顺序增加sort(例如com.evada..*会在com..*之前匹配)
+ * 为了保证读取的顺序增加sort(例如com.cys..*会在com..*之前匹配)
  * 保证最小匹配
  */
 public class ConfigModel implements Comparable<ConfigModel> {

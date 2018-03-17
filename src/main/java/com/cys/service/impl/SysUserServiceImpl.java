@@ -1,10 +1,9 @@
 package com.cys.service.impl;
 
-import com.alibaba.druid.support.json.JSONUtils;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cys.common.domain.Query;
 import com.cys.constants.HardCode;
+import com.cys.dao.SysUserMapper;
 import com.cys.dto.CarInfoDTO;
 import com.cys.dto.SysUserDTO;
 import com.cys.dto.SysUserShopDTO;
@@ -20,15 +19,11 @@ import com.cys.service.ISysAttachmentService;
 import com.cys.service.ISysUserRelService;
 import com.cys.service.ISysUserService;
 import com.cys.util.WXUtils;
-import edu.emory.mathcs.backport.java.util.Arrays;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.collections.MapUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.common.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -59,28 +54,35 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
 
     @Autowired
     private ICarInfoService carInfoService;
+
+    @Autowired
+    private SysUserMapper sysUserMapper;
     
     @Override
-    public Page<SysUserDTO> find(SysUser sysUser, Query query) throws Exception {
+    public Page<SysUserDTO> find(SysUserDTO sysUserDTO, Query query) throws Exception {
+        logger.info("查询用户信息：");
         Pageable pageable = query.getPageable();
-        Page<SysUser> sysUserPages = sysUserRepository.find(sysUser,pageable);
-        List<SysUser> sysUsers = sysUserPages.getContent();
-        List<SysUserDTO> sysUserDTOs = convertToSysUserDTO(sysUsers);
-        return new PageImpl<SysUserDTO>(sysUserDTOs,pageable,sysUserPages.getTotalElements());
+        Page<SysUserDTO> sysUserPages = sysUserMapper.find(sysUserDTO,pageable);
+        List<SysUserDTO> sysUserDTOs = sysUserPages.getContent();
+        if(!CollectionUtils.isEmpty(sysUserDTOs)){
+            addRelInfoSysUserDTO(sysUserDTOs);
+        }
+        return sysUserPages;
     }
 
     @Override
     public List<SysUserDTO> find(SysUserDTO sysUserDTO) throws Exception{
-        List<SysUser> sysUsers = sysUserRepository.find(sysUserDTO);
-        List<SysUserDTO> sysUserDTOs = convertToSysUserDTO(sysUsers);
+        List<SysUserDTO> sysUserDTOs = sysUserMapper.find(sysUserDTO);
+        addRelInfoSysUserDTO(sysUserDTOs);
         return sysUserDTOs;
     }
 
     @Override
     public List<SysUserDTO> findDTOByShopId(String shopId) throws Exception {
-        List<SysUser> sysUsers = sysUserRepository.findByShopId(shopId);
-        List<SysUserDTO> sysUserDTOs = convertToSysUserDTO(sysUsers);
-
+        SysUserDTO sysUserDTO = new SysUserDTO();
+        sysUserDTO.setShopId(shopId);
+        List<SysUserDTO> sysUserDTOs = sysUserMapper.find(sysUserDTO);
+        addRelInfoSysUserDTO(sysUserDTOs);
         return sysUserDTOs;
     }
 
@@ -145,10 +147,10 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
 
     @Override
     public SysUserDTO findDtoById(String id) throws Exception {
-        SysUser sysUser = sysUserRepository.findOne(id);
-        List<SysUser> sysUsers = new ArrayList<>();
-        sysUsers.add(sysUser);
-        List<SysUserDTO> sysUserDTOs = convertToSysUserDTO(sysUsers);
+        SysUserDTO sysUserDTO = sysUserMapper.findById(id);
+        List<SysUserDTO> sysUserDTOs = new ArrayList<>();
+        sysUserDTOs.add(sysUserDTO);
+        sysUserDTOs = addRelInfoSysUserDTO(sysUserDTOs);
         return sysUserDTOs.get(0);
     }
 
@@ -174,23 +176,17 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
         }
     }
 
-    private List<SysUserDTO> convertToSysUserDTO(List<SysUser> sysUsers) throws Exception{
-        List<String> userIds = sysUsers.stream().map(SysUser::getId).collect(Collectors.toList());
+    private List<SysUserDTO> addRelInfoSysUserDTO(List<SysUserDTO> sysUserDTOs) throws Exception{
+        List<String> userIds = sysUserDTOs.stream().map(SysUser::getId).collect(Collectors.toList());
         //车辆信息
         List<CarInfoDTO> carInfoDTOs = new ArrayList<>();
         if(!CollectionUtils.isEmpty(userIds)){
            carInfoDTOs = carInfoService.findCarInfoDTOByUserIds(userIds.toArray(new String[userIds.size()]));
         }
-
         Map<String, List<CarInfoDTO>> userIdMap = carInfoDTOs.stream().collect(Collectors.groupingBy(CarInfoDTO::getOwerUserId));
-
-        List<SysUserDTO> sysUserDTOs = new ArrayList<>();
-        for (SysUser sysUser:sysUsers){
-            SysUserDTO sysUserDTO = new SysUserDTO();
-            PropertyUtils.copyProperties(sysUserDTO,sysUser);
-            List<CarInfoDTO> carInfoDTOList = userIdMap.get(sysUser.getId());
+        for (SysUserDTO sysUserDTO:sysUserDTOs){
+            List<CarInfoDTO> carInfoDTOList = userIdMap.get(sysUserDTO.getId());
             sysUserDTO.setCarInfoDTOs(carInfoDTOList);
-            sysUserDTOs.add(sysUserDTO);
         }
         return sysUserDTOs;
     }
@@ -226,19 +222,16 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
 
 	@Override
 	public SysUserDTO findDtoByOpenId(String id) throws Exception {
-		SysUser sysUser1 = new SysUser();
-		sysUser1.setOpenId(id);
-		SysUser sysUser = sysUserRepository.findOne(sysUser1);
-		if(sysUser !=null){
-			List<SysUser> sysUsers = new ArrayList<>();
-	        sysUsers.add(sysUser);
-	        List<SysUserDTO> sysUserDTOs = convertToSysUserDTO(sysUsers);
-	        return sysUserDTOs.get(0);
-		}else{
-			SysUserDTO sysUserDTOs = new SysUserDTO();
-			sysUserDTOs.setDTOStatus(sysUserDTOs.IS_NOT_IXEST);
-			return sysUserDTOs;
-		}
-        
+        SysUserDTO sysUserDTO = new SysUserDTO();
+        sysUserDTO.setOpenId(id);
+        List<SysUserDTO> sysUserDTOs = sysUserMapper.find(sysUserDTO);
+        if(!CollectionUtils.isEmpty(sysUserDTOs)){
+           addRelInfoSysUserDTO(sysUserDTOs);
+            return sysUserDTOs.get(0);
+        }else {
+            SysUserDTO result = new SysUserDTO();
+            result.setDTOStatus(SysUserDTO.IS_NOT_IXEST);
+            return result;
+        }
 	}
 }

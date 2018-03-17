@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cys.dao.SysUserMapper">
+  <resultMap id="BaseResultMap" type="com.cys.dto.SysUserDTO"/>
+
+  <sql id="findDtoSql">
+    select * from (
+    select
+    su.*
+    from sys_user su
+    left join sys_shop ss on ss.id = su.shop_id
+    where su.status>'0')
+    a
+  </sql>
+
+  <select id="find"  resultMap="BaseResultMap">
+
+    <include refid="findDtoSql" />
+    <where>
+      <if test='sysUserDTO.openId != null '>
+        and a.open_id = #{sysUserDTO.openId}
+      </if>
+      <if test='sysUserDTO.userType != null '>
+        and a.user_type = #{sysUserDTO.userType}
+      </if>
+      <if test='sysUserDTO.typeDby != null'>
+        and a.type_dby = #{sysUserDTO.typeDby}
+      </if>
+      <if test='sysUserDTO.typeXby != null '>
+        and a.type_xby = #{sysUserDTO.typeXby}
+      </if>
+      <if test='sysUserDTO.typeWx != null'>
+        and a.type_wx = #{sysUserDTO.typeWx}
+      </if>
+      <if test='sysUserDTO.typeMr != null'>
+        and a.type_mr = #{sysUserDTO.typeMr}
+      </if>
+      <if test='sysUserDTO.typeJc != null'>
+        and a.type_jc = #{sysUserDTO.typeJc}
+      </if>
+      <if test='sysUserDTO.jf != null'>
+        and a.jf = #{sysUserDTO.jf}
+      </if>
+      <if test='sysUserDTO.dj != null'>
+        and a.dj = #{sysUserDTO.dj}
+      </if>
+      <if test='sysUserDTO.locationSearch != null '>
+        order by
+        ROUND(6378.138 * 2 * ASIN(SQRT(POW(SIN((#{sysUserDTO.userZbX} * PI() / 180 - a.shop_zb_x * PI() / 180
+        ) / 2),2) + COS(#{sysUserDTO.userZbX} * PI() / 180) * COS(a.shop_zb_x * PI() / 180) * POW(
+        SIN(( #{sysUserDTO.userZbY} * PI() / 180 - a.shop_zb_y * PI() / 180) / 2),2))) * 1000 )
+        <choose>
+          <when test="sysUserDTO.locationSearch == '1'">
+            asc
+          </when>
+          <when test="sysUserDTO.locationSearch == '2'">
+            desc
+          </when>
+          <otherwise>
+            asc
+          </otherwise>
+        </choose>
+      </if>
+    </where>
+  </select>
+
+  <select id="findById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <include refid="findDtoSql" />
+    <where>
+      <choose>
+        <when test='id != null and id !=""'>
+          and id = #{id}
+        </when>
+        <otherwise>
+          and 1!=1
+        </otherwise>
+      </choose>
+    </where>
+  </select>
+
+
+
+
+
+
+</mapper>

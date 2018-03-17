@@ -7,17 +7,12 @@ import com.cys.dto.SysUserDTO;
 import com.cys.dto.SysUserShopDTO;
 import com.cys.model.SysAttachment;
 import com.cys.model.SysUser;
-import com.cys.service.ISysAttachmentService;
-import com.cys.service.ISysUserRelService;
 import com.cys.service.ISysUserService;
-import com.wordnik.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by liyuan on 2018/2/5.
@@ -31,7 +26,7 @@ public class SysUserController extends BaseController {
 
     @RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData find(Query query) throws Exception {
-        SysUser sysUser= (SysUser) query.getBean(SysUser.class);
+        SysUserDTO sysUser= (SysUserDTO) query.getBean(SysUserDTO.class);
         Page<SysUserDTO> pageList = sysUserService.find(sysUser, query);
         return new ResultData(SysUserDTO.class, pageList);
     }
@@ -50,7 +45,7 @@ public class SysUserController extends BaseController {
     }
     /**
      * 用户注册
-     * @param sysUserShopDTO
+     * @param sysUserDTO
      * @return
      * @throws Exception
      */
@@ -95,7 +90,7 @@ public class SysUserController extends BaseController {
     
     /**
      * 查询详情
-     * @param id
+     * @param openId
      * @return
      * @throws Exception
      */

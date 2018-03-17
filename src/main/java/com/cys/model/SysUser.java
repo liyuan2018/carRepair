@@ -107,26 +107,26 @@ public class SysUser extends BaseModel {
     /**
      * 
      */
-    @Column(name = "type_dby", columnDefinition = "VARCHAR")
+    @Column(name = "type_dby", columnDefinition = "Integer")
     private Integer typeDby;
     
-    @Column(name = "type_xby", columnDefinition = "VARCHAR")
+    @Column(name = "type_xby", columnDefinition = "Integer")
     private Integer typeXby;
     
-    @Column(name = "type_wx", columnDefinition = "VARCHAR")
+    @Column(name = "type_wx", columnDefinition = "Integer")
     private Integer typeWx;
     
-    @Column(name = "type_mr", columnDefinition = "VARCHAR")
+    @Column(name = "type_mr", columnDefinition = "Integer")
     private Integer typeMr;
     
-    @Column(name = "type_jc", columnDefinition = "VARCHAR")
+    @Column(name = "type_jc", columnDefinition = "Integer")
     private Integer typeJc;
     
-    @Column(name = "jf", columnDefinition = "VARCHAR")
+    @Column(name = "jf", columnDefinition = "Integer")
     private Integer jf;
     
-    @Column(name = "dj", columnDefinition = "VARCHAR")
-    private Integer dj =0;
+    @Column(name = "dj", columnDefinition = "Integer")
+    private Integer dj;
 
     public Integer getTypeDby() {
 		return typeDby;

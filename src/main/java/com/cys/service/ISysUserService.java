@@ -3,14 +3,12 @@ package com.cys.service;
 import com.cys.common.domain.Query;
 import com.cys.dto.SysUserDTO;
 import com.cys.dto.SysUserShopDTO;
-import com.cys.exception.BusinessException;
 import com.cys.model.SysAttachment;
 import com.cys.model.SysUser;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by liyuan on 2018/1/31.
@@ -19,12 +17,13 @@ public interface ISysUserService extends IBaseService<SysUser,String> {
 
     /**
      * 分页查询接口
+     *
      * @param sysUserDTO
      * @param query
      * @return
      * @throws Exception
      */
-    Page<SysUserDTO> find(SysUser sysUserDTO, Query query) throws Exception;
+    Page<SysUserDTO> find(SysUserDTO sysUserDTO, Query query) throws Exception;
 
     /**
      * 查询集合
@@ -96,7 +95,7 @@ public interface ISysUserService extends IBaseService<SysUser,String> {
     
     /**
      * 详情
-     * @param openId
+     * @param id
      * @return
      * @throws Exception
      */

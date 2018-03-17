@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,7 +38,7 @@ import java.util.Properties;
  * Created by liyuan on 2018/1/24.
  */
 @Configuration
-@MapperScan({"com.cys.**.mapper","com.cys.**.mybatis"})
+@MapperScan({"com.cys.**.dao","com.cys.**.mybatis"})
 @EnableTransactionManagement
 public class DataSourceConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(DataSourceConfig.class);

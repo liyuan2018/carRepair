@@ -1,8 +1,8 @@
 package com.cys.web.converter;
 
 import com.cys.common.domain.ResultData;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -14,12 +14,12 @@ public abstract class AbstractConverter {
     /**
      * 待转换的实体所在包
      */
-    protected static final String PACKAGE_TO_PROCESS = "com.evada";
+    protected static final String PACKAGE_TO_PROCESS = "com.cys";
     /**
      * 用以返回的空实例
      */
     protected static final Map EMPTY = Collections.unmodifiableMap(new HashMap(1));
-    private static final Logger logger = LogManager.getLogger(AbstractConverter.class.getName());
+    private static final Logger logger = LoggerFactory.getLogger(AbstractConverter.class.getName());
 
     /**
      * 转成对应格式对象
@@ -67,7 +67,7 @@ public abstract class AbstractConverter {
     public abstract Object extractSet(Set set);
 
     /**
-     * 抽取com.evada包下的实体进行处理
+     * 抽取com.cys包下的实体进行处理
      */
     public abstract Object extractEntity(Object object);
 }
