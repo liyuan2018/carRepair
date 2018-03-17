@@ -18,8 +18,10 @@ import com.cys.service.ICarInfoService;
 import com.cys.service.ISysAttachmentService;
 import com.cys.service.ISysUserRelService;
 import com.cys.service.ISysUserService;
+import com.cys.util.LocationUtils;
 import com.cys.util.WXUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.common.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,10 +65,15 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
     public Page<SysUserDTO> find(SysUserDTO sysUserDTO, Query query) throws Exception {
         logger.info("查询用户信息：");
         Pageable pageable = query.getPageable();
+        if(pageable.getSort() != null){
+            sysUserDTO.setOrders(IteratorUtils.toList(pageable.getSort().iterator()));
+        }
         Page<SysUserDTO> sysUserPages = sysUserMapper.find(sysUserDTO,pageable);
         List<SysUserDTO> sysUserDTOs = sysUserPages.getContent();
         if(!CollectionUtils.isEmpty(sysUserDTOs)){
             addRelInfoSysUserDTO(sysUserDTOs);
+            //设置距离
+            setLocation(sysUserDTO.getUserZbX(),sysUserDTO.getUserZbY(),sysUserDTOs);
         }
         return sysUserPages;
     }
@@ -162,6 +170,19 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
         return sysUserDTO;
     }
 
+
+    private void setLocation(BigDecimal userZbX,BigDecimal userZbY,List<SysUserDTO> sysUserDTOs){
+        if(!CollectionUtils.isEmpty(sysUserDTOs)){
+            sysUserDTOs.forEach(sysUserDTO -> {
+                if(userZbX != null && userZbY != null && sysUserDTO.getShopZbX() != null && sysUserDTO.getShopZbY() != null){
+                    double location = LocationUtils.getDistance(userZbX.doubleValue(),userZbY.doubleValue(),sysUserDTO.getShopZbX().doubleValue(),sysUserDTO.getShopZbY().doubleValue());
+                    BigDecimal result = BigDecimal.valueOf(location);
+                    result = result.setScale(2,BigDecimal.ROUND_HALF_UP);
+                    sysUserDTO.setLocation(result.toString());
+                }
+            });
+        }
+    }
 
     private void saveRelation(SysUserDTO sysUserDTO){
         //营业执照

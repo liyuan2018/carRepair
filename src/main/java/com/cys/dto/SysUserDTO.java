@@ -3,7 +3,9 @@ package com.cys.dto;
 import com.cys.model.SysAttachment;
 import com.cys.model.SysShop;
 import com.cys.model.SysUser;
+import org.springframework.data.domain.Sort;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.persistence.Transient;
@@ -49,17 +51,32 @@ public class SysUserDTO extends SysUser {
     /**
      * 用户精度
      */
-    private Double userZbY;
+    private BigDecimal userZbY;
 
     /**
      * 用户纬度
      */
-    private Double userZbX;
+    private BigDecimal userZbX;
 
     /**
-     * 传入值查询距离排序 1：顺序，2：倒叙
+     * 距离
      */
-    private String  locationSearch;
+    private String  location;
+
+
+    /**
+     * 店铺纬度
+     */
+    private BigDecimal shopZbX;
+    /**
+     * 店铺经度
+     */
+    private BigDecimal shopZbY;
+
+    /**
+     * 排序
+     */
+    private List<Sort.Order> orders;
 
     public List<SysAttachment> getBusinessLicenses() {
         return businessLicenses;
@@ -85,27 +102,51 @@ public class SysUserDTO extends SysUser {
         this.carInfoDTOs = carInfoDTOs;
     }
 
-    public Double getUserZbY() {
+    public BigDecimal getUserZbY() {
         return userZbY;
     }
 
-    public void setUserZbY(Double userZbY) {
+    public void setUserZbY(BigDecimal userZbY) {
         this.userZbY = userZbY;
     }
 
-    public Double getUserZbX() {
+    public BigDecimal getUserZbX() {
         return userZbX;
     }
 
-    public void setUserZbX(Double userZbX) {
+    public void setUserZbX(BigDecimal userZbX) {
         this.userZbX = userZbX;
     }
 
-    public String getLocationSearch() {
-        return locationSearch;
+    public String getLocation() {
+        return location;
     }
 
-    public void setLocationSearch(String locationSearch) {
-        this.locationSearch = locationSearch;
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public List<Sort.Order> getOrders() {
+        return orders;
+    }
+
+    public BigDecimal getShopZbX() {
+        return shopZbX;
+    }
+
+    public void setShopZbX(BigDecimal shopZbX) {
+        this.shopZbX = shopZbX;
+    }
+
+    public BigDecimal getShopZbY() {
+        return shopZbY;
+    }
+
+    public void setShopZbY(BigDecimal shopZbY) {
+        this.shopZbY = shopZbY;
+    }
+
+    public void setOrders(List<Sort.Order> orders) {
+        this.orders = orders;
     }
 }

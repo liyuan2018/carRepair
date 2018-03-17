@@ -15,7 +15,7 @@ public class LocationUtils {
      * x度 = x*π/360 弧度
      *
      * @author chiwei
-     * @param d
+     * @param degree
      * @return
      * @since JDK 1.6
      */

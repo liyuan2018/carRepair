@@ -6,7 +6,9 @@
   <sql id="findDtoSql">
     select * from (
     select
-    su.*
+    su.*,
+    ss.shop_zb_x,
+    ss.shop_zb_y
     from sys_user su
     left join sys_shop ss on ss.id = su.shop_id
     where su.status>'0')
@@ -17,6 +19,9 @@
 
     <include refid="findDtoSql" />
     <where>
+      <if test='sysUserDTO.name != null '>
+        and a.name = #{sysUserDTO.name}
+      </if>
       <if test='sysUserDTO.openId != null '>
         and a.open_id = #{sysUserDTO.openId}
       </if>
@@ -44,24 +49,27 @@
       <if test='sysUserDTO.dj != null'>
         and a.dj = #{sysUserDTO.dj}
       </if>
-      <if test='sysUserDTO.locationSearch != null '>
-        order by
-        ROUND(6378.138 * 2 * ASIN(SQRT(POW(SIN((#{sysUserDTO.userZbX} * PI() / 180 - a.shop_zb_x * PI() / 180
-        ) / 2),2) + COS(#{sysUserDTO.userZbX} * PI() / 180) * COS(a.shop_zb_x * PI() / 180) * POW(
-        SIN(( #{sysUserDTO.userZbY} * PI() / 180 - a.shop_zb_y * PI() / 180) / 2),2))) * 1000 )
-        <choose>
-          <when test="sysUserDTO.locationSearch == '1'">
-            asc
-          </when>
-          <when test="sysUserDTO.locationSearch == '2'">
-            desc
-          </when>
-          <otherwise>
-            asc
-          </otherwise>
-        </choose>
-      </if>
     </where>
+    <choose>
+      <when test="sysUserDTO.orders != null and sysUserDTO.orders.size() > 0">
+        <trim prefix="order by" prefixOverrides="order by"></trim>
+        <foreach collection="sysUserDTO.orders" item="order" open="order by" separator=",">
+          <choose>
+            <when test='order.property == "location_order"'>
+              ROUND(6378.138 * 2 * ASIN(SQRT(POW(SIN((#{sysUserDTO.userZbX} * PI() / 180 - a.shop_zb_x * PI() / 180
+              ) / 2),2) + COS(#{sysUserDTO.userZbX} * PI() / 180) * COS(a.shop_zb_x * PI() / 180) * POW(
+              SIN(( #{sysUserDTO.userZbY} * PI() / 180 - a.shop_zb_y * PI() / 180) / 2),2))) * 1000 )  ${order.direction}
+            </when>
+            <otherwise>
+              ${order.property} ${order.direction}
+            </otherwise>
+          </choose>
+        </foreach>
+      </when>
+      <otherwise>
+        order by name asc
+      </otherwise>
+    </choose>
   </select>
 
   <select id="findById" parameterType="java.lang.String" resultMap="BaseResultMap">
