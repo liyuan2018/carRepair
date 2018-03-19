@@ -17,8 +17,8 @@ public class SysUser extends BaseModel {
     
     public final static String STATUS_JY="0";
 
-    @Column(name = "user_type", columnDefinition = "VARCHAR")
-    private Short userType;
+    @Column(name = "user_type", columnDefinition = "Integer")
+    private Integer userType;
     
     @Column(name = "open_id", columnDefinition = "VARCHAR")
     private String openId;
@@ -99,8 +99,8 @@ public class SysUser extends BaseModel {
 	@Column(name = "shop_id", columnDefinition = "VARCHAR")
     private String shopId;
 
-    @Column(name = "work_year", columnDefinition = "VARCHAR")
-    private Short workYear;
+    @Column(name = "work_year", columnDefinition = "Integer")
+    private Integer workYear;
 
     @Column(name = "description", columnDefinition = "VARCHAR")
     private String description;
@@ -184,11 +184,11 @@ public class SysUser extends BaseModel {
 		this.dj = dj;
 	}
 
-	public Short getUserType() {
+	public Integer getUserType() {
         return userType;
     }
 
-    public void setUserType(Short userType) {
+    public void setUserType(Integer userType) {
         this.userType = userType;
     }
 
@@ -344,11 +344,11 @@ public class SysUser extends BaseModel {
         this.shopId = shopId;
     }
 
-    public Short getWorkYear() {
+    public Integer getWorkYear() {
         return workYear;
     }
 
-    public void setWorkYear(Short workYear) {
+    public void setWorkYear(Integer workYear) {
         this.workYear = workYear;
     }
 
