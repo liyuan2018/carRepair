@@ -22,6 +22,13 @@
       <if test='sysUserDTO.name != null '>
         and a.name = #{sysUserDTO.name}
       </if>
+      
+      <if test='sysUserDTO.canYuyue != null '>
+        and a.canYuyue = #{sysUserDTO.canYuyue}
+      </if>
+      
+      
+      
       <if test='sysUserDTO.openId != null '>
         and a.open_id = #{sysUserDTO.openId}
       </if>
