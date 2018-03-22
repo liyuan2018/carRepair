@@ -13,7 +13,6 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -56,12 +55,12 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         registry.addResourceHandler(API_RESOURCES_HANDLER).addResourceLocations(API_RESOURCES_LOCATION);
     }
 
-    /**
-     * 重写requestMappingHandlerMapping支持模型转换
-     * eg: Rest(user.class)-->requestMapping: /users/
-     *
-     * @return
-     */
+        /**
+         * 重写requestMappingHandlerMapping支持模型转换
+         * eg: Rest(user.class)-->requestMapping: /users/
+         *
+         * @return
+         */
     @Override
     public RequestMappingHandlerMapping requestMappingHandlerMapping() {
         RestMappingHandler handlerMapping = new RestMappingHandler();
