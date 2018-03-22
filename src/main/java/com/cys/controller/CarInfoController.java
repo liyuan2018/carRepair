@@ -4,6 +4,7 @@ import com.cys.common.annotation.Rest;
 import com.cys.common.domain.ResultData;
 import com.cys.dto.CarInfoDTO;
 import com.cys.model.CarInfo;
+import com.cys.model.MessageDTO;
 import com.cys.service.ICarInfoService;
 
 import java.util.List;
@@ -36,6 +37,18 @@ public class CarInfoController {
         carInfoDTO = carInfoService.createDto(carInfoDTO);
         return new ResultData(CarInfo.class, carInfoDTO);
     }
+    @RequestMapping(value = "/deleteById", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData deleteById(@RequestParam("id") String id) throws Exception {
+    	
+    	carInfoService.deleteById(id);
+    	MessageDTO ms= new  MessageDTO();
+    	String mss = "删除成功";
+    	String status ="success";
+    	ms.setMsg(mss);
+    	ms.setStatus(status);
+        return new ResultData(MessageDTO.class, ms);
+    }
+    
     @RequestMapping(value = "/findByUserId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData findByUserId(@RequestParam("owerUserId") String owerUserId) throws Exception {
     	CarInfo car= new CarInfo(); 

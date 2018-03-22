@@ -20,11 +20,11 @@
     <include refid="findDtoSql" />
     <where>
       <if test='sysUserDTO.name != null '>
-        and a.name = #{sysUserDTO.name}
+        and a.name like  concat('%',#{sysUserDTO.name},'%')
       </if>
       
       <if test='sysUserDTO.canYuyue != null '>
-        and a.canYuyue = #{sysUserDTO.canYuyue}
+        and a.can_yuyue = #{sysUserDTO.canYuyue}
       </if>
       
       
