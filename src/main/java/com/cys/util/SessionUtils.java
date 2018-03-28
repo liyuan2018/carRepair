@@ -16,6 +16,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +65,21 @@ public class SessionUtils {
         else{
             throw new SessionTimeoutException(ErrorCode.Common.sessionTimeout);
         }
+    }
+    
+    public static synchronized void writer(String param) {
+    	try{
+    		
+    		RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
+        	ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)attributes;
+            HttpServletResponse response = ((HttpServletResponse) servletRequestAttributes.getResponse());
+            response.setCharacterEncoding("utf-8");  
+            PrintWriter pw = response.getWriter();  
+            pw.print(param);  
+            pw.close();
+    	}catch(Exception e){}
+    	
+        
     }
 }
 

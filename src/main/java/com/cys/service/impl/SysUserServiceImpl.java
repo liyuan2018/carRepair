@@ -12,6 +12,7 @@ import com.cys.exception.BusinessException;
 import com.cys.model.SysAttachment;
 import com.cys.model.SysShop;
 import com.cys.model.SysUser;
+import com.cys.model.SysYuyue;
 import com.cys.repository.SysShopRepository;
 import com.cys.repository.SysUserRepository;
 import com.cys.service.ICarInfoService;
@@ -26,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.common.util.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -107,7 +109,15 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
     		sysUser1.setOpenId(sysUserDTO.getOpenId());
     		SysUser sysUser = sysUserRepository.findOne(sysUser1);
     		if(sysUser!=null){
-    			sysUserDTO.setDTOStatus(sysUserDTO.IS_NOT_IXEST);
+    			if(StringUtils.isNotEmpty(sysUserDTO.getName())){
+    				sysUser.setName(sysUserDTO.getName());
+    			}
+    			if(StringUtils.isNotEmpty(sysUserDTO.getMobile())){
+    				sysUser.setMobile(sysUserDTO.getMobile());
+    			}
+    			sysUser = sysUserRepository.save(sysUser);
+    			PropertyUtils.copyProperties(sysUserDTO,sysUser);
+    			sysUserDTO.setDTOStatus(sysUserDTO.STATUS_QY);
     			return sysUserDTO;
     		}
     	}
@@ -183,6 +193,16 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
             });
         }
     }
+    
+    
+    @Override
+    public Page<SysUser> adminFind(SysUser sysUser, Query query) throws Exception {
+        Pageable pageable = query.getPageable();
+        Page<SysUser> sysUserPages = sysUserRepository.find(sysUser,pageable);
+        List<SysUser> sysYuyues = sysUserPages.getContent();
+        //List<SysYuyue> sysYuyue = convertToSysUserDTO(sysUsers);
+        return new PageImpl<SysUser>(sysYuyues,pageable,sysUserPages.getTotalElements());
+    }
 
     private void saveRelation(SysUserDTO sysUserDTO){
         //营业执照
@@ -219,7 +239,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
         PropertyUtils.copyProperties(sysUser,sysUserShopDTO);
         sysUserRepository.save(sysUser);
         SysShop sysShop = new SysShop();
-        PropertyUtils.copyProperties(sysShop,sysUserShopDTO);
+        PropertyUtils.copyProperties(sysShop,sysUserShopDTO.getSysShop());
         sysShop.setOwerUserId(sysUser.getId());
         sysShopRepository.save(sysShop);
         sysUserShopDTO.setId(sysShop.getId());
@@ -250,9 +270,14 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
            addRelInfoSysUserDTO(sysUserDTOs);
             return sysUserDTOs.get(0);
         }else {
-            SysUserDTO result = new SysUserDTO();
-            result.setDTOStatus(SysUserDTO.IS_NOT_IXEST);
-            return result;
+        	SysUser u= new SysUser();
+        	u.setUserType(0);//0为车主
+        	u.setOpenId(id);
+        	
+        	u = sysUserRepository.save(u);
+        	PropertyUtils.copyProperties(sysUserDTO,u);
+            //result.setDTOStatus(SysUserDTO.IS_NOT_IXEST);
+            return sysUserDTO;
         }
 	}
 }

@@ -101,5 +101,12 @@ public interface ISysUserService extends IBaseService<SysUser,String> {
      */
     SysUserDTO findDtoByOpenId(String id) throws Exception;
     
-
+    /**
+     * 
+     * @param sysUser
+     * @param query
+     * @return
+     * @throws Exception
+     */
+    public Page<SysUser> adminFind(SysUser sysUser, Query query) throws Exception;
 }

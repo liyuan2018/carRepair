@@ -2,7 +2,10 @@ package com.cys.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -11,6 +14,8 @@ import java.util.Date;
 
 @Entity
 @Table(name = "yuyue_order")
+@Inheritance(strategy= InheritanceType.SINGLE_TABLE)
+@DiscriminatorValue("YuyueOrder")
 public class YuyueOrder extends BaseModel {
 	
 	
@@ -30,7 +35,31 @@ public class YuyueOrder extends BaseModel {
     
     @ManyToOne(cascade = { CascadeType. REFRESH })
     @JoinColumn(name="yuyue_id")
-    private SysYuyue SysYuyue;
+    private SysYuyue sysYuyue;
+    
+    @Column(name = "yy_cz_id", columnDefinition = "VARCHAR")
+    private String yyCzId;
+    
+    public String getYyCzId() {
+		return yyCzId;
+	}
+
+	public void setYyCzId(String yyCzId) {
+		this.yyCzId = yyCzId;
+	}
+
+	public String getYyQxId() {
+		return yyQxId;
+	}
+
+	public void setYyQxId(String yyQxId) {
+		this.yyQxId = yyQxId;
+	}
+
+
+
+	@Column(name = "yy_qx_id", columnDefinition = "VARCHAR")
+    private String yyQxId;
     
     public Double getShouldPayMoney() {
 		return ShouldPayMoney;
@@ -65,11 +94,11 @@ public class YuyueOrder extends BaseModel {
 	}
 
 	public SysYuyue getSysYuyue() {
-		return SysYuyue;
+		return sysYuyue;
 	}
 
 	public void setSysYuyue(SysYuyue sysYuyue) {
-		SysYuyue = sysYuyue;
+		this.sysYuyue = sysYuyue;
 	}
 
 	

@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Created by liyuan on 2018/2/5.
@@ -31,6 +32,7 @@ public class SysUserController extends BaseController {
         return new ResultData(SysUserDTO.class, pageList);
     }
 
+   
 
     /**
      * 店铺注册

@@ -23,9 +23,19 @@ public class SysShop extends BaseModel {
     @Column(name = "shop_name", columnDefinition = "VARCHAR")
     private String shopName;
 
-    @Column(name = "shop_adress", columnDefinition = "VARCHAR")
+    @Column(name = "adress_name", columnDefinition = "VARCHAR")
     private String shopAdress;
 
+    public String getAdressName() {
+		return adressName;
+	}
+
+	public void setAdressName(String adressName) {
+		this.adressName = adressName;
+	}
+
+	@Column(name = "shop_adress", columnDefinition = "VARCHAR")
+    private String adressName;
     /**
      * 经度值
      */
@@ -42,7 +52,7 @@ public class SysShop extends BaseModel {
     private String serviceType;
 
     @Column(name = "status")
-    private Integer shopStatus=0;
+    private Integer shopStatus=1;
 
     @Column(name = "shop_img_url", columnDefinition = "VARCHAR")
     private String shopImgUrl;

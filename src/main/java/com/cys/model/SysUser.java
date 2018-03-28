@@ -83,7 +83,7 @@ public class SysUser extends BaseModel {
     private Date creatorTime;
 
     @Column(name = "status", columnDefinition = "VARCHAR")
-    private String status;
+    private String status = STATUS_QY;
     
     @Column(name = "can_yuyue", columnDefinition = "VARCHAR")
     private String canYuyue;
