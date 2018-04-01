@@ -2,17 +2,20 @@ package com.cys.controller.admin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -83,6 +86,64 @@ public class AdminUserController {
 	        pw.print(json);  
 	    }  
 	    
+	    /**
+	     * 查询详情
+	     * @param id
+	     * @return
+	     * @throws Exception
+	     */
+	    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	    public ResultData findDetail(@PathVariable("id") String id) throws Exception {
+	        SysUserDTO sysUserDTO = sysUserService.findDtoById(id);
+	        return new ResultData(SysUserDTO.class, sysUserDTO);
+	    }
+	    
+	    /**
+	     * 用户注册
+	     * @param sysUserDTO
+	     * @return
+	     * @throws Exception
+	     */
+	    @RequestMapping(value = "/addUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	    public ResultData addUser(@RequestBody SysUser sysUser) throws Exception {
+	    	SysUser auser= null;
+	    	if(!StringUtils.isEmpty(sysUser.getId())){
+	    		auser = sysUserService.findById(sysUser.getId());
+	    		
+	    	}else{
+	    		auser = new SysUser();
+	    		auser.setCreatorTime(new Date());
+	    	}
+	    	SysUser uu = SessionUtils.getCurrentUser();
+	    	auser.setCanYuyue(sysUser.getCanYuyue());
+    		auser.setName(sysUser.getName());
+    		auser.setMobile(sysUser.getMobile());
+    		auser.setDescription(sysUser.getDescription());
+    		auser.setTypeDby(sysUser.getTypeDby());
+    		auser.setTypeJc(sysUser.getTypeJc());
+    		auser.setTypeMr(sysUser.getTypeMr());
+    		auser.setTypeWx(sysUser.getTypeWx());
+    		auser.setTypeXby(sysUser.getTypeXby());
+    		auser.setUserType(SysUser.TYPE_CYS);
+    		auser.setShopId(uu.getShopId());
+    		
+    		auser = sysUserService.saveOrUpdateSysUser(auser);
+	        return new ResultData(SysUser.class, auser);
+	    }
+	    
+	    //deleteUser
+	    /**
+	     * 查询详情
+	     * @param id
+	     * @return
+	     * @throws Exception
+	     */
+	    @RequestMapping(value = "/deleteUser", method = RequestMethod.GET,  produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	    public void deleteUser(@RequestParam("id") String id) throws Exception {
+	        //SysUserDTO sysUserDTO = 
+	        sysUserService.deleteById(id);
+	        //return new ResultData(SysUserDTO.class, sysUserDTO);
+	    }
 	    
 	    @RequestMapping(value = "user", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	    public void find(Query query,SysUser sysUser) throws Exception {
@@ -99,7 +160,12 @@ public class AdminUserController {
 	        	o.put("id", u.getId());
 	        	o.put("name", u.getName());
 	        	o.put("mobile", u.getMobile());
-	        	o.put("createTime", DateUtils.format(u.getCreatorTime(), "yyyy-MM-DD"));
+	        	if(u.getCreatorTime()!=null){
+	        		o.put("createTime", DateUtils.format(u.getCreatorTime(), "yyyy-MM-DD"));
+	        	}else{
+	        		o.put("createTime", "");
+	        	}
+	        	
 	            String kyy ="可预约";
 	            if(u.getCanYuyue()=="0"){
 	            	kyy ="不可预约";

@@ -16,6 +16,10 @@ public class SysUser extends BaseModel {
     public final static String STATUS_QY="1";
     
     public final static String STATUS_JY="0";
+    
+    public final static Integer TYPE_CYS=2; //车医生， 
+    public final static Integer TYPE_CZ=0;//车主
+    public final static Integer TYPE_GLY=1;//管理员
 
     @Column(name = "user_type", columnDefinition = "Integer")
     private Integer userType;

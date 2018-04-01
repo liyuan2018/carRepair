@@ -109,4 +109,10 @@ public interface ISysUserService extends IBaseService<SysUser,String> {
      * @throws Exception
      */
     public Page<SysUser> adminFind(SysUser sysUser, Query query) throws Exception;
+    /**
+     * 
+     * @param user
+     * @return
+     */
+    public SysUser saveOrUpdateSysUser(SysUser user);
 }

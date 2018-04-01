@@ -52,7 +52,8 @@ function initTable() {
         return param;                   
       },  
       columns:[
-               {checkbox:true},
+               {checkbox:true, checked : false},
+               {field:"id", title:"id",visible:false},
                {field:"name",title:"姓名"},
                {field:"mobile",title:"手机"},
                {field:"canYuyue",title:"是否可预约"},
@@ -75,6 +76,54 @@ $(document).ready(function () {
     //当点击查询按钮的时候执行  
     $("#search").bind("click", initTable);  
 });  
+
+
+function fghh(type){
+	
+	var org_id = $("#cusTable").bootstrapTable('getSelections')[0].id;		
+	$.ajax({
+	    url:org_id,
+	    type:'GET', //GET
+	    async:true,    //或false,是否异步
+	    data:{
+	        "id":org_id
+	    },
+	    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+	    beforeSend:function(xhr){
+	        console.log(xhr)
+	        console.log('发送前')
+	    },
+	    success:function(data,textStatus,jqXHR){
+	    	
+	    	var fg = data.sysUser;
+	    	
+	    	if(fg.name){
+	    		loadData(fg);
+	    		if(type=="update"){
+	    			userUpdate();
+	    		}else if(type=="view"){
+	    			userVier();
+	    		}
+	    		
+	    	}else {
+	    		alert("数据查询失败");
+	    	}
+	        console.log(data)
+	        console.log(textStatus)
+	        console.log(jqXHR)
+	    },
+	    error:function(xhr,textStatus){
+	        console.log('错误')
+	        console.log(xhr)
+	        console.log(textStatus)
+	        alert("网络异常");
+	    },
+	    complete:function(){
+	        console.log('结束')
+	    }
+	})
+}
+
 </script>  
 </head>
 <body>
@@ -93,9 +142,9 @@ $(document).ready(function () {
 	<div class="btn-group">
 	<a  class="btn" role="button" onclick="showAdd()" >新增</a>
   
-  <button class="btn">删除</button>
-  <button class="btn">修改</button>
-  <button class="btn">查看</button>
+  <button class="btn" onclick="deleteData()">删除</button>
+  <button class="btn" onclick="fghh('update')">修改</button>
+  <button class="btn" onclick="fghh('view')">查看</button>
 </div>
 </div>
 <table class="table table-hover" id="cusTable"  
@@ -111,9 +160,10 @@ $(document).ready(function () {
 
 border-width:2px;border-color:4169E1;display:none">
 <div style="padding-top:10px;text-align:center">
-	<h3> 新增车医生</h3>
+	<h3 id="usertitle"> 新增车医生</h3>
 </div>
-<form action="" id="addfrom"></form>
+<form action="" id="addfrom">
+<input type="text" name="id"  id="id" style="display:none" placeholder="姓名">
 <table style="width:100%;text-align:center">
 	<tr>
 		<td style="width:30%">姓名</td>
@@ -126,7 +176,7 @@ border-width:2px;border-color:4169E1;display:none">
 	
 	<tr>
 		<td>是否可预约</td>
-		<td style="text-align:left"><select>
+		<td style="text-align:left"><select id="canYuyue">
   <option value="1">可预约</option>
   <option value="0">不可预约</option>
   
@@ -134,16 +184,8 @@ border-width:2px;border-color:4169E1;display:none">
 	</tr>
 	
 	<tr>
-		<td>是否可预约</td>
-		<td style="text-align:left"><select>
-  <option value="1">可预约</option>
-  <option value="0">不可预约</option>
-  
-</select></td>
-	</tr>
-	<tr>
 		<td>大保养</td>
-		<td style="text-align:left"><select>
+		<td style="text-align:left"><select id="typeDby">
   <option value="1">有</option>
   <option value="0">没有</option>
   
@@ -151,7 +193,7 @@ border-width:2px;border-color:4169E1;display:none">
 	</tr>
 	<tr>
 		<td>小保养</td>
-		<td style="text-align:left"><select>
+		<td style="text-align:left" ><select id="typeXby">
   <option value="1">有</option>
   <option value="0">没有</option>
   
@@ -159,7 +201,7 @@ border-width:2px;border-color:4169E1;display:none">
 	</tr>
 	<tr>
 		<td>汽车美容</td>
-		<td style="text-align:left"><select>
+		<td style="text-align:left"><select id="typeMr">
   <option value="1">有</option>
   <option value="0">没有</option>
   
@@ -167,7 +209,7 @@ border-width:2px;border-color:4169E1;display:none">
 	</tr>
 	<tr>
 		<td>汽车检查</td>
-		<td style="text-align:left"><select>
+		<td style="text-align:left"><select id="typeJc">
   <option value="1">有</option>
   <option value="0">没有</option>
   
@@ -175,7 +217,7 @@ border-width:2px;border-color:4169E1;display:none">
 	</tr>
 	<tr>
 		<td>修车</td>
-		<td style="text-align:left"><select>
+		<td style="text-align:left"><select id="typeWx">
   <option value="1">有</option>
   <option value="0">没有</option>
   
@@ -183,14 +225,14 @@ border-width:2px;border-color:4169E1;display:none">
 	</tr>
 	<tr>
 		<td>简介</td>
-		<td style="text-align:left"><input type="text" name="name"  class="input-big" placeholder="">
+		<td style="text-align:left"><input type="text" name="description"  id="description" class="input-big" placeholder="">
   
 </td>
 	</tr>
 	
 	<tr>
 		<td colspan="2">
-			<input class="btn" style="width:100px" value="提     交"/>
+			<input class="btn" style="width:100px" value="提     交" id="tijiao" onclick="addOrUpdate()"/>
 			<input class="btn" style="width:100px" value="取    消" onclick="hideAdd()"/>
 		</td>
 		
@@ -212,8 +254,151 @@ function showAdd(){
 }
 function hideAdd(){
 	$("#addcys").hide();
+	$("#tijiao").show();
 	//$("#addfrom").resetForm();
 	$("#name").val("");  
 	$("#mobile").val("");  
+	$("#id").val("");  
+	$("#description").val("");  
 }
+
+function userAdd(){
+	$("#usertitle").val("新增车医生");
+	$("#addcys").show();
+}
+
+function userVier(){
+	$("#usertitle").val("车医生信息");
+	$("#addcys").show();
+	$("#tijiao").hide();
+	
+}
+
+function userUpdate(){
+	$("#usertitle").val("修改车医生信息");
+	$("#addcys").show();
+	$("#tijiao").show();
+}
+
+function deleteData(){
+	
+	var org_id = $("#cusTable").bootstrapTable('getSelections')[0].id;		
+	$.ajax({
+	    url:"deleteUser",
+	    type:'GET', //GET
+	    async:true,    //或false,是否异步
+	    data:{"id":org_id},
+	    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+	    contentType: "application/json",
+	    beforeSend:function(xhr){
+	        console.log(xhr)
+	        console.log('发送前')
+	    },
+	    success:function(data,textStatus,jqXHR){
+	    	initTable();
+	    	
+	    },
+	    error:function(xhr,textStatus){
+	        console.log('错误')
+	        console.log(xhr)
+	        console.log(textStatus)
+	        alert("网络异常");
+	    },
+	    complete:function(){
+	        console.log('结束')
+	    }
+	})
+}
+
+
+/** 
+ * 设置select控件选中 
+ * @param selectId select的id值 
+ * @param checkValue 选中option的值 
+ * @author 标哥 
+*/  
+function set_select_checked(selectId, checkValue){  
+    var select = document.getElementById(selectId);  
+
+    for (var i = 0; i < select.options.length; i++){  
+        if (select.options[i].value == checkValue){  
+            select.options[i].selected = true;  
+            break;  
+        }  
+    }  
+}
+
+function loadData(user){
+	if(user.name){
+		$("#name").val(user.name);
+		$("#id").val(user.id);
+	}
+	if(user.mobile){
+		$("#mobile").val(user.mobile);
+	}
+	if(user.description){
+		$("#description").val(user.description);
+	}
+	
+	set_select_checked("canYuyue",user.canYuyue);
+	set_select_checked("typeDby",user.typeDby);
+	set_select_checked("typeXby",user.typeXby);
+	set_select_checked("typeMr",user.typeMr);
+	set_select_checked("typeJc",user.typeJc);
+	set_select_checked("typeWx",user.typeWx);
+}
+
+function addOrUpdate(){
+	var param1;
+	if($("#id").val() ==""){
+		param1 = {"name":$("#name").val(),"mobile":$("#mobile").val(),
+		    	"canYuyue":$("#canYuyue").val(),"typeDby":$("#typeDby").val(),"typeXby":$("#typeXby").val(),
+		    	"typeMr":$("#typeMr").val(),"typeJc":$("#typeJc").val(),"typeWx":$("#typeWx").val(),"description":$("#description").val()
+		    }
+	}else{
+		param1 = {"id":$("#id").val(),"name":$("#name").val(),"mobile":$("#mobile").val(),
+		    	"canYuyue":$("#canYuyue").val(),"typeDby":$("#typeDby").val(),"typeXby":$("#typeXby").val(),
+		    	"typeMr":$("#typeMr").val(),"typeJc":$("#typeJc").val(),"typeWx":$("#typeWx").val(),"description":$("#description").val()
+		    }
+	}
+	param1 = JSON.stringify( param1 );
+	$.ajax({
+	    url:"addUser",
+	    type:'POST', //GET
+	    async:true,    //或false,是否异步
+	    data:param1,
+	    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+	    contentType: "application/json",
+	    beforeSend:function(xhr){
+	        console.log(xhr)
+	        console.log('发送前')
+	    },
+	    success:function(data,textStatus,jqXHR){
+	    	
+	    	var fg = data.sysUser;
+	    	
+	    	if(fg.id){
+	    		
+	    		initTable();  hideAdd();
+	    	}else {
+	    		alert("数据查询失败");
+	    	}
+	        console.log(data)
+	        console.log(textStatus)
+	        console.log(jqXHR)
+	    },
+	    error:function(xhr,textStatus){
+	        console.log('错误')
+	        console.log(xhr)
+	        console.log(textStatus)
+	        alert("网络异常");
+	    },
+	    complete:function(){
+	        console.log('结束')
+	    }
+	})
+}
+
+
+
 </script>

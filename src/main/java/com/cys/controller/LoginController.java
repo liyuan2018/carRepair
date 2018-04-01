@@ -1,5 +1,7 @@
 package com.cys.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -73,7 +75,7 @@ public class LoginController extends BaseController {
 	 * @param req
 	 * @return
 	 */
-	@RequestMapping(params = "checkuser")
+	@RequestMapping(value = "checkuser")
 	@ResponseBody
 	public ResultData checkuser(SysUser user, HttpServletRequest req) {
 		
@@ -92,10 +94,10 @@ public class LoginController extends BaseController {
 		user.setPassword(MD5Util.md5Password(user.getPassword()));
 		SysUser uq= new SysUser();
 		uq.setAccount(user.getAccount());
-		SysUser uu =  sysUserService.findOne(uq);
+		List<SysUser> uu =  sysUserService.find(uq);
 		String message ="";
 		String status ="fail";
-		if (uu == null) {
+		if (uu == null&&uu.size()==0) {
 			message ="账号不存在";
 		} else {
 			SysUser u = sysUserService.findOne(user);
@@ -108,10 +110,11 @@ public class LoginController extends BaseController {
 				status = "success";
 			}
 
-			json.setMsg(message);
-			json.setStatus(status);
+			
 			
 		}
+		json.setMsg(message);
+		json.setStatus(status);
 		return new ResultData(MessageDTO.class, json);
 	}
 
@@ -154,38 +157,17 @@ public class LoginController extends BaseController {
 			// 根据角色进行判断，不同角色进入不同的主页面
 			if ((user.getUserType()!= null && equals(user.getUserType()==1))
 					) {
-				return new ModelAndView("main/main");
+				return new ModelAndView("index");
 			} else if (user.getUserType()!= null && equals(user.getUserType()==2)) {
 				return new ModelAndView("main/index");
 			} else {
-				return new ModelAndView("main/index");
+				return new ModelAndView("login");
 			}
 
-			// 要添加自己的风格，复制下面三行即可
-			// if (StringUtils.isNotEmpty(indexStyle)
-			// && indexStyle.equalsIgnoreCase("helpdesk_main")) {
-			// return "main/helpdesk_main";
-			// }
-			// if (StringUtils.isNotEmpty(indexStyle)
-			// && indexStyle.equalsIgnoreCase("bootstrap")) {
-			// return "main/bootstrap_main";
-			// }
-			// if (StringUtils.isNotEmpty(indexStyle)
-			// && indexStyle.equalsIgnoreCase("shortcut")) {
-			// return "main/shortcut_main";
-			// }
-			// if (StringUtils.isNotEmpty(indexStyle)
-			// && indexStyle.equalsIgnoreCase("sliding")) {
-			// return "main/sliding_main";
-			// }
-			// if (StringUtils.isNotEmpty(indexStyle)
-			// && indexStyle.equalsIgnoreCase("shamcey")) {
-			// return "main/shamcey_main";
-			// }
-			//
+			
 			// return "main/main";
 		} else {
-			return new ModelAndView("login/newlogin");
+			return new ModelAndView("login");
 		}
 
 	}

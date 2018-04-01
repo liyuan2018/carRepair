@@ -20,6 +20,7 @@ import com.cys.service.ISysAttachmentService;
 import com.cys.service.ISysUserRelService;
 import com.cys.service.ISysUserService;
 import com.cys.util.LocationUtils;
+import com.cys.util.MD5Util;
 import com.cys.util.WXUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.IteratorUtils;
@@ -237,6 +238,10 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
 		sysUserShopDTO.setCreatorTime(new Date());
         SysUser sysUser = new SysUser();
         PropertyUtils.copyProperties(sysUser,sysUserShopDTO);
+        if(sysUser.getPassword()!=null){
+        	sysUser.setPassword(MD5Util.md5Password(sysUser.getPassword()));//密码加密入库
+        }
+        
         sysUserRepository.save(sysUser);
         SysShop sysShop = new SysShop();
         PropertyUtils.copyProperties(sysShop,sysUserShopDTO.getSysShop());
@@ -279,5 +284,12 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser,String> implemen
             //result.setDTOStatus(SysUserDTO.IS_NOT_IXEST);
             return sysUserDTO;
         }
+	}
+
+	@Override
+	public SysUser saveOrUpdateSysUser(SysUser user) {
+		// TODO Auto-generated method stub
+		user = sysUserRepository.save(user);
+		return user;
 	}
 }
