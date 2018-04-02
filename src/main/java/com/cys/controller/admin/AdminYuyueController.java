@@ -2,7 +2,9 @@ package com.cys.controller.admin;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +27,11 @@ import com.cys.common.domain.Query;
 import com.cys.common.domain.ResultData;
 import com.cys.dto.SysUserDTO;
 import com.cys.model.SysUser;
+import com.cys.model.SysYuyue;
+import com.cys.model.YuyueOrder;
 import com.cys.service.ISysUserService;
+import com.cys.service.ISysYuyueService;
+import com.cys.service.YuyueOrderService;
 import com.cys.util.DateUtils;
 import com.cys.util.SessionUtils;
 
@@ -33,11 +39,16 @@ import com.cys.util.SessionUtils;
  * Created by liyuan on 2018/1/24.
  */
 @RestController
-@RequestMapping("/admin")
-public class AdminUserController {
+@RequestMapping("/admin/yuyue")
+public class AdminYuyueController {
 
 	@Autowired
+	private YuyueOrderService yuyueOrderService;
+	@Autowired
     private ISysUserService sysUserService;
+	
+	@Autowired
+    private ISysYuyueService sysYuyueService;
 	
 	 @RequestMapping(value = "index", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	    public ModelAndView index() throws Exception{
@@ -45,46 +56,10 @@ public class AdminUserController {
 	    }
 	    @RequestMapping(value = "table", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	    public ModelAndView main() throws Exception{
-	        return new ModelAndView("table");
+	        return new ModelAndView("yuyueList");
 	    }
 	    
-	    @RequestMapping(value = "usertest", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	    private void usertest(HttpServletRequest request,  
-	            HttpServletResponse response) throws IOException {  
-	        response.setCharacterEncoding("utf-8");  
-	        PrintWriter pw = response.getWriter();  
-	          
-	        //得到客户端传递的页码和每页记录数，并转换成int类型  
-	       /* int pageSize = Integer.parseInt(request.getParameter("pageSize"));  
-	        int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));  
-	        String orderNum = request.getParameter("orderNum");  */
-	          
-	        //分页查找商品销售记录，需判断是否有带查询条件  
-	        /*List<SimsSellRecord> sellRecordList = null;  
-	        sellRecordList = sellRecordService.querySellRecordByPage(pageNumber, pageSize, orderNum);  
-	        */ 
-	        JSONArray arr = new JSONArray();
-	        JSONObject O1 =new JSONObject();
-	        O1.put("name", "123");
-	        O1.put("moble", "1232");
-	        O1.put("canYuyue", "1232");
-	        
-	        
-	        JSONObject O2 =new JSONObject();
-	        O2.put("name", "123T");
-	        O2.put("moble", "1232T");
-	        O2.put("canYuyue", "1232T");
-	        arr.add(O1);
-	        arr.add(O2);
-	        //将商品销售记录转换成json字符串  
-	        //String sellRecordJson = sellRecordService.getSellRecordJson(sellRecordList);  
-	        //得到总记录数  
-	        int total = 2;  
-	          
-	        //需要返回的数据有总记录数和行数据  
-	        String json = "{\"total\":" + total + ",\"rows\":" + arr.toString() + "}";  
-	        pw.print(json);  
-	    }  
+	   
 	    
 	    /**
 	     * 查询详情
@@ -133,45 +108,73 @@ public class AdminUserController {
 	    
 	    //deleteUser
 	    /**
-	     * 查询详情
+	     * 确认已完成
 	     * @param id
 	     * @return
 	     * @throws Exception
 	     */
-	    @RequestMapping(value = "/deleteUser", method = RequestMethod.GET,  produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	    public void deleteUser(@RequestParam("id") String id) throws Exception {
-	        //SysUserDTO sysUserDTO = 
-	        sysUserService.deleteById(id);
-	        //return new ResultData(SysUserDTO.class, sysUserDTO);
+	    @RequestMapping(value = "/save", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	    public void save(@RequestParam("id") String id,@RequestParam("serviceDesc") String serviceDesc,@RequestParam("serviceMoney") String serviceMoney) throws Exception {
+	        
+	        
+	       
+	        YuyueOrder yy = new YuyueOrder();
+	        SysYuyue sysYuyue = sysYuyueService.findById(id);
+	        sysYuyue.setStatus("2");
+	        yy.setSysYuyue(sysYuyue);
+	        yy.setCreateTime(new Date());
+	        yy.setServiceInfo(serviceDesc);
+	        if(!com.cys.util.StringUtils.isEmpty(serviceMoney)){
+	        	yy.setShouldPayMoney(Double.parseDouble(serviceMoney));
+	        }
+	        List<YuyueOrder> li = new ArrayList<YuyueOrder>();
+	        li.add(yy);
+	        yuyueOrderService.saveInBatch(li);
 	    }
 	    
 	    @RequestMapping(value = "user", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	    public void find(Query query,SysUser sysUser) throws Exception {
+	    public void find(Query query,  SysYuyue sysYuyue) throws Exception {
 	    	
 	    	//query.getPageable().s;
 	        //SysUser sysUser= (SysUser) query.getBean(SysUser.class);
 	    	SysUser uu = SessionUtils.getCurrentUser();
-	    	sysUser.setShopId(uu.getShopId());
-	        Page<SysUser> pageList = sysUserService.adminFind(sysUser, query);
+	    	sysYuyue.setShopId(uu.getShopId());
+	        Page<SysYuyue> pageList = sysYuyueService.find(sysYuyue, query);
 	        //sysUserService.
 	        JSONArray arr = new JSONArray();
 	        for(int i=0;i<pageList.getContent().size();i++){
-	        	SysUser u=pageList.getContent().get(i);
+	        	SysYuyue u=pageList.getContent().get(i);
 	        	JSONObject o = new JSONObject();
 	        	o.put("id", u.getId());
-	        	o.put("name", u.getName());
-	        	o.put("mobile", u.getMobile());
-	        	if(u.getCreatorTime()!=null){
-	        		o.put("createTime", DateUtils.format(u.getCreatorTime(), "yyyy-MM-DD"));
+	        	o.put("type", SysYuyue.getYuyueDesc(u.getYyType()));
+	        	if(u.getYyQyUser()!=null){
+	        		o.put("qxName", u.getYyQyUser().getName());
 	        	}else{
-	        		o.put("createTime", "");
+	        		o.put("qxName", "");
 	        	}
 	        	
-	            String kyy ="可预约";
-	            if(u.getCanYuyue()=="0"){
-	            	kyy ="不可预约";
+	        	if(u.getYyDate()!=null){
+	        		o.put("yyTime", DateUtils.format(u.getYyDate(), "yyyy-MM-DD"));
+	        		if(u.getYyTime() != null){
+	        			String VB="";
+	        			if(u.getYyTime().equalsIgnoreCase("1")){
+	        				VB="上午";
+	        			}else if(u.getYyTime().equalsIgnoreCase("2")){
+	        				VB="下午";
+	        			}
+	        			o.put("yyTime",o.get("yyTime")+":"+VB);
+	        		}
+	        	}else{
+	        		o.put("yyTime", "");
+	        	}
+	        	
+	            if( u.getYyCzUser()!=null){
+	            	o.put("czName", u.getYyCzUser().getName());
+	            }else{
+	            	o.put("czName", "");
 	            }
-	        	o.put("canYuyue", kyy);
+	        	
+	        	o.put("status", SysYuyue.getStatusDesc(u.getStatus()));
 	        	arr.add(o);
 	        }
 	        String json = "{\"total\":" + pageList.getTotalElements() + ",\"rows\":" + arr.toString() + "}";  

@@ -66,4 +66,12 @@ public class SysYuyueServiceImpl extends BaseServiceImpl<SysYuyue,String>  imple
         //List<SysYuyue> sysYuyue = convertToSysUserDTO(sysUsers);
         return new PageImpl<SysYuyue>(sysYuyues,pageable,sysUserPages.getTotalElements());
     }
+    
+    public Page<SysYuyue> findgh(SysYuyue sysYuyue, Query query) throws Exception {
+        Pageable pageable = query.getPageable();
+        Page<SysYuyue> sysUserPages = sysYuyueRespository.find(sysYuyue,pageable);
+        List<SysYuyue> sysYuyues = sysUserPages.getContent();
+        //List<SysYuyue> sysYuyue = convertToSysUserDTO(sysUsers);
+        return new PageImpl<SysYuyue>(sysYuyues,pageable,sysUserPages.getTotalElements());
+    }
 }

@@ -31,6 +31,8 @@ public class SysYuyueController extends BaseController {
     @Autowired
     private ISysYuyueService sysYuyueService;
 
+    @Autowired
+    private ISysUserService sysUserService;
     /**
      * 保存预约信息
      * @param request
@@ -43,6 +45,14 @@ public class SysYuyueController extends BaseController {
     public ResultData save(HttpServletRequest request,HttpServletResponse response,@RequestBody SysYuyue sysyuyue) throws Exception {
         sysyuyue.setCreateTime(new Date());
         sysyuyue.setStatus("1");
+        if(sysyuyue.getYyQyUser() !=null){
+        	SysUser uu= sysUserService.findById(sysyuyue.getYyQyUser().getId());
+        	if(uu!=null){
+        		sysyuyue.setShopId(sysyuyue.getYyQyUser().getShopId());
+        	}
+        	
+        }
+        
         sysYuyueService.create(sysyuyue);
         return new ResultData(SysYuyue.class, sysyuyue);
     }

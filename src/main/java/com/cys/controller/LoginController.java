@@ -106,6 +106,7 @@ public class LoginController extends BaseController {
 				
 			}else{
 				req.getSession().setAttribute(GlobleUtil.SESSION_USER, u);
+				req.getSession().setAttribute(GlobleUtil.SESSION_USER_NAME, u.getName());
 				message = "登录成功!";
 				status = "success";
 			}

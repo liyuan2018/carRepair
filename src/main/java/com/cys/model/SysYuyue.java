@@ -13,6 +13,11 @@ import java.util.Date;
 @DiscriminatorValue("SysYuyue")
 public class SysYuyue extends BaseModel {
     private static final long serialVersionUID = 1L;
+    private static final String TYPE_DBY="1"; 
+    private static final String TYPE_XBY="2"; 
+    private static final String TYPE_WX="3"; 
+    private static final String TYPE_MR="4"; 
+    private static final String TYPE_JC="5"; 
 
     @Column(name = "yy_type", columnDefinition = "VARCHAR")
     private String yyType;
@@ -31,7 +36,18 @@ public class SysYuyue extends BaseModel {
     @Column(name = "car_cj_num", columnDefinition = "VARCHAR")
     private String carCjNum;
     
-    @ManyToOne(cascade = { CascadeType. REFRESH })
+    @Column(name = "shop_id", columnDefinition = "VARCHAR")
+    private String shopId;
+    
+    public String getShopId() {
+		return shopId;
+	}
+
+	public void setShopId(String shopId) {
+		this.shopId = shopId;
+	}
+
+	@ManyToOne(cascade = { CascadeType. REFRESH })
     @JoinColumn(name="yy_qy_user_id")
     private SysUser yyQyUser;
     
@@ -114,4 +130,36 @@ public class SysYuyue extends BaseModel {
     }
 
 
+    public static String getYuyueDesc(String str){
+    	if(str ==null){
+    		return "";
+    	}
+    	if(str.equalsIgnoreCase(TYPE_DBY)){
+    		return"大保养";
+    	}else if(str.equalsIgnoreCase(TYPE_JC)){
+    		return"检查";
+    	}else if(str.equalsIgnoreCase(TYPE_MR)){
+    		return"美容";
+    	}else if(str.equalsIgnoreCase(TYPE_WX)){
+    		return"维修";
+    	}else if(str.equalsIgnoreCase(TYPE_XBY)){
+    		return"小保养";
+    	}else{
+    		return "";
+    	}
+    }
+    
+    private static final String STATUS_XJ="1";//新建
+    private static final String STATUS_WC="2";//完成
+    public static String getStatusDesc(String str){
+    	if(str ==null){
+    		return "";
+    	}
+    	if(str.equalsIgnoreCase(STATUS_XJ)){
+    		return"新建";
+    	}else if(str.equalsIgnoreCase(STATUS_WC)){
+    		return"完成";
+    	}
+    	return "";
+    }
 }

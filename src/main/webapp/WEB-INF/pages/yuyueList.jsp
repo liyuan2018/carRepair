@@ -44,21 +44,19 @@ function initTable() {
         var param = {    
             page: params.pageNumber-1,    
             limit: params.pageSize,  
-            userType:2,
-            shopId:1,
-            name:$("#aname").val(),
-            mobile:$("#amobile").val()
+           
+            
         };    
         return param;                   
       },  
       columns:[
                {checkbox:true, checked : false},
                {field:"id", title:"id",visible:false},
-               {field:"name",title:"姓名"},
-               {field:"mobile",title:"手机"},
-               {field:"canYuyue",title:"是否可预约"},
-               {field:"createTime",title:"创建时间"},
-              
+               {field:"type",title:"预约类型"},
+               {field:"qxName",title:"车医生姓名"},
+               {field:"czName",title:"车主姓名"},
+               {field:"yyTime",title:"预约时间"},
+               {field:"status",title:"状态"}	
                ],
       onLoadSuccess: function(){  //加载成功时执行  
         //alert("加载成功");  
@@ -128,7 +126,7 @@ function fghh(type){
 </head>
 <body>
 <div style="padding:10px">
-<h4>用户管理</h2>
+<h4>预约管理</h2>
 
 <div>
 	<form class="form-inline">
@@ -140,11 +138,11 @@ function fghh(type){
 </div>
 <div>
 	<div class="btn-group">
-	<a  class="btn" role="button" onclick="userAdd()" >新增</a>
+	<a  class="btn" role="button" onclick="showAdd()" >确认完成</a>
   
-  <button class="btn" onclick="deleteData()">删除</button>
+  <!-- <button class="btn" onclick="deleteData()">删除</button>
   <button class="btn" onclick="fghh('update')">修改</button>
-  <button class="btn" onclick="fghh('view')">查看</button>
+  <button class="btn" onclick="fghh('view')">查看</button> -->
 </div>
 </div>
 <table class="table table-hover" id="cusTable"  
@@ -160,75 +158,31 @@ function fghh(type){
 
 border-width:2px;border-color:4169E1;display:none">
 <div style="padding-top:10px;text-align:center">
-	<h3 id="usertitle"> 新增车医生</h3>
+	<h3 id="usertitle"> 确认完成</h3>
 </div>
 <form action="" id="addfrom">
 <input type="text" name="id"  id="id" style="display:none" placeholder="姓名">
-<table style="width:100%;text-align:center">
+<!-- <table style="width:100%;text-align:center">
 	<tr>
-		<td style="width:30%">姓名</td>
-		<td style="width:70%;text-align:left"><input type="text" name="name"  id="name" class="input" placeholder="姓名"></td>
+		<td style="width:30%">车医生姓名</td>
+		<td style="width:70%;text-align:left"><span id="cysName"></span></td>
 	</tr>
 	<tr>
-		<td>手机号码</td>
-		<td style="text-align:left"><input type="text" name="mobile" id="mobile"  class="input" placeholder="手机号码"></td>
-	</tr>
-	
-	<tr>
-		<td>是否可预约</td>
-		<td style="text-align:left"><select id="canYuyue">
-  <option value="1">可预约</option>
-  <option value="0">不可预约</option>
-  
-</select></td>
+		<td>服务类型</td>
+		<td style="text-align:left"><span id="serviceTpye"></span></td>
 	</tr>
 	
 	<tr>
-		<td>大保养</td>
-		<td style="text-align:left"><select id="typeDby">
-  <option value="1">有</option>
-  <option value="0">没有</option>
-  
-</select></td>
+		<td>服务介绍</td>
+		<td style="text-align:left"><input id="serviceDesc" name="serviceDesc" /></td>
 	</tr>
+	
 	<tr>
-		<td>小保养</td>
-		<td style="text-align:left" ><select id="typeXby">
-  <option value="1">有</option>
-  <option value="0">没有</option>
-  
-</select></td>
+		<td>服务费用</td>
+		<td style="text-align:left"><input id="serviceMoney" name="serviceMoney" /></td>
 	</tr>
-	<tr>
-		<td>汽车美容</td>
-		<td style="text-align:left"><select id="typeMr">
-  <option value="1">有</option>
-  <option value="0">没有</option>
-  
-</select></td>
-	</tr>
-	<tr>
-		<td>汽车检查</td>
-		<td style="text-align:left"><select id="typeJc">
-  <option value="1">有</option>
-  <option value="0">没有</option>
-  
-</select></td>
-	</tr>
-	<tr>
-		<td>修车</td>
-		<td style="text-align:left"><select id="typeWx">
-  <option value="1">有</option>
-  <option value="0">没有</option>
-  
-</select></td>
-	</tr>
-	<tr>
-		<td>简介</td>
-		<td style="text-align:left"><input type="text" name="description"  id="description" class="input-big" placeholder="">
-  
-</td>
-	</tr>
+	
+	
 	
 	<tr>
 		<td colspan="2">
@@ -240,7 +194,7 @@ border-width:2px;border-color:4169E1;display:none">
 
 	</tr>
 	
-</table>
+</table> -->
 </form>
 </div>
 
@@ -250,22 +204,23 @@ border-width:2px;border-color:4169E1;display:none">
 
 <script>
 function showAdd(){
+	var org_id = $("#cusTable").bootstrapTable('getSelections')[0].id;	
+	var cysName = $("#cusTable").bootstrapTable('getSelections')[0].qxName;	
+	var type = $("#cusTable").bootstrapTable('getSelections')[0].type;	
+	$("#cysName").html(cysName);
+	$("#serviceTpye").html(type);
+	
 	$("#addcys").show();
 }
 function hideAdd(){
 	$("#addcys").hide();
 	$("#tijiao").show();
 	//$("#addfrom").resetForm();
-	$("#name").val("");  
-	$("#mobile").val("");  
-	$("#id").val("");  
-	$("#description").val("");  
+	$("#serviceDesc").val("");  
+	$("#serviceMoney").val("");  
+	
 }
 
-function userAdd(){
-	$("#usertitle").val("新增车医生");
-	$("#addcys").show();
-}
 
 function userVier(){
 	$("#usertitle").val("车医生信息");
@@ -350,39 +305,32 @@ function loadData(user){
 
 function addOrUpdate(){
 	var param1;
-	if($("#id").val() ==""){
-		param1 = {"name":$("#name").val(),"mobile":$("#mobile").val(),
-		    	"canYuyue":$("#canYuyue").val(),"typeDby":$("#typeDby").val(),"typeXby":$("#typeXby").val(),
-		    	"typeMr":$("#typeMr").val(),"typeJc":$("#typeJc").val(),"typeWx":$("#typeWx").val(),"description":$("#description").val()
-		    }
-	}else{
-		param1 = {"id":$("#id").val(),"name":$("#name").val(),"mobile":$("#mobile").val(),
-		    	"canYuyue":$("#canYuyue").val(),"typeDby":$("#typeDby").val(),"typeXby":$("#typeXby").val(),
-		    	"typeMr":$("#typeMr").val(),"typeJc":$("#typeJc").val(),"typeWx":$("#typeWx").val(),"description":$("#description").val()
-		    }
-	}
-	param1 = JSON.stringify( param1 );
+	var org_id = $("#cusTable").bootstrapTable('getSelections')[0].id;		
+	param1 = {"id":org_id,"serviceDesc":$("#serviceDesc").val(),"serviceMoney":$("#serviceMoney").val()
+	    	
+	    }
+	//param1 = JSON.stringify( param1 );
 	$.ajax({
-	    url:"addUser",
+	    url:"save",
 	    type:'POST', //GET
 	    async:true,    //或false,是否异步
 	    data:param1,
 	    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
-	    contentType: "application/json",
+	   
 	    beforeSend:function(xhr){
 	        console.log(xhr)
 	        console.log('发送前')
 	    },
 	    success:function(data,textStatus,jqXHR){
-	    	
-	    	var fg = data.sysUser;
+	    	initTable();  hideAdd();
+	    	/* var fg = data.sysUser;
 	    	
 	    	if(fg.id){
 	    		
 	    		initTable();  hideAdd();
 	    	}else {
 	    		alert("数据查询失败");
-	    	}
+	    	} */
 	        console.log(data)
 	        console.log(textStatus)
 	        console.log(jqXHR)
