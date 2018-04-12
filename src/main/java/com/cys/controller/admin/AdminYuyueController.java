@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,12 +24,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.cys.common.annotation.Rest;
 import com.cys.common.domain.Query;
 import com.cys.common.domain.ResultData;
 import com.cys.dto.SysUserDTO;
+import com.cys.dto.YuyueOrderDTO;
+import com.cys.model.CarInfo;
 import com.cys.model.SysUser;
 import com.cys.model.SysYuyue;
 import com.cys.model.YuyueOrder;
+import com.cys.service.ICarInfoService;
 import com.cys.service.ISysUserService;
 import com.cys.service.ISysYuyueService;
 import com.cys.service.YuyueOrderService;
@@ -38,10 +43,14 @@ import com.cys.util.SessionUtils;
 /**
  * Created by liyuan on 2018/1/24.
  */
+@ComponentScan
 @RestController
 @RequestMapping("/admin/yuyue")
 public class AdminYuyueController {
 
+	@Autowired
+	private ICarInfoService carInfoService;
+	
 	@Autowired
 	private YuyueOrderService yuyueOrderService;
 	@Autowired
@@ -73,37 +82,18 @@ public class AdminYuyueController {
 	        return new ResultData(SysUserDTO.class, sysUserDTO);
 	    }
 	    
-	    /**
-	     * 用户注册
-	     * @param sysUserDTO
-	     * @return
-	     * @throws Exception
-	     */
-	    @RequestMapping(value = "/addUser", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	    public ResultData addUser(@RequestBody SysUser sysUser) throws Exception {
-	    	SysUser auser= null;
-	    	if(!StringUtils.isEmpty(sysUser.getId())){
-	    		auser = sysUserService.findById(sysUser.getId());
-	    		
-	    	}else{
-	    		auser = new SysUser();
-	    		auser.setCreatorTime(new Date());
+	   
+	    
+	    @RequestMapping(value = "getCarByByNum", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	    public ResultData getCarByByNum(String carNum) throws Exception {
+	    	CarInfo carInfo1 =new CarInfo();
+	    	CarInfo carInfo =new CarInfo();
+	    	carInfo.setCarNum(carNum);
+	    	List<CarInfo> li =carInfoService.find(carInfo);
+	    	if(li !=null&&li.size()>0){
+	    		carInfo1 = li.get(0);
 	    	}
-	    	SysUser uu = SessionUtils.getCurrentUser();
-	    	auser.setCanYuyue(sysUser.getCanYuyue());
-    		auser.setName(sysUser.getName());
-    		auser.setMobile(sysUser.getMobile());
-    		auser.setDescription(sysUser.getDescription());
-    		auser.setTypeDby(sysUser.getTypeDby());
-    		auser.setTypeJc(sysUser.getTypeJc());
-    		auser.setTypeMr(sysUser.getTypeMr());
-    		auser.setTypeWx(sysUser.getTypeWx());
-    		auser.setTypeXby(sysUser.getTypeXby());
-    		auser.setUserType(SysUser.TYPE_CYS);
-    		auser.setShopId(uu.getShopId());
-    		
-    		auser = sysUserService.saveOrUpdateSysUser(auser);
-	        return new ResultData(SysUser.class, auser);
+	    	return new ResultData(CarInfo.class, carInfo1);
 	    }
 	    
 	    //deleteUser
@@ -114,22 +104,11 @@ public class AdminYuyueController {
 	     * @throws Exception
 	     */
 	    @RequestMapping(value = "/save", method = RequestMethod.POST,  produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	    public void save(@RequestParam("id") String id,@RequestParam("serviceDesc") String serviceDesc,@RequestParam("serviceMoney") String serviceMoney) throws Exception {
+	    public void save(@RequestBody YuyueOrderDTO yuyueOrderDTO ) throws Exception {
 	        
-	        
+	    	sysYuyueService.saveYuyueOrder(yuyueOrderDTO); 
 	       
-	        YuyueOrder yy = new YuyueOrder();
-	        SysYuyue sysYuyue = sysYuyueService.findById(id);
-	        sysYuyue.setStatus("2");
-	        yy.setSysYuyue(sysYuyue);
-	        yy.setCreateTime(new Date());
-	        yy.setServiceInfo(serviceDesc);
-	        if(!com.cys.util.StringUtils.isEmpty(serviceMoney)){
-	        	yy.setShouldPayMoney(Double.parseDouble(serviceMoney));
-	        }
-	        List<YuyueOrder> li = new ArrayList<YuyueOrder>();
-	        li.add(yy);
-	        yuyueOrderService.saveInBatch(li);
+	        
 	    }
 	    
 	    @RequestMapping(value = "user", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -153,6 +132,19 @@ public class AdminYuyueController {
 	        		o.put("qxName", "");
 	        	}
 	        	
+	        	if(u.getYyCzUser()!=null){
+	        		o.put("czName", u.getYyCzUser().getName());
+	        		o.put("mobile", u.getYyCzUser().getMobile());
+	        	}else{
+	        		o.put("czName", "");
+	        		o.put("mobile", "");
+	        	}
+	        	
+	        	if(u.getCarNum() !=null){
+	        		o.put("carNum", u.getCarNum());
+	        	}else{
+	        		o.put("carNum", "");
+	        	}
 	        	if(u.getYyDate()!=null){
 	        		o.put("yyTime", DateUtils.format(u.getYyDate(), "yyyy-MM-DD"));
 	        		if(u.getYyTime() != null){
@@ -168,11 +160,7 @@ public class AdminYuyueController {
 	        		o.put("yyTime", "");
 	        	}
 	        	
-	            if( u.getYyCzUser()!=null){
-	            	o.put("czName", u.getYyCzUser().getName());
-	            }else{
-	            	o.put("czName", "");
-	            }
+	           
 	        	
 	        	o.put("status", SysYuyue.getStatusDesc(u.getStatus()));
 	        	arr.add(o);

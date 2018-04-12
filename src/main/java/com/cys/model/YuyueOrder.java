@@ -19,10 +19,11 @@ import java.util.Date;
 public class YuyueOrder extends BaseModel {
 	
 	
+	 
 	
 
     @Column(name = "should_pay_money", columnDefinition = "Double")
-    private Double ShouldPayMoney;
+    private Double shouldPayMoney;
     @Column(name = "pay_noney", columnDefinition = "Double")
     private Double payMoney;
   
@@ -57,16 +58,17 @@ public class YuyueOrder extends BaseModel {
 	}
 
 
+	
 
 	@Column(name = "yy_qx_id", columnDefinition = "VARCHAR")
     private String yyQxId;
     
     public Double getShouldPayMoney() {
-		return ShouldPayMoney;
+		return shouldPayMoney;
 	}
 
 	public void setShouldPayMoney(Double shouldPayMoney) {
-		ShouldPayMoney = shouldPayMoney;
+		this.shouldPayMoney = shouldPayMoney;
 	}
 
 	public Double getPayMoney() {
@@ -102,13 +104,24 @@ public class YuyueOrder extends BaseModel {
 	}
 
 	
-   
+   /**
+    * 进场里程
+    */
     @Column(name = "yl1", columnDefinition = "VARCHAR")
     private String yl1;
+    /**
+     * 下次保养里程
+     */
     @Column(name = "yl2", columnDefinition = "VARCHAR")
     private String yl2;
+    /**
+     * 配件类型
+     */
     @Column(name = "yl3", columnDefinition = "VARCHAR")
     private String yl3;
+    /**
+     * 折扣
+     */
     @Column(name = "yl4", columnDefinition = "VARCHAR")
     private String yl4;
     @Column(name = "yl5", columnDefinition = "VARCHAR")

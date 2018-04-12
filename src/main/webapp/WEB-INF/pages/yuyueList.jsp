@@ -8,6 +8,9 @@
 <title></title>
 <link href="<%=request.getContextPath()%>/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"> <!--初始化文件--><!--初始化文件-->
 <link href="<%=request.getContextPath()%>/bootstrap/css/bootstrap-table.min.css" rel="stylesheet" type="text/css">  
+<style>
+#serverI tr td {border:1px solid #9E9E9E;}
+</style>
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-1.8.3.min.js"></script>  
 <!--rem适配js-->  
 <%-- <script type="text/javascript" src="<%=request.getContextPath()%>/bootstrap/js/bootstrap.min.js"></script>  --%>
@@ -53,8 +56,10 @@ function initTable() {
                {checkbox:true, checked : false},
                {field:"id", title:"id",visible:false},
                {field:"type",title:"预约类型"},
+               {field:"carNum",title:"车牌号"},
                {field:"qxName",title:"车医生姓名"},
                {field:"czName",title:"车主姓名"},
+               {field:"mobile",title:"车主手机"},
                {field:"yyTime",title:"预约时间"},
                {field:"status",title:"状态"}	
                ],
@@ -76,50 +81,31 @@ $(document).ready(function () {
 });  
 
 
-function fghh(type){
+
+/**
+ * 新增行
+ */
+ var ios =0;
+function addTr(){
+	//serverI
+	ios = ios+1;
+	var tr = '<tr id="tr'+ios+'">'
+		+'<td><input type="text" name="project" style="width:100px" /></td>'
+		+'<td><input type="text" name="price" style="width:100px" id="price'+ios+'" onchange="onchangeMoney('+ios+')" /></td>'
+		+'<td><input type="text" name="workTimeCost" style="width:100px" /></td>'
+		+'<td><input type="text" name="commission" id="commission'+ios+'" style="width:100px" /></td>'
+		+'<td><input type="text" name="productName" style="width:100px" /></td>'
+		+'<td><input type="button" value="删除" onclick="deleteTr('+ios+')" /></td>'
+		+'</tr>';
+	$("#serverI").append(tr);	
+		
+}
+
+function deleteTr(is){
 	
-	var org_id = $("#cusTable").bootstrapTable('getSelections')[0].id;		
-	$.ajax({
-	    url:org_id,
-	    type:'GET', //GET
-	    async:true,    //或false,是否异步
-	    data:{
-	        "id":org_id
-	    },
-	    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
-	    beforeSend:function(xhr){
-	        console.log(xhr)
-	        console.log('发送前')
-	    },
-	    success:function(data,textStatus,jqXHR){
-	    	
-	    	var fg = data.sysUser;
-	    	
-	    	if(fg.name){
-	    		loadData(fg);
-	    		if(type=="update"){
-	    			userUpdate();
-	    		}else if(type=="view"){
-	    			userVier();
-	    		}
-	    		
-	    	}else {
-	    		alert("数据查询失败");
-	    	}
-	        console.log(data)
-	        console.log(textStatus)
-	        console.log(jqXHR)
-	    },
-	    error:function(xhr,textStatus){
-	        console.log('错误')
-	        console.log(xhr)
-	        console.log(textStatus)
-	        alert("网络异常");
-	    },
-	    complete:function(){
-	        console.log('结束')
-	    }
-	})
+	var removeObj = document.getElementById("tr"+is);
+	$("#tr"+is).remove();
+	onchangeMoney(111);
 }
 
 </script>  
@@ -154,47 +140,106 @@ function fghh(type){
 </table>  
 <div>
 
-<div id="addcys" style="position:fixed;z-index:1050;width:600px;height:550px;top:30px;left:20%;background-color:#F8F8FF;border-style:solid;
+<div id="addcys" style="position:fixed;z-index:1050;width:720px;height:550px;top:30px;left:20%;background-color:#F8F8FF;border-style:solid;
 
 border-width:2px;border-color:4169E1;display:none">
 <div style="padding-top:10px;text-align:center">
-	<h3 id="usertitle"> 确认完成</h3>
+	<h3 id="usertitle" onclick="showAdd()"> 确认完成</h3>
 </div>
 <form action="" id="addfrom">
-<input type="text" name="id"  id="id" style="display:none" placeholder="姓名">
-<!-- <table style="width:100%;text-align:center">
+<input type="text" name="id"  id="id" style="display:none" placeholder="">
+ <table style="width:700px;text-align:center;border-collapse:separate; border-spacing:0px 10px;">
 	<tr>
-		<td style="width:30%">车医生姓名</td>
-		<td style="width:70%;text-align:left"><span id="cysName"></span></td>
+		<td style="width:150px">车医生姓名</td>
+		<td style="width:200px;text-align:left"><span id="cysName"></span></td>
+		<td style="width:150px">服务类型</td>
+		<td style="width:200px;text-align:left"><span id="serviceType"></span></td>
 	</tr>
 	<tr>
-		<td>服务类型</td>
-		<td style="text-align:left"><span id="serviceTpye"></span></td>
+		<td >车主姓名</td>
+		<td style="text-align:left"><span id="czName"></span></td>
+		<td style="">联系号码</td>
+		<td style="text-align:left"><span id="czMobile"></span></td>
 	</tr>
 	
 	<tr>
-		<td>服务介绍</td>
-		<td style="text-align:left"><input id="serviceDesc" name="serviceDesc" /></td>
+		<td style="">车型</td>
+		<td style="text-align:left"><span id="carType"></span></td>
+		<td style="">车牌号</td>
+		<td style="text-align:left"><span id="carNum"></span></td>
 	</tr>
 	
 	<tr>
-		<td>服务费用</td>
-		<td style="text-align:left"><input id="serviceMoney" name="serviceMoney" /></td>
+		<td style="">进场里程(公里)</td>
+		<td style="text-align:left"><input type="text" class="form-control" id="yl1" name="yl1" placeholder="进场里程" style="width:100px" ></td>
+		<td style="">下次保养里程(公里)</td>
+		<td style="text-align:left"><input type="text" class="form-control" id="yl2" name="yl2" placeholder="下次保养里程" style="width:100px" ></td>
 	</tr>
 	
-	
+	<tr>
+		<td>配件类型</td>
+		<td style="text-align:left">
+			<select name="yl3" id="yl3">
+				<option value="原厂件">原厂件</option>
+				<option value="品牌件">品牌件</option>
+				<option value="副厂件">副厂件</option>
+				<option value="拆车件">拆车件</option>
+				<option value="其他">其他</option>
+			</select>
+			
+		</td>
+		<td > 提成比例 </td>
+		<td ><input type="text" class="form-control" id="tcrate" name="tcrate"  style="width:100px" value=0.03></td>
+	</tr>
 	
 	<tr>
-		<td colspan="2">
-			<input class="btn" style="width:100px" value="提     交" id="tijiao" onclick="addOrUpdate()"/>
+		
+		<td colspan="4" style="text-align:center">
+			 <table id="serverI" style="width:690px;">
+				<tr>
+				<td>项目(必输)</td>
+				<td>单价(元)</td>
+				<td>工时费(元)</td>
+				<td>提成(元)</td>
+				<td>具体产品</td>
+				<td><input type="button" value="新增"  onclick="addTr()" /></td>
+				</tr>
+				<tr>
+				<td><input type="text" name="project"  style="width:100px" /></td>
+				<td><input type="text" name="price"  id="price0" onchange="onchangeMoney(0)" style="width:100px" /></td>
+				<td><input type="text" name="workTimeCost"  style="width:100px" /></td>
+				<td><input type="text" name="commission" id="commission0"  style="width:100px" /></td>
+				<td><input type="text" name="productName"  style="width:100px" /></td>
+				<td></td>
+				</tr>
+			</table> 
+		</td>
+	</tr>  
+	
+	<tr>
+		<td style="">折扣</td>
+		<td style="text-align:left"><input type="text" class="form-control" id="zhekou" name="zhekou" onchange="onchangeMoney(111)" placeholder="折扣" style="width:100px" value=1></td>
+		<td style="">总金额</td>
+		<td style="text-align:left"><input type="text" class="form-control" id="shouldPayMoney" name="shouldPayMoney" placeholder="总金额" style="width:100px" ></td>
+	</tr>
+	<!-- <tr>
+		<td>服务总费用</td>
+		<td style="text-align:left"><input id="serviceMoney"  type="text" name="serviceMoney" class="input"  /></td>
+	</tr> -->
+	
+	
+	
+<tr>
+		<td colspan="4" >
+			<input class="btn" style="width:100px" value="提     交" id="tijiao" onclick="submitP()"/>
 			<input class="btn" style="width:100px" value="取    消" onclick="hideAdd()"/>
 		</td>
 		
   
 
-	</tr>
+	</tr> 
 	
-</table> -->
+</table> 
 </form>
 </div>
 
@@ -206,52 +251,66 @@ border-width:2px;border-color:4169E1;display:none">
 function showAdd(){
 	var org_id = $("#cusTable").bootstrapTable('getSelections')[0].id;	
 	var cysName = $("#cusTable").bootstrapTable('getSelections')[0].qxName;	
+	var czName = $("#cusTable").bootstrapTable('getSelections')[0].czName;	
+	var mobile = $("#cusTable").bootstrapTable('getSelections')[0].mobile;	
 	var type = $("#cusTable").bootstrapTable('getSelections')[0].type;	
+	var carNum =$("#cusTable").bootstrapTable('getSelections')[0].carNum;
 	$("#cysName").html(cysName);
-	$("#serviceTpye").html(type);
-	
+	$("#czName").html(czName);
+	$("#czMobile").html(mobile);
+	$("#serviceType").html(type);
+	$("#carNum").html(carNum);
 	$("#addcys").show();
+	getCarByByNum(carNum);
+	
 }
 function hideAdd(){
 	$("#addcys").hide();
 	$("#tijiao").show();
 	//$("#addfrom").resetForm();
-	$("#serviceDesc").val("");  
-	$("#serviceMoney").val("");  
-	
+	/* $("#serviceDesc").val("");  
+	$("#serviceMoney").val("");   */
+	clearf();
+}
+
+function clearf(){
+	$("#cysName").html("");
+	$("#czName").html("");
+	$("#czMobile").html("");
+	$("#serviceType").html("");
+	$("#carType").html("");
+	$("#carNum").html("");
+	$("input[name='project']").val("");  
+	$("input[name='price']").val("") ;
+	$("input[name='workTimeCost']").val("") ;
+	$("input[name='commission']").val("") ;
+	$("input[name='productName']").val("") ;
 }
 
 
-function userVier(){
-	$("#usertitle").val("车医生信息");
-	$("#addcys").show();
-	$("#tijiao").hide();
+function getCarByByNum(num){
 	
-}
-
-function userUpdate(){
-	$("#usertitle").val("修改车医生信息");
-	$("#addcys").show();
-	$("#tijiao").show();
-}
-
-function deleteData(){
-	
-	var org_id = $("#cusTable").bootstrapTable('getSelections')[0].id;		
 	$.ajax({
-	    url:"deleteUser",
-	    type:'GET', //GET
+	    url:"getCarByByNum",
+	    type:"GET", //GET
+	    //contentType: "application/json",
 	    async:true,    //或false,是否异步
-	    data:{"id":org_id},
-	    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
-	    contentType: "application/json",
+	    data:{"carNum":num},
+	    dataType:'json',   //返回的数据格式：json/xml/html/script/jsonp/text
+	    
 	    beforeSend:function(xhr){
-	        console.log(xhr)
+	        console.log(xhr);
 	        console.log('发送前')
 	    },
 	    success:function(data,textStatus,jqXHR){
-	    	initTable();
+	    	//alert(data.carInfo.id);
+	    	if(data.carInfo.id !== null&& data.carInfo.id !== undefined){
+	    		$("#carType").html(data.carInfo.carType);
+	    	}
 	    	
+	        console.log(data);
+	        console.log(textStatus);
+	        console.log(jqXHR);
 	    },
 	    error:function(xhr,textStatus){
 	        console.log('错误')
@@ -260,77 +319,50 @@ function deleteData(){
 	        alert("网络异常");
 	    },
 	    complete:function(){
-	        console.log('结束')
+	        console.log('结束');
 	    }
 	})
 }
 
 
-/** 
- * 设置select控件选中 
- * @param selectId select的id值 
- * @param checkValue 选中option的值 
- * @author 标哥 
-*/  
-function set_select_checked(selectId, checkValue){  
-    var select = document.getElementById(selectId);  
-
-    for (var i = 0; i < select.options.length; i++){  
-        if (select.options[i].value == checkValue){  
-            select.options[i].selected = true;  
-            break;  
-        }  
-    }  
-}
-
-function loadData(user){
-	if(user.name){
-		$("#name").val(user.name);
-		$("#id").val(user.id);
-	}
-	if(user.mobile){
-		$("#mobile").val(user.mobile);
-	}
-	if(user.description){
-		$("#description").val(user.description);
-	}
+function submitP(){
 	
-	set_select_checked("canYuyue",user.canYuyue);
-	set_select_checked("typeDby",user.typeDby);
-	set_select_checked("typeXby",user.typeXby);
-	set_select_checked("typeMr",user.typeMr);
-	set_select_checked("typeJc",user.typeJc);
-	set_select_checked("typeWx",user.typeWx);
-}
-
-function addOrUpdate(){
-	var param1;
-	var org_id = $("#cusTable").bootstrapTable('getSelections')[0].id;		
-	param1 = {"id":org_id,"serviceDesc":$("#serviceDesc").val(),"serviceMoney":$("#serviceMoney").val()
-	    	
-	    }
-	//param1 = JSON.stringify( param1 );
+	var t01 = $("#serverI tr").length;
+	var project = document.getElementsByName("project");
+	var price = document.getElementsByName("price");
+	var workTimeCost = document.getElementsByName("workTimeCost");
+	var commission = document.getElementsByName("commission");
+	var productName = document.getElementsByName("productName");
+	var org_id = $("#cusTable").bootstrapTable('getSelections')[0].id;	
+	var lk;
+	var mycars=new Array(t01-1)
+	for(var i=1;i<t01;i++){
+		if(project[i-1]!=""){
+			var obj = new ServiceP(project[i-1].value,price[i-1].value,workTimeCost[i-1].value,commission[i-1].value,productName[i-1].value);
+			mycars[i-1]=obj;
+			//lk[i-1]=obj;
+		}
+	}
+	//alert(mycars[0].project);
+	var yl1 = $("#yl1").val();
+	var yl2 = $("#yl2").val();
+	var yl3 = $("#yl3").val();
+	var param = {"yl1":yl1,"yl2":yl2,"yl3":yl3,"yl4":$("#zhekou").val(),"serverProject":mycars,"shouldPayMoney":$("#shouldPayMoney").val(),"sysYuyue":{"id":org_id}};
+	param1 = JSON.stringify( param );
 	$.ajax({
 	    url:"save",
 	    type:'POST', //GET
 	    async:true,    //或false,是否异步
 	    data:param1,
 	    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
-	   
+	    contentType: "application/json",
 	    beforeSend:function(xhr){
 	        console.log(xhr)
 	        console.log('发送前')
 	    },
 	    success:function(data,textStatus,jqXHR){
 	    	initTable();  hideAdd();
-	    	/* var fg = data.sysUser;
 	    	
-	    	if(fg.id){
-	    		
-	    		initTable();  hideAdd();
-	    	}else {
-	    		alert("数据查询失败");
-	    	} */
 	        console.log(data)
 	        console.log(textStatus)
 	        console.log(jqXHR)
@@ -345,8 +377,45 @@ function addOrUpdate(){
 	        console.log('结束')
 	    }
 	})
+	
 }
 
 
+function ServiceP(project,price,workTimeCost,commission,productName){ 
+	this.project = project; 
+	this.price = price; 
+	this.workTimeCost = workTimeCost; 
+	this.commission = commission; 
+	this.productName = productName; 
+} 
 
+function onchangeMoney(count){
+	var tmoney =0;
+	var rate = $("#zhekou").val();
+	var price = document.getElementsByName("price");
+	
+	
+	if(count !=111){
+		var mm = $("#price"+count).val();
+		var ty= $("#tcrate").val();
+		$("#commission"+count).val((mm*ty).toFixed(2));
+		
+	}
+	
+	for(var i=0;i<price.length;i++){
+		if(price[i]!=""){
+			
+				tmoney = tmoney+parseFloat(price[i].value);
+		    
+		    	
+		    
+		}
+	}
+	
+	tmoney = tmoney*rate;
+	$("#shouldPayMoney").val(tmoney.toFixed(2));
+}
+
+
+  
 </script>
