@@ -14,10 +14,13 @@ import com.cys.repository.SysYuyueRespository;
 import com.cys.repository.YuyueOrderRepository;
 import com.cys.service.ISysUserService;
 import com.cys.service.ISysYuyueService;
+import com.cys.util.OrderUtil;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.common.util.CollectionUtils;
+import org.apache.jackrabbit.webdav.ordering.OrderingDavServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -93,7 +96,7 @@ public class SysYuyueServiceImpl extends BaseServiceImpl<SysYuyue,String>  imple
 	public void saveYuyueOrder(YuyueOrderDTO yuyueOrderDTO) throws Exception {
 		// TODO Auto-generated method stub
 		YuyueOrder yuyueOrder = new YuyueOrder();
-		SysYuyue sy = sysYuyueRespository.findOne(yuyueOrder.getSysYuyue());
+		SysYuyue sy = sysYuyueRespository.findOne(yuyueOrderDTO.getSysYuyue());
 		
 		PropertyUtils.copyProperties(yuyueOrder,yuyueOrderDTO);
 		if(sy.getYyCzUser()!=null){
@@ -102,6 +105,7 @@ public class SysYuyueServiceImpl extends BaseServiceImpl<SysYuyue,String>  imple
 		if(sy.getYyQyUser()!=null){
 			yuyueOrder.setYyQxId(sy.getYyQyUser().getId());
 		}
+		yuyueOrder.setYl5(OrderUtil.getOrderIdByUUId());
         yuyueOrderRepository.save(yuyueOrder);
         if(yuyueOrderDTO.getServerProject()!=null){
         	for(int i=0;i<yuyueOrderDTO.getServerProject().size();i++){

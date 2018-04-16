@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 
 import com.cys.common.domain.Query;
+import com.cys.dto.YuyueOrderDTO;
 import com.cys.model.YuyueOrder;
 
 /**
@@ -16,5 +17,7 @@ public interface YuyueOrderService extends IBaseService<YuyueOrder,String> {
 	Page<YuyueOrder> find(YuyueOrder sysYuyue, Query query) throws Exception;
 	
 	List<YuyueOrder> findByHql(String Hql) throws Exception;
+	
+	YuyueOrderDTO findByid(String id) throws Exception;
  
 }

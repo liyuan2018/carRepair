@@ -28,7 +28,7 @@ function initTable() {
  
   $("#cusTable").bootstrapTable({  
       method: "get",  //使用get请求到服务器获取数据  
-      url: "user", //获取数据的Servlet地址  
+      url: "yuyueOrder", //获取数据的Servlet地址  
       striped: true,  //表格显示条纹  
       pagination: true, //启动分页  
       pageSize: 10,  //每页显示的记录数  
@@ -46,7 +46,8 @@ function initTable() {
       queryParams: function queryParams(params) {   //设置查询参数  
         var param = {    
             page: params.pageNumber-1,    
-            limit: params.pageSize
+            limit: params.pageSize,  
+            
             
         };    
         return param;                   
@@ -55,13 +56,15 @@ function initTable() {
                {checkbox:true, checked : false},
                {field:"id", title:"id",visible:false},
                {field:"type",title:"预约类型"},
-               {field:"carNum",title:"车牌号"},
+               {field:"shouldPayMoney",title:"应付款（元）"},
+               {field:"carNum",title:"车牌"},
                {field:"qxName",title:"车医生姓名"},
                {field:"czName",title:"车主姓名"},
-               {field:"mobile",title:"车主手机"},
+          
                {field:"yyTime",title:"预约时间"},
-               {field:"status",title:"状态"},	
-               
+               {field:"zhekou",title:"折扣"},	
+               {field:"orderNO",title:"单号"},
+               {field:"caozuo",title:"操作"}
                ],
       onLoadSuccess: function(){  //加载成功时执行  
         //alert("加载成功");  
@@ -112,19 +115,19 @@ function deleteTr(is){
 </head>
 <body>
 <div style="padding:10px">
-<h4>预约管理</h2>
+<h4>结算单信息</h2>
 
 <div>
 	<form class="form-inline">
-  <label>车医生姓名</label><input type="text" name="aname" id="aname" class="input" placeholder="姓名">
-  <label>车医生手机号码</label><input type="text" class="input" id="amobile" name ="amobile" placeholder="手机号码">
+ <!--  <label>车医生姓名</label><input type="text" name="aname" id="aname" class="input" placeholder="姓名">
+  <label>车医生手机号码</label><input type="text" class="input" id="amobile" name ="amobile" placeholder="手机号码"> -->
   
-  <input class="btn" value="查找" style="width:50px" onclick="initTable()" />
+  <!-- <input class="btn" value="查找" style="width:50px" onclick="initTable()" /> -->
 </form>
 </div>
 <div>
 	<div class="btn-group">
-	<a  class="btn" role="button" onclick="showAdd()" >确认完成</a>
+	<!-- <a  class="btn" role="button" onclick="showAdd()" >确认完成</a> -->
   
   <!-- <button class="btn" onclick="deleteData()">删除</button>
   <button class="btn" onclick="fghh('update')">修改</button>
@@ -144,12 +147,12 @@ function deleteTr(is){
 
 border-width:2px;border-color:4169E1;display:none">
 <div style="padding-top:10px;text-align:center">
-	<h3 id="usertitle" onclick="showAdd()"> 确认完成</h3>
+	<h3 id="usertitle" onclick="showAdd()"> 详细信息</h3>
 </div>
 <form action="" id="addfrom">
 <input type="text" name="id"  id="id" style="display:none" placeholder="">
  <table style="width:700px;text-align:center;border-collapse:separate; border-spacing:0px 10px;">
-	<tr>
+	<!-- <tr>
 		<td style="width:150px">车医生姓名</td>
 		<td style="width:200px;text-align:left"><span id="cysName"></span></td>
 		<td style="width:150px">服务类型</td>
@@ -190,38 +193,36 @@ border-width:2px;border-color:4169E1;display:none">
 		</td>
 		<td > 提成比例 </td>
 		<td ><input type="text" class="form-control" id="tcrate" name="tcrate"  style="width:100px" value=0.03></td>
-	</tr>
+	</tr> -->
 	
 	<tr>
 		
 		<td colspan="4" style="text-align:center">
-			 <table id="serverI" style="width:690px;">
+			 <table  style="width:690px;">
+			   <thead>
 				<tr>
 				<td>项目(必输)</td>
 				<td>单价(元)</td>
 				<td>工时费(元)</td>
 				<td>提成(元)</td>
 				<td>具体产品</td>
-				<td><input type="button" value="新增"  onclick="addTr()" /></td>
+				<!-- <td><input type="button" value="新增"  onclick="addTr()" /></td> -->
 				</tr>
-				<tr>
-				<td><input type="text" name="project"  style="width:100px" /></td>
-				<td><input type="text" name="servicePrice"  id="price0" onchange="onchangeMoney(0)" style="width:100px" /></td>
-				<td><input type="text" name="workTimeCost"  style="width:100px" /></td>
-				<td><input type="text" name="commission" id="commission0"  style="width:100px" /></td>
-				<td><input type="text" name="productName"  style="width:100px" /></td>
-				<td></td>
-				</tr>
+				</thead>
+				<tbody id="serverI">
+				
+				</tbody>
+				
 			</table> 
 		</td>
 	</tr>  
 	
-	<tr>
+	<!-- <tr>
 		<td style="">折扣</td>
 		<td style="text-align:left"><input type="text" class="form-control" id="zhekou" name="zhekou" onchange="onchangeMoney(111)" placeholder="折扣" style="width:100px" value=1></td>
 		<td style="">总金额</td>
 		<td style="text-align:left"><input type="text" class="form-control" id="shouldPayMoney" name="shouldPayMoney" placeholder="总金额" style="width:100px" ></td>
-	</tr>
+	</tr> -->
 	<!-- <tr>
 		<td>服务总费用</td>
 		<td style="text-align:left"><input id="serviceMoney"  type="text" name="serviceMoney" class="input"  /></td>
@@ -229,15 +230,15 @@ border-width:2px;border-color:4169E1;display:none">
 	
 	
 	
-<tr>
+ <tr>
 		<td colspan="4" >
-			<input class="btn" style="width:100px" value="提     交" id="tijiao" onclick="submitP()"/>
+			
 			<input class="btn" style="width:100px" value="取    消" onclick="hideAdd()"/>
 		</td>
 		
   
 
-	</tr> 
+	</tr>  
 	
 </table> 
 </form>
@@ -249,7 +250,7 @@ border-width:2px;border-color:4169E1;display:none">
 
 <script>
 function showAdd(){
-	var org_id = $("#cusTable").bootstrapTable('getSelections')[0].id;	
+	/* var org_id = $("#cusTable").bootstrapTable('getSelections')[0].id;	
 	var cysName = $("#cusTable").bootstrapTable('getSelections')[0].qxName;	
 	var czName = $("#cusTable").bootstrapTable('getSelections')[0].czName;	
 	var mobile = $("#cusTable").bootstrapTable('getSelections')[0].mobile;	
@@ -260,13 +261,13 @@ function showAdd(){
 	$("#czMobile").html(mobile);
 	$("#serviceType").html(type);
 	$("#carNum").html(carNum);
-	$("#addcys").show();
-	getCarByByNum(carNum);
+	$("#addcys").show(); */
+	chakan(carNum);
 	
 }
 function hideAdd(){
 	$("#addcys").hide();
-	$("#tijiao").show();
+	/* $("#tijiao").show(); */
 	//$("#addfrom").resetForm();
 	/* $("#serviceDesc").val("");  
 	$("#serviceMoney").val("");   */
@@ -274,7 +275,7 @@ function hideAdd(){
 }
 
 function clearf(){
-	$("#cysName").html("");
+	/* $("#cysName").html("");
 	$("#czName").html("");
 	$("#czMobile").html("");
 	$("#serviceType").html("");
@@ -284,14 +285,15 @@ function clearf(){
 	$("input[name='servicePrice']").val("") ;
 	$("input[name='workTimeCost']").val("") ;
 	$("input[name='commission']").val("") ;
-	$("input[name='productName']").val("") ;
+	$("input[name='productName']").val("") ; */
+	$("#serverI").html("");
 }
 
 
-function getCarByByNum(num){
-	
+function chakan(num){
+	$("#addcys").show();
 	$.ajax({
-	    url:"getCarByByNum",
+	    url:"getServerProject",
 	    type:"GET", //GET
 	    //contentType: "application/json",
 	    async:true,    //或false,是否异步
@@ -304,13 +306,25 @@ function getCarByByNum(num){
 	    },
 	    success:function(data,textStatus,jqXHR){
 	    	//alert(data.carInfo.id);
-	    	if(data.carInfo.id !== null&& data.carInfo.id !== undefined){
-	    		$("#carType").html(data.carInfo.carType);
-	    	}
+	    	var html = "";
 	    	
-	        console.log(data);
-	        console.log(textStatus);
-	        console.log(jqXHR);
+	    	if (data.arrayLists == null || data.arrayLists == undefined || data.arrayLists == '') 
+	    	{ 
+		    	alert("没有详细数据");
+	    	} else{
+	    		for(var i=0;i<data.arrayLists.length;i++){
+		    		var tt= data.arrayLists[i];
+		    		html +="<tr>"
+		    		+"<td>"+thnull(tt.project)+"</td>"
+		    		+"<td>"+thnull(tt.servicePrice)+"</td>"
+		    		+"<td>"+thnull(tt.workTimeCost)+"</td>"
+		    		+"<td>"+thnull(tt.commission)+"</td>"
+		    		+"<td>"+thnull(tt.productName)+"</td>"
+		    		+"</tr>"
+		    	}
+	    	}
+	    	$("#serverI").html(html);
+	    	
 	    },
 	    error:function(xhr,textStatus){
 	        console.log('错误')
@@ -322,103 +336,18 @@ function getCarByByNum(num){
 	        console.log('结束');
 	    }
 	})
-}
-
-
-function submitP(){
 	
-	var t01 = $("#serverI tr").length;
-	var project = document.getElementsByName("project");
-	var servicePrice = document.getElementsByName("servicePrice");
-	var workTimeCost = document.getElementsByName("workTimeCost");
-	var commission = document.getElementsByName("commission");
-	var productName = document.getElementsByName("productName");
-	var org_id = $("#cusTable").bootstrapTable('getSelections')[0].id;	
-	var org_status = $("#cusTable").bootstrapTable('getSelections')[0].status;	
-	if(org_status = "完成"){
-		alert("该订单已经处理了");
-	}
-	var lk;
-	var mycars=new Array(t01-1)
-	for(var i=1;i<t01;i++){
-		if(project[i-1]!=""){
-			var obj = new ServiceP(project[i-1].value,servicePrice[i-1].value,workTimeCost[i-1].value,commission[i-1].value,productName[i-1].value);
-			mycars[i-1]=obj;
-			//lk[i-1]=obj;
-		}
-	}
-	//alert(mycars[0].project);
-	var yl1 = $("#yl1").val();
-	var yl2 = $("#yl2").val();
-	var yl3 = $("#yl3").val();
-	var param = {"yl1":yl1,"yl2":yl2,"yl3":yl3,"yl4":$("#zhekou").val(),"serverProject":mycars,"shouldPayMoney":$("#shouldPayMoney").val(),"sysYuyue":{"id":org_id}};
-	param1 = JSON.stringify( param );
-	$.ajax({
-	    url:"save",
-	    type:'POST', //GET
-	    async:true,    //或false,是否异步
-	    data:param1,
-	    dataType:'json',    //返回的数据格式：json/xml/html/script/jsonp/text
-	    contentType: "application/json",
-	    beforeSend:function(xhr){
-	        console.log(xhr)
-	        console.log('发送前')
-	    },
-	    success:function(data,textStatus,jqXHR){
-	    	initTable();  hideAdd();
-	    	
-	        console.log(data)
-	        console.log(textStatus)
-	        console.log(jqXHR)
-	    },
-	    error:function(xhr,textStatus){
-	        console.log('错误')
-	        console.log(xhr)
-	        console.log(textStatus)
-	        alert("网络异常");
-	    },
-	    complete:function(){
-	        console.log('结束')
-	    }
-	})
-	
-}
-
-
-function ServiceP(project,servicePrice,workTimeCost,commission,productName){ 
-	this.project = project; 
-	this.servicePrice = servicePrice; 
-	this.workTimeCost = workTimeCost; 
-	this.commission = commission; 
-	this.productName = productName; 
-} 
-
-function onchangeMoney(count){
-	var tmoney =0;
-	var rate = $("#zhekou").val();
-	var servicePrice = document.getElementsByName("servicePrice");
-	
-	
-	if(count !=111){
-		var mm = $("#price"+count).val();
-		var ty= $("#tcrate").val();
-		$("#commission"+count).val((mm*ty).toFixed(2));
-		
-	}
-	
-	for(var i=0;i<servicePrice.length;i++){
-		if(servicePrice[i]!=""){
+	function thnull(tr){
+		if (tr == null || tr == undefined || tr == '') { 
 			
-				tmoney = tmoney+parseFloat(servicePrice[i].value);
-		    
-		    	
-		    
+			return "";
+		}else{
+			return tr;
 		}
 	}
-	
-	tmoney = tmoney*rate;
-	$("#shouldPayMoney").val(tmoney.toFixed(2));
 }
+
+
 
 
   

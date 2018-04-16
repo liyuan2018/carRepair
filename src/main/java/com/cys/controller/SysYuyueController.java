@@ -45,10 +45,14 @@ public class SysYuyueController extends BaseController {
     public ResultData save(HttpServletRequest request,HttpServletResponse response,@RequestBody SysYuyue sysyuyue) throws Exception {
         sysyuyue.setCreateTime(new Date());
         sysyuyue.setStatus("1");
+        System.out.println("sysyuyue.getYyQyUser()="+sysyuyue.getYyQyUser());
         if(sysyuyue.getYyQyUser() !=null){
         	SysUser uu= sysUserService.findById(sysyuyue.getYyQyUser().getId());
+        	 System.out.println("id="+sysyuyue.getYyQyUser().getId()+"==="+sysyuyue.getYyQyUser().getId());
+        	 System.out.println("uu="+uu);
         	if(uu!=null){
-        		sysyuyue.setShopId(sysyuyue.getYyQyUser().getShopId());
+        		sysyuyue.setShopId(uu.getShopId());
+        		System.out.println("shopid="+sysyuyue.getYyQyUser().getShopId());
         	}
         	
         }

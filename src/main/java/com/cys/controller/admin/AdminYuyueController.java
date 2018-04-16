@@ -30,12 +30,14 @@ import com.cys.common.domain.ResultData;
 import com.cys.dto.SysUserDTO;
 import com.cys.dto.YuyueOrderDTO;
 import com.cys.model.CarInfo;
+import com.cys.model.ServerProject;
 import com.cys.model.SysUser;
 import com.cys.model.SysYuyue;
 import com.cys.model.YuyueOrder;
 import com.cys.service.ICarInfoService;
 import com.cys.service.ISysUserService;
 import com.cys.service.ISysYuyueService;
+import com.cys.service.ServerProjectService;
 import com.cys.service.YuyueOrderService;
 import com.cys.util.DateUtils;
 import com.cys.util.SessionUtils;
@@ -59,6 +61,9 @@ public class AdminYuyueController {
 	@Autowired
     private ISysYuyueService sysYuyueService;
 	
+	@Autowired
+    private ServerProjectService serverProjectService;
+	
 	 @RequestMapping(value = "index", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	    public ModelAndView index() throws Exception{
 	        return new ModelAndView("index");
@@ -68,7 +73,10 @@ public class AdminYuyueController {
 	        return new ModelAndView("yuyueList");
 	    }
 	    
-	   
+	    @RequestMapping(value = "yuyueOrderPage", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	    public ModelAndView yuyueOrderPage() throws Exception{
+	        return new ModelAndView("yuyueOrder");
+	    }
 	    
 	    /**
 	     * 查询详情
@@ -116,6 +124,7 @@ public class AdminYuyueController {
 	    	
 	    	//query.getPageable().s;
 	        //SysUser sysUser= (SysUser) query.getBean(SysUser.class);
+	    	
 	    	SysUser uu = SessionUtils.getCurrentUser();
 	    	sysYuyue.setShopId(uu.getShopId());
 	        Page<SysYuyue> pageList = sysYuyueService.find(sysYuyue, query);
@@ -170,6 +179,74 @@ public class AdminYuyueController {
 	        SessionUtils.writer(json);
 	    }
 	    
+	    @RequestMapping(value = "yuyueOrder", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	    public void yuyueOrder(Query query,  YuyueOrder yuyueOrder) throws Exception {
+	    	SysUser uu = SessionUtils.getCurrentUser();
+	    	Page<YuyueOrder> pageList = yuyueOrderService.find(yuyueOrder,query);
+	    	
+	    	
+	    	 JSONArray arr = new JSONArray();
+		        for(int i=0;i<pageList.getContent().size();i++){
+		        	YuyueOrder u=pageList.getContent().get(i);
+		        	JSONObject o = new JSONObject();
+		        	o.put("id", u.getId());
+		        	o.put("type", SysYuyue.getYuyueDesc(u.getSysYuyue().getYyType()));
+		        	if(u.getSysYuyue().getYyQyUser()!=null){
+		        		o.put("qxName", u.getSysYuyue().getYyQyUser().getName());
+		        	}else{
+		        		o.put("qxName", "");
+		        	}
+		            o.put("carNum", u.getSysYuyue().getCarNum());
+		        	if(u.getSysYuyue().getYyCzUser()!=null){
+		        		o.put("czName", u.getSysYuyue().getYyCzUser().getName());
+		        		//o.put("mobile", u.getSysYuyue().getYyCzUser().getMobile());
+		        	}else{
+		        		o.put("czName", "");
+		        		
+		        	}
+		        	
+		        	if(u.getShouldPayMoney() !=null){
+		        		o.put("shouldPayMoney", u.getShouldPayMoney());
+		        	}else{
+		        		o.put("shouldPayMoney", "");
+		        	}
+		        	if(u.getSysYuyue().getYyDate()!=null){
+		        		o.put("yyTime", DateUtils.format(u.getSysYuyue().getYyDate(), "yyyy-MM-DD"));
+		        		if(u.getSysYuyue().getYyTime() != null){
+		        			String VB="";
+		        			if(u.getSysYuyue().getYyTime().equalsIgnoreCase("1")){
+		        				VB="上午";
+		        			}else if(u.getSysYuyue().getYyTime().equalsIgnoreCase("2")){
+		        				VB="下午";
+		        			}
+		        			o.put("yyTime",o.get("yyTime")+":"+VB);
+		        		}
+		        	}else{
+		        		o.put("yyTime", "");
+		        	}
+		        	
+		            o.put("orderNO", u.getYl5());
+		            o.put("zhekou", u.getYl4());
+		            o.put("caozuo", "<a onclick=\"chakan('"+u.getId()+"')\"> 查看 </a>");
+		        	//o.put("status", SysYuyue.getStatusDesc(u.getStatus()));
+		        	arr.add(o);
+		        }
+		        
+		        String json = "{\"total\":" + pageList.getTotalElements() + ",\"rows\":" + arr.toString() + "}";  
+		        System.out.println(json);
+		        SessionUtils.writer(json);
+	    }
+	    
+	    @RequestMapping(value = "getServerProject", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	    public ResultData getServerProject(String carNum) throws Exception {
+	    	ServerProject sp = new ServerProject();
+	    	sp.setOrderId(carNum);
+	    	List<ServerProject>  li = serverProjectService.find(sp);
+	    	
+	    	
+	    
+	    	return new ResultData(ArrayList.class, li);
+	    }
 	    
 
 }

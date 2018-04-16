@@ -49,9 +49,19 @@
                 </li>
                 <li>
                     <h2 class="obtain">预约管理<i></i></h2>
-                    <div class="secondary" onclick="chooseM('yuyue/table')">
-                        <h3 >预约单管理</h3>
+                    <div class="secondary" onclick="chooseM('yuyue/table')" >
+                        <h3  >预约单管理</h3>
+                        
                     </div>
+                    
+                </li>
+                <li>
+                    <h2 class="obtain">结算单信息<i></i></h2>
+                    <div class="secondary" onclick="chooseM('yuyue/yuyueOrderPage')" >
+                        <h3  >结算单信息</h3>
+                        
+                    </div>
+                   
                 </li>
                 <li>
                     <h2 class="obtain">系统管理<i></i></h2>
